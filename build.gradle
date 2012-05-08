@@ -1,0 +1,133 @@
+apply plugin : 'java'
+apply plugin : 'eclipse'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
+apply from: 'cobertura.gradle'
+apply plugin: 'maven'
+
+group = 'com.ninja-squad'
+sourceCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.code.findbugs:jsr305:2.0.0'
+    compile 'net.sourceforge.findbugs:annotations:1.3.2'
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.mockito:mockito-all:1.9.0'
+    testCompile 'org.hsqldb:hsqldb:2.2.8'
+}
+
+configurations {
+    compile.transitive = false
+    testCompile.transitive = false
+    runtime.transitive = false
+    testRuntime.transitive = false
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'ISO-8859-1'
+
+checkstyle {
+    sourceSets = [sourceSets.main]
+}
+
+checkstyleMain << {
+    ant.xslt(in: reports.xml.destination,
+             style: new File(configFile.parent, 'checkstyle-noframes-sorted.xsl'),
+             out: new File(reports.xml.destination.parent, 'main.html'))
+}
+
+pmd {
+    sourceSets = [sourceSets.main]
+}
+
+pmdMain {
+    ignoreFailures = true
+    ruleSetFiles = files('config/pmd/ruleSet.xml')
+}
+
+findbugs {
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+}
+
+findbugsMain {
+    reports {
+        xml {
+            enabled = false
+        }
+        html {
+            enabled = true
+        }
+    }
+}
+
+def sharedManifest = manifest {
+    attributes(['Implementation-Title': 'ninja-core', 
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'ninja-squad.com'])
+}
+
+jar {
+    manifest { 
+        from sharedManifest
+    }
+}
+
+javadoc {
+    options.overview file('src/main/resources/com/ninja_squad/dbsetup/overview.html').path
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+    manifest { 
+        from sharedManifest
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+    manifest { 
+        from sharedManifest
+    }
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.write('eclipse.preferences.version=1\n')
+    f.append('encoding/<project>=ISO-8859-1')
+}
+
+cleanEclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.delete()
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // TODO configure maven repos:
+            // repository(url: uri("pomRepo"))
+            // snapshotRepository(url: uri("snapshotRepo"))
+        }
+    }
+}
+
+[install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured {pom ->
+    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'} // we don't care about test dependencies
+    pom.dependencies*.scope = null // all dependencies are compile time dependencies, and there is no need to say it
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-rc-3'
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<ruleset name="MemWords ruleset"
+    xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+  <description>
+  The PMD ruleset used by ninja-core
+  </description>
+  
+  <rule ref="rulesets/basic.xml">
+      <exclude name="EmptyCatchBlock"/>
+  </rule>
+  <rule ref="rulesets/basic.xml/EmptyCatchBlock">
+      <properties>
+          <property name="allowCommentedBlocks" value="true"/>
+      </properties>
+  </rule>
+  
+  <rule ref="rulesets/braces.xml"/>
+  
+  <rule ref="rulesets/clone.xml"/>
+  
+  <rule ref="rulesets/controversial.xml/UnusedModifier"/>
+  <rule ref="rulesets/controversial.xml/AssignmentInOperand"/>
+  <rule ref="rulesets/controversial.xml/DontImportSun"/>
+  
+  <rule ref="rulesets/design.xml/SimplifyBooleanReturns"/>
+  <rule ref="rulesets/design.xml/SimplifyBooleanExpressions"/>
+  <rule ref="rulesets/design.xml/SwitchStmtsShouldHaveDefault"/>
+  <rule ref="rulesets/design.xml/ConstructorCallsOverridableMethod"/>
+  <rule ref="rulesets/design.xml/FinalFieldCouldBeStatic"/>
+  <rule ref="rulesets/design.xml/DefaultLabelNotLastInSwitchStmt"/>
+  <rule ref="rulesets/design.xml/OptimizableToArrayCall"/>
+  <rule ref="rulesets/design.xml/EqualsNull"/>
+  <rule ref="rulesets/design.xml/InstantiationToGetClass"/>
+  <rule ref="rulesets/design.xml/IdempotentOperations"/>
+  <rule ref="rulesets/design.xml/SimpleDateFormatNeedsLocale"/>
+  <rule ref="rulesets/design.xml/UseLocaleWithCaseConversions"/>
+  <rule ref="rulesets/design.xml/AvoidProtectedFieldInFinalClass"/>
+  <rule ref="rulesets/design.xml/AssignmentToNonFinalStatic"/>
+  <rule ref="rulesets/design.xml/MissingStaticMethodInNonInstantiatableClass"/>
+  <rule ref="rulesets/design.xml/MissingBreakInSwitch"/>
+  <rule ref="rulesets/design.xml/UseNotifyAllInsteadOfNotify"/>
+  <rule ref="rulesets/design.xml/AvoidInstanceofChecksInCatchClause"/>
+  <rule ref="rulesets/design.xml/SimplifyConditional"/>
+  <rule ref="rulesets/design.xml/CompareObjectsWithEquals"/>
+  <rule ref="rulesets/design.xml/PositionLiteralsFirstInComparisons"/>
+  <rule ref="rulesets/design.xml/UncommentedEmptyMethod"/>
+  <rule ref="rulesets/design.xml/AvoidConstantsInterface"/>
+  <rule ref="rulesets/design.xml/UnsynchronizedStaticDateFormatter"/>
+  <rule ref="rulesets/design.xml/PreserveStackTrace"/>
+  <rule ref="rulesets/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal"/>
+  <rule ref="rulesets/design.xml/SingularField"/>
+  <rule ref="rulesets/design.xml/ReturnEmptyArrayRatherThanNull"/>
+  <rule ref="rulesets/design.xml/AbstractClassWithoutAnyMethod"/>
+  
+  <rule ref="rulesets/finalizers.xml"/>
+  
+  <rule ref="rulesets/imports.xml"/>
+  
+  <rule ref="rulesets/naming.xml/VariableNamingConventions"/>
+  <rule ref="rulesets/naming.xml/MethodNamingConventions"/>
+  <rule ref="rulesets/naming.xml/ClassNamingConventions"/>
+  <rule ref="rulesets/naming.xml/AbstractNaming"/>
+  <rule ref="rulesets/naming.xml/AvoidDollarSigns"/>
+  <rule ref="rulesets/naming.xml/MethodWithSameNameAsEnclosingClass"/>
+  <rule ref="rulesets/naming.xml/SuspiciousHashcodeMethodName"/>
+  <rule ref="rulesets/naming.xml/SuspiciousConstantFieldName"/>
+  <rule ref="rulesets/naming.xml/SuspiciousEqualsMethodName"/>
+  <rule ref="rulesets/naming.xml/AvoidFieldNameMatchingTypeName"/>
+  <rule ref="rulesets/naming.xml/AvoidFieldNameMatchingMethodName"/>
+  <rule ref="rulesets/naming.xml/NoPackage"/>
+  <rule ref="rulesets/naming.xml/PackageCase"/>
+  <rule ref="rulesets/naming.xml/BooleanGetMethodName"/>
+  
+  <rule ref="rulesets/optimizations.xml/UseArrayListInsteadOfVector"/>
+  <rule ref="rulesets/optimizations.xml/SimplifyStartsWith"/>
+  <rule ref="rulesets/optimizations.xml/UseArraysAsList"/>
+  <rule ref="rulesets/optimizations.xml/AvoidArrayLoops"/>
+  <rule ref="rulesets/optimizations.xml/UnnecessaryWrapperObjectCreation"/>
+  <rule ref="rulesets/optimizations.xml/AddEmptyString"/>
+  
+  <rule ref="rulesets/strictexception.xml/AvoidCatchingThrowable"/>
+  <rule ref="rulesets/strictexception.xml/SignatureDeclareThrowsException"/>
+  <rule ref="rulesets/strictexception.xml/AvoidCatchingNPE"/>
+  <rule ref="rulesets/strictexception.xml/AvoidThrowingRawExceptionTypes"/>
+  <rule ref="rulesets/strictexception.xml/DoNotExtendJavaLangError"/>
+  <rule ref="rulesets/strictexception.xml/DoNotThrowExceptionInFinally"/>
+  <rule ref="rulesets/strictexception.xml/AvoidThrowingNewInstanceOfSameException"/>
+  
+  <rule ref="rulesets/strings.xml">
+      <exclude name="AvoidDuplicateLiterals"/>
+  </rule>
+  
+  <rule ref="rulesets/unusedcode.xml"/>
+</ruleset>
