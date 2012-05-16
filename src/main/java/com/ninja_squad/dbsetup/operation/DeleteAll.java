@@ -71,7 +71,7 @@ public final class DeleteAll implements Operation {
         for (String table : tables) {
             operations.add(new DeleteAll(table));
         }
-        return CompositeOperation.of(operations);
+        return CompositeOperation.sequenceOf(operations);
     }
 
     @Override

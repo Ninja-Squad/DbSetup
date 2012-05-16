@@ -28,8 +28,8 @@ public class InsertIntegrationTest {
 
     @Before
     public void prepare() throws SQLException {
-        new DbSetup(Database.DESTINATION, Operations.of(CommonOperations.DROP_TABLES,
-                                                        CommonOperations.CREATE_TABLES)).launch();
+        new DbSetup(Database.DESTINATION, Operations.sequenceOf(CommonOperations.DROP_TABLES,
+                                                                CommonOperations.CREATE_TABLES)).launch();
         connection = Database.getConnection();
     }
 
@@ -58,7 +58,7 @@ public class InsertIntegrationTest {
                   .columns("b_id", "a_id", "va")
                   .values(2, TestEnum.BAT, TestEnum.BAR)
                   .build();
-        new DbSetup(Database.DESTINATION, Operations.of(insertA, insertB1, insertB2)).launch();
+        new DbSetup(Database.DESTINATION, Operations.sequenceOf(insertA, insertB1, insertB2)).launch();
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("select * from A order by a_id");
         assertTrue(rs.next());

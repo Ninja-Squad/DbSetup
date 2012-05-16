@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
  * &#064;Before
  * public void setUp() throws Exception {
  *     Operation operation =
- *          Operations.of(
+ *         Operations.sequenceOf(
  *             CommonOperations.DELETE_ALL,
  *             CommonOperations.INSERT_REFERENCE_DATA,
  *             Operations.insertInto("CLIENT")

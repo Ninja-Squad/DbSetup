@@ -15,11 +15,11 @@ import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration;
 public class CompositeOperationTest {
     @Test
-    public void ofWorksWhenNop() throws SQLException {
-        testNoArgOpWorks(CompositeOperation.of());
-        testNoArgOpWorks(CompositeOperation.of(Collections.<Operation>emptyList()));
-        testNoArgOpWorks(Operations.of());
-        testNoArgOpWorks(Operations.of(Collections.<Operation>emptyList()));
+    public void sequenceOfWorksWhenNop() throws SQLException {
+        testNoArgOpWorks(CompositeOperation.sequenceOf());
+        testNoArgOpWorks(CompositeOperation.sequenceOf(Collections.<Operation>emptyList()));
+        testNoArgOpWorks(Operations.sequenceOf());
+        testNoArgOpWorks(Operations.sequenceOf(Collections.<Operation>emptyList()));
     }
 
     private void testNoArgOpWorks(Operation nop) throws SQLException {
@@ -29,27 +29,27 @@ public class CompositeOperationTest {
     }
 
     @Test
-    public void ofWorksWhenSingleArg() throws SQLException {
+    public void sequenceOfWorksWhenSingleArg() throws SQLException {
         Operation a = mock(Operation.class);
 
-        assertSame(a, CompositeOperation.of(a));
-        assertSame(a, CompositeOperation.of(Collections.singletonList(a)));
-        assertSame(a, Operations.of(a));
-        assertSame(a, Operations.of(Collections.singletonList(a)));
+        assertSame(a, CompositeOperation.sequenceOf(a));
+        assertSame(a, CompositeOperation.sequenceOf(Collections.singletonList(a)));
+        assertSame(a, Operations.sequenceOf(a));
+        assertSame(a, Operations.sequenceOf(Collections.singletonList(a)));
     }
 
     @Test
-    public void ofWorksWhenSeveralArgs() throws SQLException {
+    public void sequenceOfWorksWhenSeveralArgs() throws SQLException {
         Operation a = mock(Operation.class);
         Operation b = mock(Operation.class);
 
-        testOfWorksWhenMultipleArgs(CompositeOperation.of(a, b), a, b);
-        testOfWorksWhenMultipleArgs(CompositeOperation.of(Arrays.asList(a, b)), a, b);
-        testOfWorksWhenMultipleArgs(Operations.of(a, b), a, b);
-        testOfWorksWhenMultipleArgs(Operations.of(Arrays.asList(a, b)), a, b);
+        testSequenceOfWorksWhenMultipleArgs(CompositeOperation.sequenceOf(a, b), a, b);
+        testSequenceOfWorksWhenMultipleArgs(CompositeOperation.sequenceOf(Arrays.asList(a, b)), a, b);
+        testSequenceOfWorksWhenMultipleArgs(Operations.sequenceOf(a, b), a, b);
+        testSequenceOfWorksWhenMultipleArgs(Operations.sequenceOf(Arrays.asList(a, b)), a, b);
     }
 
-    private void testOfWorksWhenMultipleArgs(Operation composite, Operation a, Operation b) throws SQLException {
+    private void testSequenceOfWorksWhenMultipleArgs(Operation composite, Operation a, Operation b) throws SQLException {
         Connection connection = mock(Connection.class);
         composite.execute(connection, DefaultBinderConfiguration.INSTANCE);
         InOrder inOrder = inOrder(a, b);
@@ -62,8 +62,8 @@ public class CompositeOperationTest {
         SqlOperation a = SqlOperation.of("A");
         SqlOperation b = SqlOperation.of("B");
 
-        Operation c1 = CompositeOperation.of(a, b);
-        Operation c2 = CompositeOperation.of(a, b);
+        Operation c1 = CompositeOperation.sequenceOf(a, b);
+        Operation c2 = CompositeOperation.sequenceOf(a, b);
 
         assertEquals(c1, c2);
         assertEquals(c1.hashCode(), c2.hashCode());
@@ -78,6 +78,6 @@ public class CompositeOperationTest {
         when(a.toString()).thenReturn("a");
         Operation b = mock(Operation.class);
         when(b.toString()).thenReturn("b");
-        assertEquals("a\nb", CompositeOperation.of(a, b).toString());
+        assertEquals("a\nb", CompositeOperation.sequenceOf(a, b).toString());
     }
 }

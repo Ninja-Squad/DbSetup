@@ -70,7 +70,7 @@ public final class Truncate implements Operation {
         for (String table : tables) {
             operations.add(new Truncate(table));
         }
-        return CompositeOperation.of(operations);
+        return CompositeOperation.sequenceOf(operations);
     }
 
     @Override

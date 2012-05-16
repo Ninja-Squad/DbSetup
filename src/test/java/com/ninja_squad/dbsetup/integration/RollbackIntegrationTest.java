@@ -21,8 +21,8 @@ public class RollbackIntegrationTest {
 
     @Before
     public void prepare() throws SQLException {
-        new DbSetup(Database.DESTINATION, Operations.of(CommonOperations.DROP_TABLES,
-                                                        CommonOperations.CREATE_TABLES)).launch();
+        new DbSetup(Database.DESTINATION, Operations.sequenceOf(CommonOperations.DROP_TABLES,
+                                                                CommonOperations.CREATE_TABLES)).launch();
         connection = Database.getConnection();
     }
 
@@ -44,7 +44,7 @@ public class RollbackIntegrationTest {
                   .values(1L, "hello")
                   .build();
         try {
-            new DbSetup(Database.DESTINATION, Operations.of(insertA1, insertA2)).launch();
+            new DbSetup(Database.DESTINATION, Operations.sequenceOf(insertA1, insertA2)).launch();
             fail("expected a DbSetupRuntimeException");
         }
         catch (DbSetupRuntimeException e) {
@@ -68,7 +68,7 @@ public class RollbackIntegrationTest {
                   .values(1L, "hello")
                   .build();
         try {
-            new DbSetup(Database.DESTINATION, Operations.of(insertA1, insertA2)).launch();
+            new DbSetup(Database.DESTINATION, Operations.sequenceOf(insertA1, insertA2)).launch();
             fail("expected a NumberFormatException");
         }
         catch (NumberFormatException e) {

@@ -19,9 +19,9 @@ public class TruncateIntegrationTest {
 
     @Before
     public void prepare() throws SQLException {
-        new DbSetup(Database.DESTINATION, Operations.of(CommonOperations.DROP_TABLES,
-                                                        CommonOperations.CREATE_TABLES,
-                                                        CommonOperations.INSERT_ROWS)).launch();
+        new DbSetup(Database.DESTINATION, Operations.sequenceOf(CommonOperations.DROP_TABLES,
+                                                                CommonOperations.CREATE_TABLES,
+                                                                CommonOperations.INSERT_ROWS)).launch();
         connection = Database.getConnection();
     }
 

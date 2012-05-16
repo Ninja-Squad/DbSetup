@@ -18,7 +18,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
  * &#064;Before
  * public void setUp() throws Exception {
  *     Operation operation =
- *          Operations.of(
+ *         Operations.sequenceOf(
  *             CommonOperations.DELETE_ALL,
  *             CommonOperations.INSERT_REFERENCE_DATA,
  *             Operations.insertInto("CLIENT")

@@ -72,7 +72,7 @@ public final class SqlOperation implements Operation {
         for (String sql : sqlStatements) {
             operations.add(new SqlOperation(sql));
         }
-        return CompositeOperation.of(operations);
+        return CompositeOperation.sequenceOf(operations);
     }
 
     @Override

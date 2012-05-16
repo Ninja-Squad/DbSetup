@@ -40,15 +40,15 @@ public final class CompositeOperation implements Operation {
      * Creates a new Operation containing all the given operations
      * @param operations the sequence of operations
      */
-    public static Operation of(@Nonnull Operation... operations) {
-        return of(Arrays.asList(operations));
+    public static Operation sequenceOf(@Nonnull Operation... operations) {
+        return sequenceOf(Arrays.asList(operations));
     }
 
     /**
      * Creates a new Operation containing all the given operations
      * @param operations the sequence of operations
      */
-    public static Operation of(@Nonnull List<? extends Operation> operations) {
+    public static Operation sequenceOf(@Nonnull List<? extends Operation> operations) {
         if (operations.isEmpty()) {
             return NOP;
         }

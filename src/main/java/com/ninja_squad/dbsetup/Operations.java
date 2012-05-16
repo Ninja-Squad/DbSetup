@@ -114,8 +114,8 @@ public final class Operations {
      * @param operations the operations to put in a sequence
      * @see CompositeOperation
      */
-    public static Operation of(@Nonnull Operation... operations) {
-        return CompositeOperation.of(operations);
+    public static Operation sequenceOf(@Nonnull Operation... operations) {
+        return CompositeOperation.sequenceOf(operations);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class Operations {
      * @param operations the operations to put in a sequence
      * @see CompositeOperation
      */
-    public static Operation of(@Nonnull List<? extends Operation> operations) {
-        return CompositeOperation.of(operations);
+    public static Operation sequenceOf(@Nonnull List<? extends Operation> operations) {
+        return CompositeOperation.sequenceOf(operations);
     }
 }
