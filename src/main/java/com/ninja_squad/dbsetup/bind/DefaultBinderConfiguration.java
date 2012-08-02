@@ -28,18 +28,13 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
      * Uses the parameter type of the given parameter and returns the following Binders depending on the type
      * got from the metadata.
      * <ul>
+     *   <li>VARCHAR, CHAR, LONGNVARCHAR, LONGVARCHAR, NCHAR, NVARCHAR :
+     *       {@link Binders#stringBinder()}</li>
      *   <li>DATE : {@link Binders#dateBinder()}</li>
      *   <li>TIME : {@link Binders#timeBinder()}</li>
      *   <li>TIMESTAMP : {@link Binders#timestampBinder()}</li>
-     *   <li>BIGINT : {@link Binders#integerBinder()}</li>
-     *   <li>INTEGER : {@link Binders#integerBinder()}</li>
-     *   <li>SMALLINT : {@link Binders#integerBinder()}</li>
-     *   <li>TINYINT : {@link Binders#integerBinder()}</li>
-     *   <li>DECIMAL : {@link Binders#decimalBinder()}</li>
-     *   <li>DOUBLE : {@link Binders#decimalBinder()}</li>
-     *   <li>FLOAT : {@link Binders#decimalBinder()}</li>
-     *   <li>NUMERIC : {@link Binders#decimalBinder()}</li>
-     *   <li>REAL : {@link Binders#decimalBinder()}</li>
+     *   <li>INTEGER, BIGINT, SMALLINT, TINYINT : {@link Binders#integerBinder()}</li>
+     *   <li>DECIMAL, DOUBLE, FLOAT, NUMERIC, REAL : {@link Binders#decimalBinder()}</li>
      *   <li>other : {@link Binders#defaultBinder()}</li>
      */
     @Override

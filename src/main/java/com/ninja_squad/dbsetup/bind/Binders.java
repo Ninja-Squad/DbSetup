@@ -37,7 +37,7 @@ public final class Binders {
      * <ul>
      *   <li><code>String</code></li>
      *   <li><code>enum</code>: the name of the enum is used as bound value</li>
-     *   <li><code>Object: the <code>toString()</code> of the object is used as bound value</code></li>
+     *   <li><code>Object</code>: the <code>toString()</code> of the object is used as bound value</li>
      * </ul>
      */
     public static Binder stringBinder() {
@@ -49,7 +49,7 @@ public final class Binders {
      * <ul>
      *   <li><code>java.sql.Date</code></li>
      *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Date</li>
-     *   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a java.sql.Date</code>
+     *   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a java.sql.Date
      *   </li>
      *   <li><code>String</code>: the string is transformed to a java.sql.Date using the <code>Date.valueOf()</code>
      *       method</li>
@@ -67,7 +67,7 @@ public final class Binders {
      *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Timestamp</li>
      *   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a
      *   java.sql.Timestamp</code></li>
-     *   <li><code>String</code>: the string is transformed to a java.sql.Timestamp using the
+     *   <li><code>String</code>: the string is transformed to a <code>java.sql.Timestamp</code> using the
      *       <code>Timestamp.valueOf()</code> method</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
@@ -80,8 +80,10 @@ public final class Binders {
      * Returns a binder suitable for columns of type TIME. The returned binder supports values of type
      * <ul>
      *   <li><code>java.sql.Time</code></li>
-     *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Time</li>
-     *   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a java.sql.Time</code>
+     *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a
+     *      <code>java.sql.Time</code></li>
+     *   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a
+     *      <code>java.sql.Time</code>
      *   </li>
      *   <li><code>String</code>: the string is transformed to a java.sql.Time using the
      *       <code>Time.valueOf()</code> method</li>
@@ -107,7 +109,8 @@ public final class Binders {
      * Returns a binder suitable for numeric, integer columns. The returned binder supports values of type
      * <ul>
      *   <li><code>enum</code>: the enum is transformed into an integer by taking its ordinal</li>
-     *   <li><code>String</code>: the string is transformed to a java.math.BigInteger using its constructor</li>
+     *   <li><code>String</code>: the string is transformed to a <code>java.math.BigInteger</code> using its
+     *      constructor</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
