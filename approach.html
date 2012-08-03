@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DbSetup, from Ninja Squad</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+    </head>
+    <body style="margin-top: 50px;">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="index.html">DbSetup</a>
+                    <div class="nav">
+                        <ul class="nav">
+                            <li class="active"><a href="approach.html">Why using it?</a></li>
+                            <li><a href="user-guide.html">User Guide</a></li>
+                            <li><a href="apidoc/1.0/index.html">API documentation</a></li>
+                            <li><a href="download.html">Download</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="page-header">
+                <h1>Why use DbSetup?</h1>
+            </div>
+            
+            <h2>XML sucks. Java rules.</h2>
+            <p>
+                Most database testing tools use XML, YAML or SQL files to define test data sets. And those
+                approaches have several drawbacks:
+                <ul>
+                    <li>Java developers are good at Java. Java IDEs are good at Java. Why use another language
+                        if Java can do it?
+                    <li>XML datasets have lots of repetitions. Each row of a table repeats the name of all the 
+                        columns of the table.
+                    <li>XML is not a programming language. You can't easily factor out some common parts or 
+                        parameterize a data set. You can't use tests or loops.
+                    <li>XML doesn't allow you to use constants or enums that are defined in your Java code.
+                        It doesn't allow you to name a specific ID. It doesn't have any other type than string.
+                    <li>XML files are hard to navigate. You can't have your data set defined in the test itself.
+                        With DbSetup, data sets are in the test class itself, or one control-click away from the test
+                        class.
+                </ul>
+                
+                DbSetup lets you define data sets in Java, in a very intuitive and non-verbose way. Compare the following data
+                sets:
+            </p>
+            <div class="row">
+                <div class="span6">
+                    <h3>XML syntax</h3>
+                    <pre>
+&lt;dataset&gt;
+    &lt;PERSON ID="1" FIRST_NAME="John" LAST_NAME="Doe" 
+            BIRTH_DATE="1975-05-06" VERSION="0"/&gt;
+    &lt;PERSON ID="2" FIRST_NAME="Mark" LAST_NAME="Smith" 
+            BIRTH_DATE="1980-07-03" VERSION="0"/&gt;
+    &lt;PERSON ID="3" FIRST_NAME="Claire" LAST_NAME="Connell" 
+            BIRTH_DATE="1981-09-17" VERSION="0"/&gt;
+&lt;/dataset&gt;
+                    </pre>
+                </div>
+                <div class="span6">
+                    <h3>DbSetup syntax</h3>
+                    <pre>
+Insert.into("PERSON")
+      .withDefaultValue("VERSION", 0)
+      .columns("ID", "FIRST_NAME", "LAST_NAME", "BIRTH_DATE")
+      .values(1, "John", "Doe", "1975-05-06")
+      .values(2, "Mark", "Smith", "1980-07-03")
+      .values(3, "Claire", "Connell", "1981-09-17")
+      .build();
+                    </pre>
+                </div>
+            </div>
+            
+            <h2>You're in control</h2>
+            <p>
+                DbSetup doesn't try to do everything for you and to guess which tables should be deleted based
+                on what has been inserted, and in which order. You're not limited to deletes and inserts. If you have
+                some cyclic dependencies in your data set, you can use an update statement, or even disable constraints,
+                wherever you want during the setup, using a <code>SqlOperation</code>.
+            </p>
+            <p>
+                Defining your own operations is easy. 
+            </p>
+            <p>
+                Since everything is done and defined in Java, inserting a complex piece of data, or a large numer of
+                rows, or a piece of binary data that can't be written easily in XML, is not a problem.
+            </p>
+            <p>
+                Reusing a common part of a setup, parameterize it, is as simple as defining and calling a Java method.
+            </p>
+            
+            <h2>DbSetup is fast</h2>
+            <p>
+                Most of the database operations in an application, especially when you use an ORM, are read-only operations.
+                A typical repository contains many <code>find()</code> methods that you want to test, and very few <code>create()</code>
+                or <code>save()</code>. Instead of re-populating the database before each test, even though the previous one
+                used the same data set and wass read-only,
+                DbSetup allows populating the database only if it needs to be populated. By using a <code>DbSetupTracker</code>,
+                and adding a single line of code in your read-only tests, you can avoid lots of unnecessary database repopulations,
+                making your tests run much faster, and still leaving test methods independant.
+            </p>
+            <h2>DbSetup is extremely simple</h2>
+            <p>
+                DbSetup contains very few classes, and typical usage involves a very small portion of these classes. You should be
+                up and running in a few minutes.  
+            </p>
+        </div>
+    </body>
+</html>

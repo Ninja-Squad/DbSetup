@@ -1,0 +1,5 @@
+com.ninja_squad.dbsetup
+com.ninja_squad.dbsetup.bind
+com.ninja_squad.dbsetup.destination
+com.ninja_squad.dbsetup.operation
+com.ninja_squad.dbsetup.util

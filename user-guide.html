@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DbSetup, from Ninja Squad</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+    </head>
+    <body style="margin-top: 50px;">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="index.html">DbSetup</a>
+                    <div class="nav">
+                        <ul class="nav">
+                            <li><a href="approach.html">Why using it?</a></li>
+                            <li class="active"><a href="user-guide.html">User Guide</a></li>
+                            <li><a href="apidoc/1.0/index.html">API documentation</a></li>
+                            <li><a href="download.html">Download</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="page-header">
+                <h1>User Guide</h1>
+            </div>
+            <h2>Don't clean up, prepare!</h2>
+            <p>
+                A classical way of doing database tests is to start from an empty database, populate the database 
+                before each test, run the test, then remove the data after the test.
+            <p>
+                This approach is not satisfactory:
+            </p>
+            <ul>
+                <li>if the database is not empty before the test, it fails;
+                <li>if a test fails, inspecting the contents of the database after a test can be useful;
+                <li>most of the tests are read-only, and inserting and removing the same data set again
+                    and again makes the tests slow. Slow tests are bad.
+            </ul>
+            <p>
+                We recommend using multiple very small data sets, specific for each test class. If you insert less
+                data, the tests will be faster.
+            </p>
+            <p>
+                We thus recommend the following strategy:
+            </p>
+            <ol>
+                <li>clear the database before the test, 
+                <li>then insert a small data set,
+                <li>then run the test, 
+                <li>then leave the database as it is. 
+            </ol>
+            <p>
+                If another test is run after, it will start by
+                clearing the database, and everything will be fine. That means that each test must start by 
+                clearing all the tables, and not just the tables it uses. You want your tests to be independant, 
+                and able to run in whatever order.
+            </p>
+            <h2>Getting started</h2>
+            <h3>Create the list of tables to clear before each test</h3>
+            <p>
+                The order of this list is important. You must start with the tables that don't have any
+                reference to them. Then the tables that reference these tables, etc. For example, if the product table
+                has a foreign key to the vendor table, which has a foreign key to the country table, you must start
+                by clearing the product table, then the vendor table, then the country table.
+            </p>
+            <p>
+                Since the tables will be cleared before each test, you can define a global constant that will be used
+                by all the tests:
+            </p>
+            <pre>
+import static com.ninja_squad.dbsetup.Operations.*;
+
+public class CommonOperations {
+    public static final Operation DELETE_ALL = 
+        deleteAllFrom("PRODUCT", "VENDOR", "COUNTRY", "USER");
+    ...
+}
+            </pre>
+            
+            <h3>Optional: create a common data set</h3>
+            <p>
+                We recommend creating data sets that are as independant as possible from other ones. Using a global
+                data set for multiple test classes leads to data sets larger than necessary, and makes the tests run slower.
+                And more importantly, if you add a row in the data set to test a specific corner case in a spcific test,
+                you risk breaking a whole lot of other tests that have already been written and don't expect to have
+                this new row in the table.
+            </p>
+            <p>
+                It can be useful, though, to have a very small set of reference data that are necessary for nearly all the
+                tests, because all tables depend on them: countries, languages, users, things like that:
+            </p>
+            <pre>
+    public static final Operation INSERT_REFERENCE_DATA =
+        sequenceOf(
+            insertInto("COUNTRY")
+                .columns("ID", "ISO_CODE", "NAME")
+                .values(1, "FRA", "France")
+                .values(2, "USA", "United States")
+                .build(),
+            insertInto("USER")
+                .columns("ID", "LOGIN", "NAME")
+                .values(1L, "jbnizet", "Jean-Baptiste Nizet")
+                .values(2L, "clacote", "Cyril Lacote")
+                .build());
+            </pre>
+            
+            <h3>Create your test class</h3>
+            <p>
+                The below example uses JUnit, but the principle is similar if you use TestNG or any other test framework.
+                You need to have a reference to a JDBC DataSource, or to create a new connection each time using the DriverManager:
+            </p>
+            <pre>
+public class VendorRepositoryTest {
+
+    private DataSource dataSource = ...;
+
+    @Before
+    public void prepare() throws Exception {
+        Operation operation =
+            sequenceOf(
+                CommonOperations.DELETE_ALL,
+                CommonOperations.INSERT_REFERENCE_DATA,
+                insertInto("VENDOR")
+                    .columns("ID", "CODE", "NAME", "COUNTRY_ID")
+                    .values(1L, "AMA", "Amazon", 2)
+                    .values(2L, "PMI", "PriceMinister", 1)
+                    .build());
+            DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
+            // or without DataSource:
+            // DbSetup dbSetup = new DbSetup(new DriverManagerDestination(TEST_DB_URL, TEST_DB_USER, TEST_DB_PASSWORD), operation);
+            dbSetup.launch();
+        }
+    }
+}
+            </pre>
+
+            <h3>Add tests, and speedup the setup</h3>
+            You might want to add a test for the methods <code>findByCode()</code>, <code>findByName()</code>, <code>findByCriteria()</code>
+            and <code>createVendor()</code>. Among all those tests, the test for <code>createVendor()</code> is the only one which 
+            is susceptible to modify the database. All the other tests are read-only, and it's thus unnecessary to launch the setup
+            after any of these tests has been run. To do that, we'll introduce a <code>DbSetupTracker</code>, and mark the read-only
+            tests as such:
+            <pre class="prettyprint">
+    // the tracker is static because JUnit uses a separate Test instance for every test method.
+    private static DbSetupTracker dbSetupTracker = new DbSetupTracker();
+    
+    @Before
+    public void prepare() throws Exception {
+        // same operation definition as above
+        Operation operation =
+            sequenceOf(
+                CommonOperations.DELETE_ALL,
+                CommonOperations.INSERT_REFERENCE_DATA,
+                insertInto("VENDOR")
+                    .columns("ID", "CODE", "NAME", "COUNTRY_ID")
+                    .values(1L, "AMA", "Amazon", 2)
+                    .values(2L, "PMI", "PriceMinister", 1)
+                    .build());
+                    
+        // same DbSetup definition as above
+        DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
+        
+        // use the tracker to launch the DbSetup.
+        dbSetupTracker.launchIfNecessary(dbSetup);
+    }
+    
+    @Test
+    public void testFindByCode() {
+        dbSetupTracker.ignoreNextLaunch();
+        ...
+    }
+    
+    @Test
+    public void testFindByCode() {
+        dbSetupTracker.ignoreNextLaunch();
+        ...
+    }
+    
+    @Test
+    public void testFindByCode() {
+        dbSetupTracker.ignoreNextLaunch();
+        ...
+    }
+    
+    @Test
+    public void testCreateVendor() {
+        // The test writes to the database, so dbSetupTracker.ignoreNextLaunch(); must NOT be called
+        ...
+    }
+            </pre>
+            
+            <p>
+                Note that if you forget to call <code>dbSetupTracker.ignoreNextLaunch();</code> from a read-only test,
+                nothing serious will happen. The only consequence will be an unnecessary setup, but all the tests will
+                pass. That's why we chose this strategy.
+            </p>
+        
+            <h2>Data formats</h2>
+            <p>
+                DbSetup uses the database metadata to detect the type of the columns it must insert into. Depending on the type
+                of the column, you may pass values of various types. Read the javadoc of the <code>DefaultBinderConfiguration</code> of 
+                <code>Binders</code> classes for a complete list of supported types and formats. Here are the most important ones:
+            </p>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Type of the column</th>
+                        <th>Supported types and formats</th>
+                    <tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>VARCHAR (and similar)</td>
+                        <td>String, Enum, or any Object. If an Enum is pased, its name is inserted. If an Object is passed,
+                            its toString() value is inserted.</td>
+                    </tr>
+                    <tr>
+                        <td>DATE</td>
+                        <td>java.sql.Date, java.util.Date, java.util.Calendar, or String. The expected format of the String 
+                            is the format of java.sql.Date.valueOf(): <code>yyyy-MM-dd</code></td>
+                    </tr>
+                    <tr>
+                        <td>TIMESTAMP</td>
+                        <td>java.sql.Timestamp, java.util.Date, java.util.Calendar, or String. The expected format of the String 
+                            is the format of java.sql.Timestamp.valueOf(): <code>yyyy-MM-dd hh:mm:ss[.f...]</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                Note that to insert NULL into a column, you must pass <code>null</code> (and not the String <code>"null"</code>).
+            </p>
+            <p>
+                To support additional types or formats, create an instance of BinderConfiguration, and pass an instance to the DbSetup constructor.
+            </p>
+            
+            <h2>Cyclic dependencies and SQL support</h2>
+            <p>
+                Sometimes, you need a data set that contains cyclic dependencies. For example you might have a foreign key to the
+                vendor table in the product table, and you might have a foreign key to the featured product in the vendor table.
+                This kind of cyclic dependency is problemetic, because you can't delete all the vendors before deleting the products,
+                and vice-versa. Similarly, you can't insert a product before its vendor, but you can't insert the vendo before the product
+                either. In that case, you thus have two solutions:
+            </p>
+            <ol>
+                <li>deactivating (or deleting) one of the foreign key constraints, insert the data, and reactivating
+                    (or recreating) the foreign key constraint
+                <li>insert the vendors, then the products, then update the vendors to set their featured product.
+            </ol>
+            <p>The solution, in both cases, is to use a SQL operation. For example:</p>
+            <pre>
+Operation insertVendorsAndProducts = 
+    sequenceOf(
+        insertInto("VENDOR")
+            .columns("ID", "CODE", "NAME")
+            .values(1L, "AMA", "AMAZON")
+            .build(),
+        insertInto("PRODUCT")
+            .columns("ID", "NAME", "VENDOR_ID")
+            .values(1L, "Kindle", "1L")
+            .build(),
+        sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));
+            </pre>
+        </div>
+    </body>
+</html>
