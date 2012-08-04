@@ -3,30 +3,31 @@
     <head>
         <meta charset="utf-8">
         <title>DbSetup, from Ninja Squad</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
     </head>
-    <body style="margin-top: 50px;">
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="index.html">DbSetup</a>
-                    <div class="nav">
-                        <ul class="nav">
-                            <li class="active"><a href="approach.html">Why using it?</a></li>
-                            <li><a href="user-guide.html">User Guide</a></li>
-                            <li><a href="apidoc/1.0/index.html">API documentation</a></li>
-                            <li><a href="download.html">Download</a></li>
-                        </ul>
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="brand" href="index.html">DbSetup</a>
+                        <div class="nav">
+                            <ul class="nav">
+                                <li class="active"><a href="approach.html">Why using it?</a></li>
+                                <li><a href="user-guide.html">User Guide</a></li>
+                                <li><a href="apidoc/1.0/index.html">API documentation</a></li>
+                                <li><a href="download.html">Download</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
             <div class="page-header">
                 <h1>Why use DbSetup?</h1>
             </div>
             
-            <h2>XML sucks. Java rules.</h2>
+            <h2><a name="xml-sucks-java-rules"></a>XML sucks. Java rules.</h2>
             <p>
                 Most database testing tools use XML, YAML or SQL files to define test data sets. And those
                 approaches have several drawbacks:
@@ -75,7 +76,7 @@ Insert.into("PERSON")
                 </div>
             </div>
             
-            <h2>You're in control</h2>
+            <h2><a name="you-are-in-control"></a>You're in control</h2>
             <p>
                 DbSetup doesn't try to do everything for you and to guess which tables should be deleted based
                 on what has been inserted, and in which order. You're not limited to deletes and inserts. If you have
@@ -93,7 +94,7 @@ Insert.into("PERSON")
                 Reusing a common part of a setup, parameterize it, is as simple as defining and calling a Java method.
             </p>
             
-            <h2>DbSetup is fast</h2>
+            <h2><a id="dbsetup-is-fast"></a>DbSetup is fast</h2>
             <p>
                 Most of the database operations in an application, especially when you use an ORM, are read-only operations.
                 A typical repository contains many <code>find()</code> methods that you want to test, and very few <code>create()</code>
@@ -103,10 +104,10 @@ Insert.into("PERSON")
                 and adding a single line of code in your read-only tests, you can avoid lots of unnecessary database repopulations,
                 making your tests run much faster, and still leaving test methods independant.
             </p>
-            <h2>DbSetup is extremely simple</h2>
+            <h2><a id="dbsetup-is-simple"></a>DbSetup is extremely simple</h2>
             <p>
                 DbSetup contains very few classes, and typical usage involves a very small portion of these classes. You should be
-                up and running in a few minutes.  
+                <a href="user-guide.html#getting-started">up and running</a> in a few minutes.  
             </p>
         </div>
     </body>

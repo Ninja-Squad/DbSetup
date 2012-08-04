@@ -3,29 +3,31 @@
     <head>
         <meta charset="utf-8">
         <title>DbSetup, from Ninja Squad</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
     </head>
-    <body style="margin-top: 50px;">
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="index.html">DbSetup</a>
-                    <div class="nav">
-                        <ul class="nav">
-                            <li><a href="approach.html">Why using it?</a></li>
-                            <li class="active"><a href="user-guide.html">User Guide</a></li>
-                            <li><a href="apidoc/1.0/index.html">API documentation</a></li>
-                            <li><a href="download.html">Download</a></li>
-                        </ul>
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="brand" href="index.html">DbSetup</a>
+                        <div class="nav">
+                            <ul class="nav">
+                                <li><a href="approach.html">Why using it?</a></li>
+                                <li class="active"><a href="user-guide.html">User Guide</a></li>
+                                <li><a href="apidoc/1.0/index.html">API documentation</a></li>
+                                <li><a href="download.html">Download</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
             <div class="page-header">
                 <h1>User Guide</h1>
             </div>
-            <h2>Don't clean up, prepare!</h2>
+            
+            <h2><a id="dont-cleanup-prepare"></a>Don't clean up, prepare!</h2>
             <p>
                 A classical way of doing database tests is to start from an empty database, populate the database 
                 before each test, run the test, then remove the data after the test.
@@ -57,8 +59,12 @@
                 clearing all the tables, and not just the tables it uses. You want your tests to be independant, 
                 and able to run in whatever order.
             </p>
-            <h2>Getting started</h2>
-            <h3>Create the list of tables to clear before each test</h3>
+            
+            <hr/>
+            
+            <h2><a id="getting-started"></a>Getting started</h2>
+            
+            <h3><a id="tables-to-clear"></a>Create the list of tables to clear before each test</h3>
             <p>
                 The order of this list is important. You must start with the tables that don't have any
                 reference to them. Then the tables that reference these tables, etc. For example, if the product table
@@ -79,7 +85,7 @@ public class CommonOperations {
 }
             </pre>
             
-            <h3>Optional: create a common data set</h3>
+            <h3><a id="common-data-set"></a>Optional: create a common data set</h3>
             <p>
                 We recommend creating data sets that are as independant as possible from other ones. Using a global
                 data set for multiple test classes leads to data sets larger than necessary, and makes the tests run slower.
@@ -106,7 +112,7 @@ public class CommonOperations {
                 .build());
             </pre>
             
-            <h3>Create your test class</h3>
+            <h3><a id="create-test-class"></a>Create your test class</h3>
             <p>
                 The below example uses JUnit, but the principle is similar if you use TestNG or any other test framework.
                 You need to have a reference to a JDBC DataSource, or to create a new connection each time using the DriverManager:
@@ -136,7 +142,7 @@ public class VendorRepositoryTest {
 }
             </pre>
 
-            <h3>Add tests, and speedup the setup</h3>
+            <h3><a name="speedup-the-setup"></a>Add tests, and speedup the setup</h3>
             You might want to add a test for the methods <code>findByCode()</code>, <code>findByName()</code>, <code>findByCriteria()</code>
             and <code>createVendor()</code>. Among all those tests, the test for <code>createVendor()</code> is the only one which 
             is susceptible to modify the database. All the other tests are read-only, and it's thus unnecessary to launch the setup
@@ -197,7 +203,9 @@ public class VendorRepositoryTest {
                 pass. That's why we chose this strategy.
             </p>
         
-            <h2>Data formats</h2>
+            <hr/>
+        
+            <h2><a id="data-formats"></a>Data formats</h2>
             <p>
                 DbSetup uses the database metadata to detect the type of the columns it must insert into. Depending on the type
                 of the column, you may pass values of various types. Read the javadoc of the <code>DefaultBinderConfiguration</code> of 
@@ -235,7 +243,9 @@ public class VendorRepositoryTest {
                 To support additional types or formats, create an instance of BinderConfiguration, and pass an instance to the DbSetup constructor.
             </p>
             
-            <h2>Cyclic dependencies and SQL support</h2>
+            <hr/>
+            
+            <h2><a id="cyclic-dependencies"></a>Cyclic dependencies and SQL support</h2>
             <p>
                 Sometimes, you need a data set that contains cyclic dependencies. For example you might have a foreign key to the
                 vendor table in the product table, and you might have a foreign key to the featured product in the vendor table.
