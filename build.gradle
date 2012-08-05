@@ -5,6 +5,7 @@ apply plugin: 'pmd'
 apply plugin: 'findbugs'
 apply from: 'cobertura.gradle'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'com.ninja-squad'
 sourceCompatibility = 1.6
@@ -131,9 +132,10 @@ cleanEclipseJdt << {
 uploadArchives {
     repositories {
         mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
             // TODO configure maven repos:
-            // repository(url: uri("pomRepo"))
-            // snapshotRepository(url: uri("snapshotRepo"))
+            repository(url: 'file://d:/temp/repoRelease')
+            snapshotRepository(url: 'file://d:/temp/repoSnapshot')
         }
     }
 }
@@ -175,6 +177,10 @@ uploadArchives {
             }
         }
     }
+}
+
+signing {
+    sign configurations.archives
 }
 
 task wrapper(type: Wrapper) {
