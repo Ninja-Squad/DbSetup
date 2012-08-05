@@ -66,7 +66,7 @@ findbugsMain {
 }
 
 def sharedManifest = manifest {
-    attributes(['Implementation-Title': 'ninja-core', 
+    attributes(['Implementation-Title': project.name, 
                 'Implementation-Version': project.version,
                 'Implementation-Vendor': 'ninja-squad.com'])
 }
@@ -97,6 +97,21 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     }
 }
 
+task distributionZip(type: Zip, dependsOn: [javadoc, jar]) {
+    classifier = 'dist'
+    from jar.archivePath
+    into('src') {
+        from sourceSets.main.java
+    }
+    into('javadoc') {
+        from javadoc.destinationDir
+    }
+}
+
+assemble {
+    dependsOn distributionZip
+}
+
 artifacts {
     archives sourcesJar
     archives javadocJar
@@ -124,10 +139,44 @@ uploadArchives {
 }
 
 [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured {pom ->
-    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'} // we don't care about test dependencies
-    pom.dependencies*.scope = null // all dependencies are compile time dependencies, and there is no need to say it
+    // we don't care about test dependencies
+    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'} 
+    // we don't care about findbugs annotations 
+    pom.dependencies = pom.dependencies.findAll {it.groupId != 'net.sourceforge.findbugs' && it.artifactId != 'annotations'} 
+    // we don't care about JSR305 annotations
+    pom.dependencies = pom.dependencies.findAll {it.groupId != 'com.google.code.findbugs' && it.artifactId != 'jsr305'} 
+    // all dependencies are compile time dependencies, and there is no need to say it
+    pom.dependencies*.scope = null 
+    
+    pom.project {
+        description = 'Helps you setup your database with test data'
+        url = 'https://github.com/Ninja-Squad/DbSetup'
+        organization {
+            name = 'Ninja Squad'
+            url = 'http://ninja-squad.github.com/DbSetup'
+        }
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+        scm {
+            url = 'https://github.com/Ninja-Squad/DbSetup'
+            connection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
+            developerConnection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
+        }
+        developers {
+            developer {
+                id = 'jnizet'
+                name = 'Jean-Baptiste Nizet'
+                email = 'jb@ninja-squad.com'
+            }
+        }
+    }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.0-rc-3'
+    gradleVersion = '1.0'
 }
