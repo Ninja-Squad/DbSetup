@@ -138,10 +138,17 @@ public class BindersTest {
     }
 
     @Test
-    public void timestampBinderBindsString() throws SQLException {
+    public void timestampBinderBindsStringWithTimestampFormat() throws SQLException {
         Binder binder = Binders.timestampBinder();
         binder.bind(stmt, 1, "1975-07-19 13:14:15");
         verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 13:14:15"));
+    }
+
+    @Test
+    public void timestampBinderBindsStringWithDateFormat() throws SQLException {
+        Binder binder = Binders.timestampBinder();
+        binder.bind(stmt, 1, "1975-07-19");
+        verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 00:00:00"));
     }
 
     @Test

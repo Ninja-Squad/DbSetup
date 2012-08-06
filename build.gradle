@@ -100,11 +100,14 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 task distributionZip(type: Zip, dependsOn: [javadoc, jar]) {
     classifier = 'dist'
-    from jar.archivePath
-    into('src') {
+    def rootDir = project.name + '-' + project.version;
+    into(rootDir) {
+        from jar.archivePath
+    }
+    into(rootDir + '/src') {
         from sourceSets.main.java
     }
-    into('javadoc') {
+    into(rootDir + '/javadoc') {
         from javadoc.destinationDir
     }
 }
@@ -179,10 +182,12 @@ uploadArchives {
     }
 }
 
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.0'
+    gradleVersion = '1.1'
 }

@@ -68,7 +68,8 @@ public final class Binders {
      *   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a
      *   java.sql.Timestamp</code></li>
      *   <li><code>String</code>: the string is transformed to a <code>java.sql.Timestamp</code> using the
-     *       <code>Timestamp.valueOf()</code> method</li>
+     *       <code>Timestamp.valueOf()</code> method, or using the <code>java.sql.Date.valueOf() method if the
+     *       string has less than 19 characters</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
@@ -228,6 +229,9 @@ public final class Binders {
      * @author JB
      */
     private static final class TimestampBinder implements Binder {
+        // the number of chars in yyyy-mm-dd hh:mm:ss
+        private static final int MIN_NUMBER_OF_CHARS_FOR_TIMESTAMP = 19;
+
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof Timestamp) {
@@ -240,7 +244,14 @@ public final class Binders {
                 stmt.setTimestamp(param, new Timestamp(((java.util.Calendar) value).getTimeInMillis()));
             }
             else if (value instanceof String) {
-                stmt.setTimestamp(param, Timestamp.valueOf((String) value));
+                String valueAsString = (String) value;
+                if (valueAsString.length() >= MIN_NUMBER_OF_CHARS_FOR_TIMESTAMP) {
+                    stmt.setTimestamp(param, Timestamp.valueOf(valueAsString));
+                }
+                else {
+                    Date valueAsDate = Date.valueOf(valueAsString);
+                    stmt.setTimestamp(param, new Timestamp(valueAsDate.getTime()));
+                }
             }
             else {
                 stmt.setObject(param, value);

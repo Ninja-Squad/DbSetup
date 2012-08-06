@@ -20,17 +20,17 @@ import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 @Immutable
 public final class Truncate implements Operation {
 
-    private final String table;
+    private final String tableToTruncate;
 
     private Truncate(String table) {
-        this.table = table;
+        this.tableToTruncate = table;
     }
 
     @Override
     public void execute(Connection connection, BinderConfiguration configuration) throws SQLException {
         Statement stmt = connection.createStatement();
         try {
-            stmt.executeUpdate("truncate table " + table);
+            stmt.executeUpdate("truncate table " + tableToTruncate);
         }
         finally {
             stmt.close();
@@ -75,12 +75,12 @@ public final class Truncate implements Operation {
 
     @Override
     public String toString() {
-        return "truncate table " + table;
+        return "truncate table " + tableToTruncate;
     }
 
     @Override
     public int hashCode() {
-        return table.hashCode();
+        return tableToTruncate.hashCode();
     }
 
     @Override
@@ -95,6 +95,6 @@ public final class Truncate implements Operation {
             return false;
         }
         Truncate other = (Truncate) obj;
-        return this.table.equals(other.table);
+        return this.tableToTruncate.equals(other.tableToTruncate);
     }
 }

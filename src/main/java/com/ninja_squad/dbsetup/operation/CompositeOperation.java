@@ -22,6 +22,7 @@ public final class CompositeOperation implements Operation {
 
         @Override
         public void execute(Connection connection, BinderConfiguration configuration) {
+            // does nothing since it's a NOP
         }
 
         @Override
