@@ -80,6 +80,7 @@ jar {
 
 javadoc {
     options.overview file('src/main/resources/com/ninja_squad/dbsetup/overview.html').path
+    options.addBooleanOption('notimestamp', true)
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
