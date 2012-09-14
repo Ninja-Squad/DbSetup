@@ -4,9 +4,10 @@
         <meta charset="utf-8">
         <title>DbSetup, from Ninja Squad</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/prettify.css" rel="stylesheet">
         <link href="css/main.css" rel="stylesheet">
     </head>
-    <body>
+    <body onload="prettyPrint()">
         <div class="container">
             <div class="navbar">
                 <div class="navbar-inner">
@@ -51,7 +52,7 @@
             <div class="row">
                 <div class="span6">
                     <h3>XML syntax</h3>
-                    <pre>
+                    <pre class="prettyprint">
 &lt;dataset&gt;
     &lt;PERSON ID="1" FIRST_NAME="John" LAST_NAME="Doe" 
             BIRTH_DATE="1975-05-06" VERSION="0"/&gt;
@@ -64,7 +65,7 @@
                 </div>
                 <div class="span6">
                     <h3>DbSetup syntax</h3>
-                    <pre>
+                    <pre class="prettyprint">
 Insert.into("PERSON")
       .withDefaultValue("VERSION", 0)
       .columns("ID", "FIRST_NAME", "LAST_NAME", "BIRTH_DATE")
@@ -110,5 +111,6 @@ Insert.into("PERSON")
                 <a href="user-guide.html#getting-started">up and running</a> in a few minutes.  
             </p>
         </div>
+        <script src="js/prettify.js"></script>
     </body>
 </html>

@@ -4,9 +4,10 @@
         <meta charset="utf-8">
         <title>DbSetup, from Ninja Squad</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/prettify.css" rel="stylesheet">
         <link href="css/main.css" rel="stylesheet">
     </head>
-    <body>
+    <body onload="prettyPrint()">
         <div class="container">
             <div class="navbar">
                 <div class="navbar-inner">
@@ -75,7 +76,7 @@
                 Since the tables will be cleared before each test, you can define a global constant that will be used
                 by all the tests:
             </p>
-            <pre>
+            <pre class="prettyprint">
 import static com.ninja_squad.dbsetup.Operations.*;
 
 public class CommonOperations {
@@ -97,7 +98,7 @@ public class CommonOperations {
                 It can be useful, though, to have a very small set of reference data that are necessary for nearly all the
                 tests, because all tables depend on them: countries, languages, users, things like that:
             </p>
-            <pre>
+            <pre class="prettyprint">
     public static final Operation INSERT_REFERENCE_DATA =
         sequenceOf(
             insertInto("COUNTRY")
@@ -117,7 +118,7 @@ public class CommonOperations {
                 The below example uses JUnit, but the principle is similar if you use TestNG or any other test framework.
                 You need to have a reference to a JDBC DataSource, or to create a new connection each time using the DriverManager:
             </p>
-            <pre>
+            <pre  class="prettyprint">
 public class VendorRepositoryTest {
 
     private DataSource dataSource = ...;
@@ -260,19 +261,21 @@ public class VendorRepositoryTest {
                 <li>insert the vendors, then the products, then update the vendors to set their featured product.
             </ol>
             <p>The solution, in both cases, is to use a SQL operation. For example:</p>
-            <pre>
-Operation insertVendorsAndProducts = 
-    sequenceOf(
-        insertInto("VENDOR")
-            .columns("ID", "CODE", "NAME")
-            .values(1L, "AMA", "AMAZON")
-            .build(),
-        insertInto("PRODUCT")
-            .columns("ID", "NAME", "VENDOR_ID")
-            .values(1L, "Kindle", "1L")
-            .build(),
-        sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));
+            <pre class="prettyprint">
+    Operation insertVendorsAndProducts = 
+        sequenceOf(
+            insertInto("VENDOR")
+                .columns("ID", "CODE", "NAME")
+                .values(1L, "AMA", "AMAZON")
+                .build(),
+            insertInto("PRODUCT")
+                .columns("ID", "NAME", "VENDOR_ID")
+                .values(1L, "Kindle", "1L")
+                .build(),
+            sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));
             </pre>
         </div>
+        
+        <script src="js/prettify.js"></script>
     </body>
 </html>
