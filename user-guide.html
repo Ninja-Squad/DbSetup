@@ -222,24 +222,26 @@ public class VendorRepositoryTest {
                 <tbody>
                     <tr>
                         <td>VARCHAR (and similar)</td>
-                        <td>String, Enum, or any Object. If an Enum is pased, its name is inserted. If an Object is passed,
-                            its toString() value is inserted.</td>
+                        <td><code class="inline">String</code>, <code class="inline">Enum</code>, or any Object. If an enum is pased, its name is inserted. 
+                            If an Object is passed, its <code>toString()</code> value is inserted.</td>
                     </tr>
                     <tr>
                         <td>DATE</td>
-                        <td>java.sql.Date, java.util.Date, java.util.Calendar, or String. The expected format of the String 
-                            is the format of java.sql.Date.valueOf(): <code>yyyy-MM-dd</code></td>
+                        <td><code class="inline">java.sql.Date</code>, <code class="inline">java.util.Date</code>, 
+                            <code class="inline">java.util.Calendar</code>, or <code class="inline">String</code>. The expected format of the String 
+                            is the format of <code class="inline">java.sql.Date.valueOf()</code>: <code>yyyy-MM-dd</code></td>
                     </tr>
                     <tr>
                         <td>TIMESTAMP</td>
-                        <td>java.sql.Timestamp, java.util.Date, java.util.Calendar, or String. The expected format of the String 
-                            is the format of java.sql.Timestamp.valueOf(): <code>yyyy-MM-dd hh:mm:ss[.f...]</code> or the format
-                            of java.sql.Date.valueOf(): <code>yyyy-MM-dd</code></td>
+                        <td><code class="inline">java.sql.Timestamp</code>, <code class="inline">java.util.Date</code>, 
+                            <code class="inline">java.util.Calendar</code>, or <code class="inline">String</code>. The expected format of the String 
+                            is the format of <code class="inline">java.sql.Timestamp.valueOf()</code>: <code>yyyy-MM-dd hh:mm:ss[.f...]</code> or the format
+                            of <code class="inline">java.sql.Date.valueOf()</code>: <code>yyyy-MM-dd</code></td>
                     </tr>
                 </tbody>
             </table>
             <p>
-                Note that to insert NULL into a column, you must pass <code>null</code> (and not the String <code>"null"</code>).
+                Note that to insert NULL into a column, you must pass <code class="inline">null</code> (and not the String <code class="inline">"null"</code>).
             </p>
             <p>
                 To support additional types or formats, create an instance of BinderConfiguration, and pass an instance to the DbSetup constructor.
