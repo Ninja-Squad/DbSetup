@@ -143,7 +143,7 @@ public class VendorRepositoryTest {
 }
             </pre>
 
-            <h3><a name="speedup-the-setup"></a>Add tests, and speedup the setup</h3>
+            <h3><a id="speedup-the-setup"></a>Add tests, and speedup the setup</h3>
             You might want to add a test for the methods <code>findByCode()</code>, <code>findByName()</code>, <code>findByCriteria()</code>
             and <code>createVendor()</code>. Among all those tests, the test for <code>createVendor()</code> is the only one which 
             is susceptible to modify the database. All the other tests are read-only, and it's thus unnecessary to launch the setup
