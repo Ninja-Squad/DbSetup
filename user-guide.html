@@ -28,6 +28,23 @@
                 <h1>User Guide</h1>
             </div>
             
+            <div class="well">
+                <ul class="nav nav-list">
+                    <li><a href="#dont-cleanup-prepare">Don't clean up, prepare!</a></li>
+                    <li><a href="#getting-started">Getting started</a></li>
+                    <li>
+                        <ul class="nav nav-list">
+                            <li><a href="#tables-to-clear">Create the list of tables to clear before each test</a></li>
+                            <li><a href="#common-data-set">Optional: create a common data set</a></li>
+                            <li><a href="#create-test-class">Create your test class</a></li>
+                            <li><a href="#speedup-the-setup">Add tests, and speedup the setup</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#data-formats">Data formats</a></li>
+                    <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
+                </ul>
+            </div>
+            
             <h2><a id="dont-cleanup-prepare"></a>Don't clean up, prepare!</h2>
             <p>
                 A classical way of doing database tests is to start from an empty database, populate the database 
@@ -83,8 +100,7 @@ public class CommonOperations {
     public static final Operation DELETE_ALL = 
         deleteAllFrom("PRODUCT", "VENDOR", "COUNTRY", "USER");
     ...
-}
-            </pre>
+}</pre>
             
             <h3><a id="common-data-set"></a>Optional: create a common data set</h3>
             <p>
@@ -110,8 +126,7 @@ public class CommonOperations {
                 .columns("ID", "LOGIN", "NAME")
                 .values(1L, "jbnizet", "Jean-Baptiste Nizet")
                 .values(2L, "clacote", "Cyril Lacote")
-                .build());
-            </pre>
+                .build());</pre>
             
             <h3><a id="create-test-class"></a>Create your test class</h3>
             <p>
@@ -140,8 +155,7 @@ public class VendorRepositoryTest {
             dbSetup.launch();
         }
     }
-}
-            </pre>
+}</pre>
 
             <h3><a id="speedup-the-setup"></a>Add tests, and speedup the setup</h3>
             You might want to add a test for the methods <code>findByCode()</code>, <code>findByName()</code>, <code>findByCriteria()</code>
@@ -195,8 +209,7 @@ public class VendorRepositoryTest {
     public void testCreateVendor() {
         // The test writes to the database, so dbSetupTracker.ignoreNextLaunch(); must NOT be called
         ...
-    }
-            </pre>
+    }</pre>
             
             <p>
                 Note that if you forget to call <code>dbSetupTracker.ignoreNextLaunch();</code> from a read-only test,
@@ -274,8 +287,7 @@ public class VendorRepositoryTest {
                 .columns("ID", "NAME", "VENDOR_ID")
                 .values(1L, "Kindle", "1L")
                 .build(),
-            sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));
-            </pre>
+            sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));</pre>
         </div>
         
         <script src="js/prettify.js"></script>
