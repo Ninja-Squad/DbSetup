@@ -10,7 +10,7 @@ import com.ninja_squad.dbsetup.bind.BinderConfiguration;
  * An operation that the database setup executes. It's advised to make implementations of this interface
  * immutable, and to make them implement equals and hashCode in order for {@link DbSetupTracker} to function
  * properly.
- * @author JB
+ * @author JB Nizet
  */
 public interface Operation {
 

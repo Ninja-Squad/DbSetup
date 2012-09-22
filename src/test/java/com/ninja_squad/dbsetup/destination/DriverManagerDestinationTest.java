@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * @author JB Nizet
+ */
 public class DriverManagerDestinationTest {
     @Test
     public void equalsAndHashCodeWork() {

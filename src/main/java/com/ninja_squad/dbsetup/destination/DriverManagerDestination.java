@@ -11,7 +11,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
 
 /**
  * A destination which uses the {@link DriverManager} to get a connection
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class DriverManagerDestination implements Destination {

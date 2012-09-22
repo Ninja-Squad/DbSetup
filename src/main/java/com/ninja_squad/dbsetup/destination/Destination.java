@@ -9,7 +9,7 @@ import com.ninja_squad.dbsetup.DbSetupTracker;
  * The destination of a database setup. It's advised to make implementations of this
  * interface immutable, and to make them implement equals and hashCode in order for {@link DbSetupTracker} to function
  * properly, or to make them singletons.
- * @author JB
+ * @author JB Nizet
  */
 public interface Destination {
     /**

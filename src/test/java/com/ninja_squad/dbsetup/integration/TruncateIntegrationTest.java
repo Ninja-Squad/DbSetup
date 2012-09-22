@@ -13,6 +13,10 @@ import org.junit.Test;
 
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.Operations;
+
+/**
+ * @author JB Nizet
+ */
 public class TruncateIntegrationTest {
 
     private Connection connection;

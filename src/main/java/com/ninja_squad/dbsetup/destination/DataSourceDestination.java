@@ -11,7 +11,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
 
 /**
  * A destination which wraps a DataSource and gets its connection from the wrapped DataSource
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class DataSourceDestination implements Destination {

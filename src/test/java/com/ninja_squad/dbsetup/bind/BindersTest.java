@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.Test;
+
 public class BindersTest {
 
     private PreparedStatement stmt;

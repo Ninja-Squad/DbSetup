@@ -13,7 +13,7 @@ import com.ninja_squad.dbsetup.operation.Truncate;
 
 /**
  * A static factory class for operations. Static import of this class can help make the code more readable.
- * @author JB
+ * @author JB Nizet
  */
 public final class Operations {
     private Operations() {

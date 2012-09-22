@@ -15,7 +15,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
 
 /**
  * An operation which deletes everything from a given database table.
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class DeleteAll implements Operation {

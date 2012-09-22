@@ -2,7 +2,7 @@ package com.ninja_squad.dbsetup;
 
 /**
  * A runtime exception indicating that a DbSetup failed.
- * @author JB
+ * @author JB Nizet
  */
 public class DbSetupRuntimeException extends RuntimeException {
 

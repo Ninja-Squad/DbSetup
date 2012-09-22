@@ -23,6 +23,9 @@ import com.ninja_squad.dbsetup.bind.Binder;
 import com.ninja_squad.dbsetup.bind.Binders;
 import com.ninja_squad.dbsetup.operation.Insert;
 
+/**
+ * @author JB Nizet
+ */
 public class InsertIntegrationTest {
     private Connection connection;
 

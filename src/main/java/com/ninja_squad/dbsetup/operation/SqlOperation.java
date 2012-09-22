@@ -17,7 +17,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
  * An operation which simply executes a SQL statement (using {@link Statement#executeUpdate(String)}). It can be useful,
  * for example, to disable or re-enable constraints before/after deleting everything from tables, or inserting into
  * tables having cross references.
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class SqlOperation implements Operation {

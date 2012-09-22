@@ -15,7 +15,7 @@ import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 /**
  * An operation which deletes everything from a given database table using a TRUNCATE statement., which is sometimes
  * faster that using a DELETE statement.
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class Truncate implements Operation {

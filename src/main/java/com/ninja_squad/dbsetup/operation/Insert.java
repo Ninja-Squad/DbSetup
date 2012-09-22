@@ -38,7 +38,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
  * <code>false</code> and the column VERSION will be set to 1. For the column CLIENT_TYPE, instead of using the
  * {@link Binder} associated to the type of the column found in the metadata of the table, a custom binder will be used.
  *
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class Insert implements Operation {
@@ -213,7 +213,7 @@ public final class Insert implements Operation {
      * A builder used to create an Insert operation. Such a builder may only be used once. Once it has built its Insert
      * operation, all its methods throw an {@link IllegalStateException}.
      * @see Insert#into(String)
-     * @author JB
+     * @author JB Nizet
      */
     public static final class Builder {
         private final String table;

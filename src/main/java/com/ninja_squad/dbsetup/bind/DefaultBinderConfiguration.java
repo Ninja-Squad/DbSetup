@@ -8,7 +8,7 @@ import com.ninja_squad.dbsetup.DbSetup;
 
 /**
  * Default implementation of {@link BinderConfiguration}, used by default by {@link DbSetup}.
- * @author JB
+ * @author JB Nizet
  */
 public class DefaultBinderConfiguration implements BinderConfiguration {
 

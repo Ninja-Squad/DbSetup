@@ -15,6 +15,9 @@ import com.ninja_squad.dbsetup.bind.Binder;
 import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 import com.ninja_squad.dbsetup.bind.Binders;
 
+/**
+ * @author JB Nizet
+ */
 public class InsertTest {
 
     @Test

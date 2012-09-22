@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.junit.Test;
+
+/**
+ * @author JB Nizet
+ */
 public class DataSourceDestinationTest {
     @Test
     public void getConnectionWorks() throws SQLException {

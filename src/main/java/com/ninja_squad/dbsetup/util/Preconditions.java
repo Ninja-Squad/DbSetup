@@ -2,7 +2,7 @@ package com.ninja_squad.dbsetup.util;
 
 /**
  * Utility class to help verifying preconditions
- * @author JB
+ * @author JB Nizet
  */
 public final class Preconditions {
     private Preconditions() {

@@ -3,6 +3,10 @@ package com.ninja_squad.dbsetup.integration;
 import static com.ninja_squad.dbsetup.Operations.*;
 
 import com.ninja_squad.dbsetup.operation.Operation;
+
+/**
+ * @author JB Nizet
+ */
 public class CommonOperations {
     public static final Operation DROP_TABLES =
         sequenceOf(sql("drop table if exists A cascade"),

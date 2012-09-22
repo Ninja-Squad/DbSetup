@@ -35,7 +35,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
  * <p>
  * Note that, to speed up test executions, a {@link DbSetupTracker} can be used, at the price of a slightly
  * bigger complexity.
- * @author JB
+ * @author JB Nizet
  */
 public final class DbSetup {
     private final Destination destination;

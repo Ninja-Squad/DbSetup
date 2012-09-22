@@ -10,7 +10,7 @@ import java.sql.Types;
 /**
  * Utility class allowing to get various kinds of binders. The {@link DefaultBinderConfiguration} uses binders
  * returned by this class, based on the type of the parameter.
- * @author JB
+ * @author JB Nizet
  */
 public final class Binders {
 
@@ -121,7 +121,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#stringBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class StringBinder implements Binder {
         @Override
@@ -148,7 +148,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#timeBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class TimeBinder implements Binder {
         @Override
@@ -178,7 +178,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#integerBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class IntegerBinder implements Binder {
         @Override
@@ -205,7 +205,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#decimalBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class DecimalBinder implements Binder {
         @Override
@@ -226,7 +226,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#timeStampBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class TimestampBinder implements Binder {
         // the number of chars in yyyy-mm-dd hh:mm:ss
@@ -266,7 +266,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#dateBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class DateBinder implements Binder {
         @Override
@@ -296,7 +296,7 @@ public final class Binders {
 
     /**
      * The implementation for {@link Binders#defaultBinder()}
-     * @author JB
+     * @author JB Nizet
      */
     private static final class DefaultBinder implements Binder {
         @Override

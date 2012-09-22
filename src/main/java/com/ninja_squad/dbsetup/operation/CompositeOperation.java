@@ -13,7 +13,7 @@ import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 
 /**
  * A composite operation or, in other words, an operation which consists in executing a sequence of other operations.
- * @author JB
+ * @author JB Nizet
  */
 @Immutable
 public final class CompositeOperation implements Operation {

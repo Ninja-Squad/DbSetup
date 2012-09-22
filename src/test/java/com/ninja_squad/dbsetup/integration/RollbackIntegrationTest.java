@@ -16,6 +16,9 @@ import com.ninja_squad.dbsetup.DbSetupRuntimeException;
 import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.operation.Insert;
 
+/**
+ * @author JB Nizet
+ */
 public class RollbackIntegrationTest {
     private Connection connection;
 

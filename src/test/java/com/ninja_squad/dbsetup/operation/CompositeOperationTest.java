@@ -13,6 +13,10 @@ import org.mockito.InOrder;
 
 import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration;
+
+/**
+ * @author JB Nizet
+ */
 public class CompositeOperationTest {
     @Test
     public void sequenceOfWorksWhenNop() throws SQLException {

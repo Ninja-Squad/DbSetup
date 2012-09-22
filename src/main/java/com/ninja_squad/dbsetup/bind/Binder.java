@@ -9,7 +9,7 @@ import com.ninja_squad.dbsetup.DbSetupTracker;
  * An object which binds a value to a prepared statement parameter. It's advised to make implementations of this
  * interface immutable, and to make them implement equals and hashCode in order for {@link DbSetupTracker} to function
  * properly, or to make them singletons.
- * @author JB
+ * @author JB Nizet
  */
 public interface Binder {
     /**

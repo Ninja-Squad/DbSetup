@@ -53,7 +53,7 @@ import javax.annotation.Nonnull;
  *     ...
  * }
  * </pre>
- * @author JB
+ * @author JB Nizet
  */
 public final class DbSetupTracker {
     private DbSetup lastSetupLaunched;

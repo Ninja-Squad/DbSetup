@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import com.ninja_squad.dbsetup.destination.Destination;
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination;
 
+/**
+ * @author JB Nizet
+ */
 public class Database {
     static {
         try {

@@ -14,6 +14,9 @@ import com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration;
 import com.ninja_squad.dbsetup.destination.Destination;
 import com.ninja_squad.dbsetup.operation.Operation;
 
+/**
+ * @author JB Nizet
+ */
 public class DbSetupTest {
 
     @Test
