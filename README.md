@@ -15,6 +15,10 @@ Another design choice of DbSetup is to provide an easy to use and simple Java AP
 ## build
     gradlew build
 
+# Documentation
+
+The documentation is available at [dbsetup.ninja-squad.com](http://dbsetup.ninja-squad.com). It's hosted by github,
+from the gh-pages branch.
     
 # License
 

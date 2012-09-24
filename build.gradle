@@ -183,15 +183,15 @@ uploadArchives {
     pom.project {
         name = 'DbSetup'
         description = 'Helps you setup your database with test data'
-        url = 'https://github.com/Ninja-Squad/DbSetup'
+        url = 'http://dbsetup.ninja-squad.com/'
         organization {
             name = 'Ninja Squad'
-            url = 'http://ninja-squad.github.com/DbSetup'
+            url = 'http://ninja-squad.com'
         }
         licenses {
             license {
                 name 'MIT License'
-                url 'https://github.com/Ninja-Squad/DbSetup/blob/master/README.md'
+                url 'http://dbsetup.ninja-squad.com/license.html'
                 distribution 'repo'
             }
         }
