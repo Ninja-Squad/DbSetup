@@ -57,7 +57,7 @@
                 <li>if the database is not empty before the test, it fails;
                 <li>if a test fails, inspecting the contents of the database after a test can be useful;
                 <li>most of the tests are read-only, and inserting and removing the same data set again
-                    and again makes the tests slow. Slow tests are bad.
+                    and again makes the tests slow. And <strong>slow tests are bad</strong>.
             </ul>
             <p>
                 We recommend using multiple very small data sets, specific for each test class. If you insert less
@@ -107,7 +107,7 @@ public class CommonOperations {
             <p>
                 We recommend creating data sets that are as independant as possible from other ones. Using a global
                 data set for multiple test classes leads to data sets larger than necessary, and makes the tests run slower.
-                And more importantly, if you add a row in the data set to test a specific corner case in a spcific test,
+                And more importantly, if you add a row in the data set to test a specific corner case in a specific test,
                 you risk breaking a whole lot of other tests that have already been written and don't expect to have
                 this new row in the table.
             </p>
