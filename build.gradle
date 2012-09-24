@@ -40,6 +40,17 @@ configurations {
     testRuntime.transitive = false
 }
 
+task checkJavaVersion {
+    if (!JavaVersion.current().isJava6()) {
+        String message = "ERROR: Java 1.6 required but " + 
+                         JavaVersion.current() + 
+                         " found. Change your JAVA_HOME environment variable.";
+        throw new StopExecutionException(message);
+    }
+}
+
+compileJava.dependsOn checkJavaVersion
+
 [compileJava, compileTestJava]*.options*.encoding = 'ISO-8859-1'
 
 checkstyle {
