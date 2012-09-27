@@ -190,30 +190,30 @@ public class VendorRepositoryTest {
     
     @Test
     public void testFindByCode() {
-        dbSetupTracker.ignoreNextLaunch();
+        dbSetupTracker.skipNextLaunch();
         ...
     }
     
     @Test
     public void testFindByCode() {
-        dbSetupTracker.ignoreNextLaunch();
+        dbSetupTracker.skipNextLaunch();
         ...
     }
     
     @Test
     public void testFindByCode() {
-        dbSetupTracker.ignoreNextLaunch();
+        dbSetupTracker.skipNextLaunch();
         ...
     }
     
     @Test
     public void testCreateVendor() {
-        // The test writes to the database, so dbSetupTracker.ignoreNextLaunch(); must NOT be called
+        // The test writes to the database, so dbSetupTracker.skipNextLaunch(); must NOT be called
         ...
     }</pre>
             
             <p>
-                Note that if you forget to call <code>dbSetupTracker.ignoreNextLaunch();</code> from a read-only test,
+                Note that if you forget to call <code>dbSetupTracker.skipNextLaunch();</code> from a read-only test,
                 nothing serious will happen. The only consequence will be an unnecessary setup, but all the tests will
                 pass. That's why we chose this strategy.
             </p>
