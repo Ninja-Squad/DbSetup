@@ -20,7 +20,8 @@
        directly into the test class, or by navigating through classes and methods using the IDE shortcuts.</li>
    <li>For more complex situations, like cyclic referential integrity constraints between rows, the Java API
        allows easily integrating SQL statements into the sequence of operations to execute to pre-populate the
-       database. These SQL statements can, for example, disable constraints and re-enable them.</li>
+       database. These SQL statements can, for example, disable constraints and re-enable them, or update rows
+       after their insertion.</li>
  </ul>
  The {@link com.ninja_squad.dbsetup.DbSetup} class and the {@link com.ninja_squad.dbsetup.DbSetupTracker} classes
  are the main entry points to the API that an automated test will use. Look at their javadoc below for example usage.

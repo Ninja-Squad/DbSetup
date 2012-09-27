@@ -55,25 +55,25 @@ import javax.annotation.Nonnull;
  *
  * &#064;Test
  * public void readOnlyTest1() {
- *     dbSetupTracker.ignoreNextLaunch();
+ *     dbSetupTracker.skipNextLaunch();
  *     ...
  * }
  *
  * &#064;Test
  * public void readOnlyTest2() {
- *     dbSetupTracker.ignoreNextLaunch();
+ *     dbSetupTracker.skipNextLaunch();
  *     ...
  * }
  *
  * &#064;Test
  * public void readOnlyTest3() {
- *     dbSetupTracker.ignoreNextLaunch();
+ *     dbSetupTracker.skipNextLaunch();
  *     ...
  * }
  *
  * &#064;Test
  * public void readWriteTest1() {
- *     // No call to dbSetupTracker.ignoreNextLaunch();
+ *     // No call to dbSetupTracker.skipNextLaunch();
  *     ...
  * }
  * </pre>
@@ -81,21 +81,21 @@ import javax.annotation.Nonnull;
  */
 public final class DbSetupTracker {
     private DbSetup lastSetupLaunched;
-    private boolean nextLaunchIgnored;
+    private boolean nextLaunchSkipped;
 
     /**
      * Executes the given DbSetup unless all the following conditions are <code>true</code>:
      * <ul>
-     *   <li>{@link #ignoreNextLaunch()} has been called since the last call to this method;</li>
-     *   <li>the given <code>dbSetup</code> is equals to the last DbSetup launched by this method</li>
+     *   <li>{@link #skipNextLaunch()} has been called since the last call to this method;</li>
+     *   <li>the given <code>dbSetup</code> is equal to the last DbSetup launched by this method</li>
      * </ul>
-     * This method resets the <code>ignoreNextLaunch</code> flag to <code>false</code>.
-     * @param dbSetup the DbSetup to execute (or ignore)
+     * This method resets the <code>skipNextLaunch</code> flag to <code>false</code>.
+     * @param dbSetup the DbSetup to execute (or skip)
      */
     public void launchIfNecessary(@Nonnull DbSetup dbSetup) {
-        boolean ignoreLaunch = nextLaunchIgnored && dbSetup.equals(lastSetupLaunched);
-        nextLaunchIgnored = false;
-        if (ignoreLaunch) {
+        boolean skipLaunch = nextLaunchSkipped && dbSetup.equals(lastSetupLaunched);
+        nextLaunchSkipped = false;
+        if (skipLaunch) {
             return;
         }
         dbSetup.launch();
@@ -106,16 +106,16 @@ public final class DbSetupTracker {
      * Marks the current test method as read-only, and thus the need for the next test method to re-execute the same
      * sequence of database setup operations.
      */
-    public void ignoreNextLaunch() {
-        this.nextLaunchIgnored = true;
+    public void skipNextLaunch() {
+        this.nextLaunchSkipped = true;
     }
 
     @Override
     public String toString() {
         return "DbSetupTracker [lastSetupLaunched="
                 + lastSetupLaunched
-                + ", nextLaunchIgnored="
-                + nextLaunchIgnored
+                + ", nextLaunchSkipped="
+                + nextLaunchSkipped
                 + "]";
     }
 }

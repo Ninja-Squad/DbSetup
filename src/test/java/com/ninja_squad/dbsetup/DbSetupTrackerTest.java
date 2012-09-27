@@ -69,7 +69,7 @@ public class DbSetupTrackerTest {
     }
 
     @Test
-    public void launchIfNecessaryLaunchesIfNotIgnored() throws SQLException {
+    public void launchIfNecessaryLaunchesIfNotSkipped() throws SQLException {
         DbSetupTracker tracker = new DbSetupTracker();
         tracker.launchIfNecessary(dbSetup1);
         tracker.launchIfNecessary(dbSetup1);
@@ -77,19 +77,19 @@ public class DbSetupTrackerTest {
     }
 
     @Test
-    public void launchIfNecessaryDoesntLaunchIfIgnored() throws SQLException {
+    public void launchIfNecessaryDoesntLaunchIfSkipped() throws SQLException {
         DbSetupTracker tracker = new DbSetupTracker();
         tracker.launchIfNecessary(dbSetup1);
-        tracker.ignoreNextLaunch();
+        tracker.skipNextLaunch();
         tracker.launchIfNecessary(dbSetup1);
         verify(operation1, times(1)).execute(any(Connection.class), any(BinderConfiguration.class));
     }
 
     @Test
-    public void launchIfNecessaryResetsTheIgnoreFlag() throws SQLException {
+    public void launchIfNecessaryResetsTheSkipFlag() throws SQLException {
         DbSetupTracker tracker = new DbSetupTracker();
         tracker.launchIfNecessary(dbSetup1);
-        tracker.ignoreNextLaunch();
+        tracker.skipNextLaunch();
         tracker.launchIfNecessary(dbSetup1);
         tracker.launchIfNecessary(dbSetup1);
         verify(operation1, times(2)).execute(any(Connection.class), any(BinderConfiguration.class));
@@ -99,7 +99,7 @@ public class DbSetupTrackerTest {
     public void launchIfNecessaryDoesntLaunchIfDifferentSetup() throws SQLException {
         DbSetupTracker tracker = new DbSetupTracker();
         tracker.launchIfNecessary(dbSetup1);
-        tracker.ignoreNextLaunch();
+        tracker.skipNextLaunch();
         tracker.launchIfNecessary(dbSetup2);
         verify(operation1, times(1)).execute(any(Connection.class), any(BinderConfiguration.class));
         verify(operation2, times(1)).execute(any(Connection.class), any(BinderConfiguration.class));
@@ -108,6 +108,6 @@ public class DbSetupTrackerTest {
     @Test
     public void toStringWorks() {
         DbSetupTracker tracker = new DbSetupTracker();
-        assertEquals("DbSetupTracker [lastSetupLaunched=null, nextLaunchIgnored=false]", tracker.toString());
+        assertEquals("DbSetupTracker [lastSetupLaunched=null, nextLaunchSkipped=false]", tracker.toString());
     }
 }
