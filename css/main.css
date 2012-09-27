@@ -15,3 +15,10 @@ footer {
 .hero-unit a {
     text-decoration: none;
 }
+#github-ribbon {
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    border: 0;
+    opacity: 0.8;
+}
