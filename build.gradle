@@ -101,7 +101,7 @@ jar {
 }
 
 javadoc {
-    options.overview file('src/main/resources/com/ninja_squad/dbsetup/overview.html').path
+    options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
     options.noTimestamp true
     options.linkSource true
 }
