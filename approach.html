@@ -6,10 +6,11 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/prettify.css" rel="stylesheet">
         <link href="css/main.css" rel="stylesheet">
+        <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
     </head>
     <body onload="prettyPrint()">
         <div class="container">
-            <div class="navbar">
+            <div class="navbar navbar-inverse">
                 <div class="navbar-inner">
                     <div class="container">
                         <a class="brand" href="index.html">DbSetup</a>
@@ -99,7 +100,7 @@ Insert.into("PERSON")
                 Most of the database operations in an application, especially when you use an ORM, are read-only operations.
                 A typical repository contains many <code>find()</code> methods that you want to test, and very few <code>create()</code>
                 or <code>save()</code>. Instead of re-populating the database before each test, even though the previous one
-                used the same data set and wass read-only,
+                used the same data set and was read-only,
                 DbSetup allows populating the database only if it needs to be populated. By using a <code>DbSetupTracker</code>,
                 and adding a single line of code in your read-only tests, you can avoid lots of unnecessary database repopulations,
                 making your tests run much faster, and still leaving test methods independant.
