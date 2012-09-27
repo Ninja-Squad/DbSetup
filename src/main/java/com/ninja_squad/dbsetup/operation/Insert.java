@@ -324,12 +324,10 @@ public final class Insert implements Operation {
         public Builder withDefaultValue(@Nonnull String column, Object value) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkNotNull(column, "column may not be null");
-            if (columnNames.contains(column)) {
-                Preconditions.checkArgument(!columnNames.contains(column),
-                                            "column "
-                                                + column
-                                                + " is already listed in the list of column names");
-            }
+            Preconditions.checkArgument(!columnNames.contains(column),
+                                        "column "
+                                            + column
+                                            + " is already listed in the list of column names");
             defaultValues.put(column, value);
             return this;
         }
