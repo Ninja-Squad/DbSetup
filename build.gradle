@@ -156,15 +156,23 @@ cleanEclipseJdt << {
     f.delete()
 }
 
+task checkSonatypeProperties {
+    if (project.properties['sonatypeUsername'] == null || project.properties['sonatypePassword'] == null) {
+        throw new StopExecutionException("ERROR: you need to have sonatypeUsername and sonatypePassword properties" +
+                                         " defined in your HOME/.gradle/gradle.properties file to upload archives");
+    }
+}
+
 uploadArchives {
+    dependsOn checkSonatypeProperties
     repositories {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
             repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
+                authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
             }
             snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
+                authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
             }
         }
     }

@@ -11,19 +11,58 @@ Another design choice of DbSetup is to provide an easy to use and simple Java AP
    - It allows viewing the data sets easily, without having to open external files, by storing the data set directly into the test class, or by navigating through classes and methods using the IDE shortcuts.
    - For more complex situations, like cyclic referential integrity constraints between rows, the Java API allows easily integrating SQL statements into the sequence of operations to execute to pre-populate the database. These SQL statements can, for example, disable constraints and re-enable them.
 
+# Documentation
+
+The documentation is available at [dbsetup.ninja-squad.com](http://dbsetup.ninja-squad.com). It's hosted by github,
+from the gh-pages branch.
+
+# Bugs and RFEs
+
+To submit bugs or RFEs, sign up on [our JIRA instance](https://ninjasquad.atlassian.net), hosted by Atlassian.
+
 # How to...
 ## build
 
     gradlew build
 
-## submit bugs or RFEs
-
-Sign up on our JIRA instance, hosted by Atlassian, at [ninjasquad.atlassian.net](https://ninjasquad.atlassian.net)
+## install the artifacts in your own local Maven repository
     
-# Documentation
+    gradlew install
+    
+## deploy a snapshot to the sonatype *snapshots* repository
 
-The documentation is available at [dbsetup.ninja-squad.com](http://dbsetup.ninja-squad.com). It's hosted by github,
-from the gh-pages branch.
+ - Make sure you have a file named `gradle.properties` under `HOME/.gradle`, and this file contains the following 
+properties:
+
+        sonatypeUsername=<the sonatype user name>
+        sonatypePassword=<the sonatype password>
+    
+ - Make sure the version on DbSetup, in the project's `gradle.properties` file, ends with `SNAPSHOT`
+ - Execute
+ 
+        gradlew uploadArchives
+        
+## release a new version of DbSetup
+
+ - Make sure you have PGP installed, and have a key pair generated and published. If you don't, follow 
+   [these instructions](https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven)
+ - Make sure you have a file named `gradle.properties` under `HOME/.gradle`, and this file contains the following 
+properties:
+
+        sonatypeUsername=<the sonatype user name>
+        sonatypePassword=<the sonatype password>
+        
+        signing.keyId=<the ID of your PGP key>
+        signing.password=<the password used to protect your PGP key
+        signing.secretKeyRingFile=<the absolute name of the secring.gpg file>
+        
+ - Make sure the version of DbSetup in the project's `gradle.properties` file is the right one. It must not end with `SNAPSHOT`
+ - Execute
+ 
+        gradlew uploadArchives
+        
+ - Follow [these instructions](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt) 
+   (section 8.a only)
     
 # License
 
