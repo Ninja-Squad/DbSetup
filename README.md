@@ -13,8 +13,13 @@ Another design choice of DbSetup is to provide an easy to use and simple Java AP
 
 # How to...
 ## build
+
     gradlew build
 
+## submit bugs or RFEs
+
+Sign up on our JIRA instance, hosted by Atlassian, at [ninjasquad.atlassian.net](https://ninjasquad.atlassian.net)
+    
 # Documentation
 
 The documentation is available at [dbsetup.ninja-squad.com](http://dbsetup.ninja-squad.com). It's hosted by github,
