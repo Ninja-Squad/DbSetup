@@ -9,12 +9,12 @@ buildscript {
 
 apply plugin : 'java'
 apply plugin : 'eclipse'
-apply plugin: 'checkstyle'
-apply plugin: 'pmd'
-apply plugin: 'findbugs'
-apply plugin: 'cobertura'
-apply plugin: 'maven'
-apply plugin: 'signing'
+apply plugin : 'checkstyle'
+apply plugin : 'pmd'
+apply plugin : 'findbugs'
+apply plugin : 'cobertura'
+apply plugin : 'maven'
+apply plugin : 'signing'
 
 group = 'com.ninja-squad'
 sourceCompatibility = 1.6
@@ -41,8 +41,8 @@ configurations {
 }
 
 task checkJavaVersion {
-    if (!JavaVersion.current().isJava6()) {
-        String message = "ERROR: Java 1.6 required but " + 
+    if (!JavaVersion.current().isJava6() && !JavaVersion.current().isJava7()) {
+        String message = "ERROR: Java 1.6 or 1.7 required but " + 
                          JavaVersion.current() + 
                          " found. Change your JAVA_HOME environment variable.";
         throw new StopExecutionException(message);
@@ -53,177 +53,179 @@ compileJava.dependsOn checkJavaVersion
 
 [compileJava, compileTestJava]*.options*.encoding = 'ISO-8859-1'
 
-checkstyle {
-    sourceSets = [sourceSets.main]
-}
+if(hasProperty('release')){
+    checkstyle {
+        sourceSets = [sourceSets.main]
+    }
 
-checkstyleMain << {
-    ant.xslt(in: reports.xml.destination,
-             style: new File(configFile.parent, 'checkstyle-noframes-sorted.xsl'),
-             out: new File(reports.xml.destination.parent, 'main.html'))
-}
+    checkstyleMain << {
+        ant.xslt(in: reports.xml.destination,
+                 style: new File(configFile.parent, 'checkstyle-noframes-sorted.xsl'),
+                 out: new File(reports.xml.destination.parent, 'main.html'))
+    }
 
-pmd {
-    sourceSets = [sourceSets.main]
-}
+    pmd {
+        sourceSets = [sourceSets.main]
+    }
 
-pmdMain {
-    ignoreFailures = true
-    ruleSetFiles = files('config/pmd/ruleSet.xml')
-}
+    pmdMain {
+        ignoreFailures = true
+        ruleSetFiles = files('config/pmd/ruleSet.xml')
+    }
 
-findbugs {
-    sourceSets = [sourceSets.main]
-    ignoreFailures = true
-}
+    findbugs {
+        sourceSets = [sourceSets.main]
+        ignoreFailures = true
+    }
 
-findbugsMain {
-    reports {
-        xml {
-            enabled = false
+    findbugsMain {
+        reports {
+            xml {
+                enabled = false
+            }
+            html {
+                enabled = true
+            }
         }
-        html {
-            enabled = true
+    }
+
+    def sharedManifest = manifest {
+        attributes(['Implementation-Title': project.name, 
+                    'Implementation-Version': project.version,
+                    'Implementation-Vendor': 'ninja-squad.com'])
+    }
+
+    jar {
+        manifest { 
+            from sharedManifest
         }
     }
-}
 
-def sharedManifest = manifest {
-    attributes(['Implementation-Title': project.name, 
-                'Implementation-Version': project.version,
-                'Implementation-Vendor': 'ninja-squad.com'])
-}
-
-jar {
-    manifest { 
-        from sharedManifest
+    javadoc {
+        options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
+        options.noTimestamp true
+        options.linkSource true
     }
-}
 
-javadoc {
-    options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
-    options.noTimestamp true
-    options.linkSource true
-}
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+        manifest { 
+            from sharedManifest
+        }
+    }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-    manifest { 
-        from sharedManifest
-    }
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-    manifest { 
-        from sharedManifest
-    }
-}
-
-task distributionZip(type: Zip, dependsOn: [javadoc, jar]) {
-    classifier = 'dist'
-    def rootDir = project.name + '-' + project.version;
-    into(rootDir) {
-        from jar.archivePath
-    }
-    into(rootDir + '/src') {
-        from sourceSets.main.java
-    }
-    into(rootDir + '/javadoc') {
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
         from javadoc.destinationDir
-    }
-}
-
-assemble {
-    dependsOn distributionZip
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-eclipseJdt << {
-    File f = file('.settings/org.eclipse.core.resources.prefs')
-    f.write('eclipse.preferences.version=1\n')
-    f.append('encoding/<project>=ISO-8859-1')
-}
-
-cleanEclipseJdt << {
-    File f = file('.settings/org.eclipse.core.resources.prefs')
-    f.delete()
-}
-
-task checkSonatypeProperties {
-    if (project.properties['sonatypeUsername'] == null || project.properties['sonatypePassword'] == null) {
-        throw new StopExecutionException("ERROR: you need to have sonatypeUsername and sonatypePassword properties" +
-                                         " defined in your HOME/.gradle/gradle.properties file to upload archives");
-    }
-}
-
-uploadArchives {
-    dependsOn checkSonatypeProperties
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
-            }
-            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
-                authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
-            }
+        manifest { 
+            from sharedManifest
         }
     }
-}
 
-[install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured {pom ->
-    // we don't care about test dependencies
-    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'} 
-    // we don't care about findbugs annotations 
-    pom.dependencies = pom.dependencies.findAll {it.groupId != 'net.sourceforge.findbugs' && it.artifactId != 'annotations'} 
-    // we don't care about JSR305 annotations
-    pom.dependencies = pom.dependencies.findAll {it.groupId != 'com.google.code.findbugs' && it.artifactId != 'jsr305'} 
-    // all dependencies are compile time dependencies, and there is no need to say it
-    pom.dependencies*.scope = null 
-    
-    pom.project {
-        name = 'DbSetup'
-        description = 'Helps you setup your database with test data'
-        url = 'http://dbsetup.ninja-squad.com/'
-        organization {
-            name = 'Ninja Squad'
-            url = 'http://ninja-squad.com'
+    task distributionZip(type: Zip, dependsOn: [javadoc, jar]) {
+        classifier = 'dist'
+        def rootDir = project.name + '-' + project.version;
+        into(rootDir) {
+            from jar.archivePath
         }
-        licenses {
-            license {
-                name 'MIT License'
-                url 'http://dbsetup.ninja-squad.com/license.html'
-                distribution 'repo'
-            }
+        into(rootDir + '/src') {
+            from sourceSets.main.java
         }
-        scm {
-            url = 'https://github.com/Ninja-Squad/DbSetup'
-            connection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
-            developerConnection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
+        into(rootDir + '/javadoc') {
+            from javadoc.destinationDir
         }
-        developers {
-            developer {
-                id = 'jnizet'
-                name = 'Jean-Baptiste Nizet'
-                email = 'jb@ninja-squad.com'
+    }
+
+    assemble {
+        dependsOn distributionZip
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    eclipseJdt << {
+        File f = file('.settings/org.eclipse.core.resources.prefs')
+        f.write('eclipse.preferences.version=1\n')
+        f.append('encoding/<project>=ISO-8859-1')
+    }
+
+    cleanEclipseJdt << {
+        File f = file('.settings/org.eclipse.core.resources.prefs')
+        f.delete()
+    }
+
+    task checkSonatypeProperties {
+        if (project.properties['sonatypeUsername'] == null || project.properties['sonatypePassword'] == null) {
+            throw new StopExecutionException("ERROR: you need to have sonatypeUsername and sonatypePassword properties" +
+                                             " defined in your HOME/.gradle/gradle.properties file to upload archives");
+        }
+    }
+
+    uploadArchives {
+        dependsOn checkSonatypeProperties
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                    authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
+                }
+                snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+                    authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
+                }
             }
         }
     }
-}
 
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
+    [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured {pom ->
+        // we don't care about test dependencies
+        pom.dependencies = pom.dependencies.findAll {it.scope != 'test'} 
+        // we don't care about findbugs annotations 
+        pom.dependencies = pom.dependencies.findAll {it.groupId != 'net.sourceforge.findbugs' && it.artifactId != 'annotations'} 
+        // we don't care about JSR305 annotations
+        pom.dependencies = pom.dependencies.findAll {it.groupId != 'com.google.code.findbugs' && it.artifactId != 'jsr305'} 
+        // all dependencies are compile time dependencies, and there is no need to say it
+        pom.dependencies*.scope = null 
+        
+        pom.project {
+            name = 'DbSetup'
+            description = 'Helps you setup your database with test data'
+            url = 'http://dbsetup.ninja-squad.com/'
+            organization {
+                name = 'Ninja Squad'
+                url = 'http://ninja-squad.com'
+            }
+            licenses {
+                license {
+                    name 'MIT License'
+                    url 'http://dbsetup.ninja-squad.com/license.html'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url = 'https://github.com/Ninja-Squad/DbSetup'
+                connection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
+                developerConnection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
+            }
+            developers {
+                developer {
+                    id = 'jnizet'
+                    name = 'Jean-Baptiste Nizet'
+                    email = 'jb@ninja-squad.com'
+                }
+            }
+        }
+    }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.1'
+    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+    signing {
+        required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '1.1'
+    }
 }
