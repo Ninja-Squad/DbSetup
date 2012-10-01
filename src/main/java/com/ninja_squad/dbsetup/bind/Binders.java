@@ -249,7 +249,7 @@ public final class Binders {
     }
 
     /**
-     * The implementation for {@link Binders#timeStampBinder()}
+     * The implementation for {@link Binders#timestampBinder()}
      * @author JB Nizet
      */
     private static final class TimestampBinder implements Binder {

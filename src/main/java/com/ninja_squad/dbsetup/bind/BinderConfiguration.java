@@ -24,17 +24,17 @@
 
 package com.ninja_squad.dbsetup.bind;
 
-import java.sql.ParameterMetaData;
-import java.sql.SQLException;
-
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.DbSetupTracker;
+
+import java.sql.ParameterMetaData;
+import java.sql.SQLException;
 
 /**
  * An object which returns the appropriate {@link Binder} based on the metadata of the prepared statement.
  * The default instance of this interface is {@link DefaultBinderConfiguration}. If the binders returned by this
  * default configuration don't fit for the particular database you're using, or if you would like the binders
- * returned by the configuration to support additional data types, you might want to provide a diferent implementation
+ * returned by the configuration to support additional data types, you might want to provide a different implementation
  * of this interface to the {@link DbSetup}.
  * <p>
  * It's advised to make implementations of this interface immutable, and to make them implement equals and hashCode
