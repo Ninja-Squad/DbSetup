@@ -45,7 +45,7 @@ task checkJavaVersion {
         String message = "ERROR: Java 1.6 required but " + 
                          JavaVersion.current() + 
                          " found. Change your JAVA_HOME environment variable.";
-        throw new StopExecutionException(message);
+        throw new IllegalStateException(message);
     }
 }
 
@@ -156,10 +156,10 @@ cleanEclipseJdt << {
     f.delete()
 }
 
-task checkSonatypeProperties {
+task checkSonatypeProperties << {
     if (project.properties['sonatypeUsername'] == null || project.properties['sonatypePassword'] == null) {
-        throw new StopExecutionException("ERROR: you need to have sonatypeUsername and sonatypePassword properties" +
-                                         " defined in your HOME/.gradle/gradle.properties file to upload archives");
+        throw new IllegalStateException("ERROR: you need to have sonatypeUsername and sonatypePassword properties" +
+                                        " defined in your HOME/.gradle/gradle.properties file to upload archives");
     }
 }
 
