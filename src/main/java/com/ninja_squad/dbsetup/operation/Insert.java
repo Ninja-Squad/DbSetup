@@ -24,25 +24,18 @@
 
 package com.ninja_squad.dbsetup.operation;
 
-import java.sql.Connection;
-import java.sql.ParameterMetaData;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
 import com.ninja_squad.dbsetup.bind.Binder;
 import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 import com.ninja_squad.dbsetup.bind.Binders;
 import com.ninja_squad.dbsetup.util.Preconditions;
+
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import java.sql.Connection;
+import java.sql.ParameterMetaData;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Operation which inserts one or several rows into a table. Example usage:
@@ -255,7 +248,7 @@ public final class Insert implements Operation {
         }
 
         /**
-         * Specifies the list of columns into which values wil be inserted. The values must the be specifed, after,
+         * Specifies the list of columns into which values wil be inserted. The values must the be specified, after,
          * using the {@link #values(Object...)} method.
          * @param columns the names of the columns to insert into.
          * @return this Builder instance, for chaining.

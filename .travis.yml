@@ -1,0 +1,6 @@
+language: java
+script: "gradle test"
+jdk:
+  - openjdk7
+  - oraclejdk7
+  - openjdk6
