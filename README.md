@@ -1,4 +1,5 @@
 Build status on Travis CI
+
 [![Build Status](https://secure.travis-ci.org/cexbrayat/DbSetup.png)](http://travis-ci.org/cexbrayat/DbSetup)
 
 # Overview
