@@ -255,7 +255,7 @@ public final class Insert implements Operation {
         }
 
         /**
-         * Specifies the list of columns into which values wil be inserted. The values must the be specifed, after,
+         * Specifies the list of columns into which values wil be inserted. The values must the be specified, after,
          * using the {@link #values(Object...)} method.
          * @param columns the names of the columns to insert into.
          * @return this Builder instance, for chaining.

@@ -5,3 +5,7 @@
 /bin
 /build
 /.classpath
+/.classpath.idea/
+DbSetup.iml
+.idea
+classes
