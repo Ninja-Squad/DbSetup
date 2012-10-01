@@ -80,7 +80,7 @@
             <p>
                 If another test is run after, it will start by
                 clearing the database, and everything will be fine. That means that each test must start by 
-                clearing all the tables, and not just the tables it uses. You want your tests to be independant, 
+                clearing all the tables, and not just the tables it uses. You want your tests to be independent,
                 and able to run in whatever order.
             </p>
             
@@ -110,7 +110,7 @@ public class CommonOperations {
             
             <h3><a id="common-data-set"></a>Optional: create a common data set</h3>
             <p>
-                We recommend creating data sets that are as independant as possible from other ones. Using a global
+                We recommend creating data sets that are as independent as possible from other ones. Using a global
                 data set for multiple test classes leads to data sets larger than necessary, and makes the tests run slower.
                 And more importantly, if you add a row in the data set to test a specific corner case in a specific test,
                 you risk breaking a whole lot of other tests that have already been written and don't expect to have
@@ -272,8 +272,8 @@ public class VendorRepositoryTest {
             <p>
                 Sometimes, you need a data set that contains cyclic dependencies. For example you might have a foreign key to the
                 vendor table in the product table, and you might have a foreign key to the featured product in the vendor table.
-                This kind of cyclic dependency is problemetic, because you can't delete all the vendors before deleting the products,
-                and vice-versa. Similarly, you can't insert a product before its vendor, but you can't insert the vendo before the product
+                This kind of cyclic dependency is problematic, because you can't delete all the vendors before deleting the products,
+                and vice-versa. Similarly, you can't insert a product before its vendor, but you can't insert the vendor before the product
                 either. In that case, you thus have two solutions:
             </p>
             <ol>
