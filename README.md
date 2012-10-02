@@ -1,3 +1,7 @@
+Build status on Travis CI
+
+[![Build Status](https://secure.travis-ci.org/Ninja-Squad/DbSetup.png)](http://travis-ci.org/Ninja-Squad/DbSetup)
+
 # Overview
 
 DbSetup allows populating a database before executing automated integration tests (typically, DAO/Repository automated tests). Although DBUnit, which is a great project, allows doing the same thing and much more, it's also harder to use and setup. And in our experience, in 98% of the cases, DBUnit is only used to pre-populate a database before executing every test method. This is the task on which DbSetup concentrates.
