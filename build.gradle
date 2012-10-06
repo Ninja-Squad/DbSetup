@@ -23,7 +23,7 @@ repositories {
     mavenCentral()
 }
 
-build.dependsOn project.tasks.getByName("cobertura")
+build.dependsOn tasks.getByName("cobertura")
 
 dependencies {
     compile 'com.google.code.findbugs:jsr305:2.0.0'
@@ -40,7 +40,7 @@ configurations {
     testRuntime.transitive = false
 }
 
-task checkJavaVersion {
+task checkJavaVersion << {
     if (!JavaVersion.current().isJava6()) {
         String message = "ERROR: Java 1.6 required but " + 
                          JavaVersion.current() + 
