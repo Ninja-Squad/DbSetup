@@ -1,0 +1,35 @@
+/*
+
+DbSetup, a Java API to populate your database.
+By http://ninja-squad.com
+
+*/
+
+/* TEAM */
+
+Lead - and only - Developer : Jean-Baptiste Nizet.
+Twitter: @jbnizet
+Website : http://ninja-squad.com/team#JB
+Location: Saint-Just-Saint-Rambert, France
+
+Other members of Ninja Squad :
+
+Developer, Architect, Public Relations, Motivation Director : Agnès Crépet.
+Twitter: @agnes_crepet.
+Website : http://ninja-squad.com/team#Agnes
+Location: Saint-Etienne, France.
+
+Developer, Hype-Driving Director, Fitness Manager : Cédric Exbrayat
+Twitter: @cedric_exbrayat
+Website : http://ninja-squad.com/team#Cedric
+Location: Lyon, France
+
+Developer, Lulz Director, Night Watch Supervisor : Cyril Lacôte
+Twitter: @clacote
+Website : http://ninja-squad.com/team#Cyril
+Location: Lyon, France
+
+/* SITE */
+
+Components: Twitter Bootstrap, hand power.
+ASCII art: http://ascii.mastervb.net/
