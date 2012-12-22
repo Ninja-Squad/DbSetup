@@ -24,18 +24,17 @@
 
 package com.ninja_squad.dbsetup.operation;
 
+import com.ninja_squad.dbsetup.bind.BinderConfiguration;
+import com.ninja_squad.dbsetup.util.Preconditions;
+
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
-import com.ninja_squad.dbsetup.bind.BinderConfiguration;
-import com.ninja_squad.dbsetup.util.Preconditions;
 
 /**
  * An operation which deletes everything from a given database table.
@@ -46,7 +45,7 @@ public final class DeleteAll implements Operation {
 
     private final String table;
 
-    protected DeleteAll(String table) {
+    private DeleteAll(String table) {
         Preconditions.checkNotNull(table, "table may not be null");
         this.table = table;
     }
