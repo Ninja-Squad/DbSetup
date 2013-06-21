@@ -95,31 +95,20 @@ public final class DateSequenceValueGenerator implements ValueGenerator<Date> {
     }
 
     /**
-     * Restarts the sequence at the given date, in the given time zone
+     * Restarts the sequence at the given date, in the default time zone
      * @param startDate the starting date, as a String. The supported formats are the same as the ones supported by
      * {@link com.ninja_squad.dbsetup.bind.Binders#timestampBinder()}, i.e. the formats supported by
      * <code>java.sql.Timestamp.valueOf()</code> and <code>java.sql.Date.valueOf()</code>
      * @return this instance, for chaining
      */
-    public DateSequenceValueGenerator startingAt(@Nonnull String startDate, @Nonnull TimeZone timeZone) {
+    public DateSequenceValueGenerator startingAt(@Nonnull String startDate) {
         Preconditions.checkNotNull(startDate, "startDate may not be null");
         if (startDate.length() >= MIN_NUMBER_OF_CHARS_FOR_TIMESTAMP) {
-            return startingAt(Timestamp.valueOf(startDate), timeZone);
+            return startingAt(Timestamp.valueOf(startDate));
         }
         else {
-            return startingAt(java.sql.Date.valueOf(startDate), timeZone);
+            return startingAt(java.sql.Date.valueOf(startDate));
         }
-    }
-
-    /**
-     * Restarts the sequence at the given date, in the default time zone
-     * @param startDate the starting date, as a String.
-     * @return this instance, for chaining
-     *
-     * @see #startingAt(String, java.util.TimeZone) for the supported formats
-     */
-    public DateSequenceValueGenerator startingAt(@Nonnull String startDate) {
-        return startingAt(startDate, TimeZone.getDefault());
     }
 
     /**

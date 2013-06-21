@@ -86,14 +86,6 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
-    public void allowsSettingNewStartAsStringWithTimeZone() throws ParseException {
-        DateSequenceValueGenerator sequence =
-            ValueGenerators.dateSequence()
-                           .startingAt("2013-07-19 00:00:00", TimeZone.getTimeZone("Europe/Paris"));
-        assertEquals("2013-07-18 22:00:00 0", toLongStringInUTC(sequence.nextValue()));
-    }
-
-    @Test
     public void allowsSettingNewStartAsCalendar() throws ParseException {
         Calendar start = Calendar.getInstance();
         DateSequenceValueGenerator sequence =
