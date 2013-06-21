@@ -100,6 +100,12 @@ jar {
     }
 }
 
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
 javadoc {
     options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
     options.noTimestamp true

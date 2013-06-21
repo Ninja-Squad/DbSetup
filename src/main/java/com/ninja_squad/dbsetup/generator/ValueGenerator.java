@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2012, Ninja Squad
+ * Copyright (c) 2013, Ninja Squad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +22,21 @@
  * THE SOFTWARE.
  */
 
-package com.ninja_squad.dbsetup.integration;
-
-import com.ninja_squad.dbsetup.operation.Operation;
-
-import static com.ninja_squad.dbsetup.Operations.*;
+package com.ninja_squad.dbsetup.generator;
 
 /**
+ * A value generator allows generating values for a specific column in a sequence of inserts. This is useful when you
+ * don't want to specify a value for each of the inserted rows in a table, and when a default value is not an option
+ * either because, for example, the column has a unique constraint.
+ * @param <T> the type of value that this generator generates
+ *
+ * @see ValueGenerators for useful implementations of this interface
  * @author JB Nizet
  */
-public class CommonOperations {
-    public static final Operation DROP_TABLES =
-        sequenceOf(sql("drop table if exists A cascade"),
-                   sql("drop table if exists B cascade"));
-
-    public static final Operation CREATE_TABLES =
-        sequenceOf(sql("create table A (a_id bigint primary key, va varchar(100), nu numeric(10, 2), bo boolean, da date, tis timestamp, tim time, seq numeric)"),
-                   sql("create table B (b_id bigint primary key, a_id SMALLINT, va varchar(100), foreign key (a_id) references A (a_id))"));
-
-    public static final Operation INSERT_ROWS =
-       sequenceOf(
-           insertInto("A").columns("a_id").values(1L).build(),
-           insertInto("B").columns("b_id", "a_id").values(1L, 1L).build());
+public interface ValueGenerator<T> {
+    /**
+     * Called each time a new row is inserted, to get the value to insert in the column using this value generator.
+     * @return the value to insert in the column associated with this generator.
+     */
+    T nextValue();
 }

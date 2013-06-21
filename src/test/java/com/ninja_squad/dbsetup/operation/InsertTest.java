@@ -24,20 +24,20 @@
 
 package com.ninja_squad.dbsetup.operation;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import com.ninja_squad.dbsetup.bind.Binder;
+import com.ninja_squad.dbsetup.bind.BinderConfiguration;
+import com.ninja_squad.dbsetup.bind.Binders;
+import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import org.junit.Test;
+import org.mockito.InOrder;
 
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.junit.Test;
-import org.mockito.InOrder;
-
-import com.ninja_squad.dbsetup.bind.Binder;
-import com.ninja_squad.dbsetup.bind.BinderConfiguration;
-import com.ninja_squad.dbsetup.bind.Binders;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author JB Nizet
@@ -141,14 +141,18 @@ public class InsertTest {
         Insert insertA = Insert.into("A")
                                .columns("a", "b")
                                .values("a1", "b1")
+                               .values("a2", "b2")
                                .withDefaultValue("c", "c3")
+                               .withGeneratedValue("d", ValueGenerators.sequence())
                                .withBinder(Binders.decimalBinder(), "b")
                                .useMetadata(false)
                                .build();
         Insert insertB = Insert.into("A")
                                .columns("a", "b")
                                .values("a1", "b1")
+                               .values("a2", "b2")
                                .withDefaultValue("c", "c3")
+                               .withGeneratedValue("d", ValueGenerators.sequence())
                                .withBinder(Binders.decimalBinder(), "b")
                                .useMetadata(false)
                                .build();
@@ -159,9 +163,11 @@ public class InsertTest {
         assertFalse(insertA.equals("hello"));
 
         insertB = Insert.into("A")
-                        .columns("d", "b")
+                        .columns("e", "b")
                         .values("a1", "b1")
+                        .values("a2", "b2")
                         .withDefaultValue("c", "c3")
+                        .withGeneratedValue("d", ValueGenerators.sequence())
                         .withBinder(Binders.decimalBinder(), "b")
                         .useMetadata(false)
                         .build();
@@ -170,7 +176,9 @@ public class InsertTest {
         insertB = Insert.into("A")
                         .columns("a", "b")
                         .values("a1", "b2")
+                        .values("a2", "b2")
                         .withDefaultValue("c", "c3")
+                        .withGeneratedValue("d", ValueGenerators.sequence())
                         .withBinder(Binders.decimalBinder(), "b")
                         .useMetadata(false)
                         .build();
@@ -179,15 +187,20 @@ public class InsertTest {
         insertB = Insert.into("A")
                         .columns("a", "b")
                         .values("a1", "b1")
+                        .values("a2", "b2")
                         .withDefaultValue("c", "c4")
+                        .withGeneratedValue("d", ValueGenerators.sequence())
                         .withBinder(Binders.decimalBinder(), "b")
                         .useMetadata(false)
                         .build();
+        assertFalse(insertA.equals(insertB));
 
         insertB = Insert.into("A")
                         .columns("a", "b")
                         .values("a1", "b1")
+                        .values("a2", "b2")
                         .withDefaultValue("c", "c3")
+                        .withGeneratedValue("d", ValueGenerators.sequence())
                         .withBinder(Binders.integerBinder(), "b")
                         .useMetadata(false)
                         .build();
@@ -196,9 +209,22 @@ public class InsertTest {
         insertB = Insert.into("A")
                         .columns("a", "b")
                         .values("a1", "b1")
+                        .values("a2", "b2")
                         .withDefaultValue("c", "c3")
+                        .withGeneratedValue("d", ValueGenerators.sequence())
                         .withBinder(Binders.decimalBinder(), "b")
                         .useMetadata(true)
+                        .build();
+        assertFalse(insertA.equals(insertB));
+
+        insertB = Insert.into("A")
+                        .columns("a", "b")
+                        .values("a1", "b1")
+                        .values("a2", "b2")
+                        .withDefaultValue("c", "c3")
+                        .withGeneratedValue("d", ValueGenerators.sequence().startingAt(2L))
+                        .withBinder(Binders.decimalBinder(), "b")
+                        .useMetadata(false)
                         .build();
         assertFalse(insertA.equals(insertB));
     }
