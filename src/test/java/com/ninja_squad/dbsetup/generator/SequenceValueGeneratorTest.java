@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2012, Ninja Squad
+ * Copyright (c) 2013, Ninja Squad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +22,40 @@
  * THE SOFTWARE.
  */
 
-package com.ninja_squad.dbsetup.integration;
+package com.ninja_squad.dbsetup.generator;
 
-import com.ninja_squad.dbsetup.operation.Operation;
+import org.junit.Test;
 
-import static com.ninja_squad.dbsetup.Operations.*;
+import static org.junit.Assert.*;
 
 /**
- * @author JB Nizet
+ * @author JB
  */
-public class CommonOperations {
-    public static final Operation DROP_TABLES =
-        sequenceOf(sql("drop table if exists A cascade"),
-                   sql("drop table if exists B cascade"));
+public class SequenceValueGeneratorTest {
+    @Test
+    public void startsAtOne() {
+        assertEquals(1L, ValueGenerators.sequence().nextValue().longValue());
+    }
 
-    public static final Operation CREATE_TABLES =
-        sequenceOf(sql("create table A (a_id bigint primary key, va varchar(100), nu numeric(10, 2), bo boolean, da date, tis timestamp, tim time, seq numeric)"),
-                   sql("create table B (b_id bigint primary key, a_id SMALLINT, va varchar(100), foreign key (a_id) references A (a_id))"));
+    @Test
+    public void incrementsByOne() {
+        SequenceValueGenerator sequence = ValueGenerators.sequence();
+        sequence.nextValue();
+        assertEquals(2L, sequence.nextValue().longValue());
+    }
 
-    public static final Operation INSERT_ROWS =
-       sequenceOf(
-           insertInto("A").columns("a_id").values(1L).build(),
-           insertInto("B").columns("b_id", "a_id").values(1L, 1L).build());
+    @Test
+    public void allowsSettingNewStart() {
+        SequenceValueGenerator sequence = ValueGenerators.sequence().startingAt(12L);
+        assertEquals(12L, sequence.nextValue().longValue());
+        sequence.startingAt(5L);
+        assertEquals(5L, sequence.nextValue().longValue());
+    }
+
+    @Test
+    public void allowsSettingNewIncrement() {
+        SequenceValueGenerator sequence = ValueGenerators.sequence().incrementingBy(10);
+        assertEquals(1L, sequence.nextValue().longValue());
+        assertEquals(11L, sequence.nextValue().longValue());
+    }
 }
