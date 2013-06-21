@@ -1,4 +1,4 @@
 language: java
-script: "gradle test"
+script: "gradle --no-color test"
 jdk:
   - openjdk6
