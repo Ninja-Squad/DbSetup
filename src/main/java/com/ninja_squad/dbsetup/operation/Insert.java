@@ -24,6 +24,15 @@
 
 package com.ninja_squad.dbsetup.operation;
 
+import com.ninja_squad.dbsetup.bind.Binder;
+import com.ninja_squad.dbsetup.bind.BinderConfiguration;
+import com.ninja_squad.dbsetup.bind.Binders;
+import com.ninja_squad.dbsetup.generator.ValueGenerator;
+import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import com.ninja_squad.dbsetup.util.Preconditions;
+
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
@@ -35,14 +44,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
-
-import com.ninja_squad.dbsetup.bind.Binder;
-import com.ninja_squad.dbsetup.bind.BinderConfiguration;
-import com.ninja_squad.dbsetup.bind.Binders;
-import com.ninja_squad.dbsetup.util.Preconditions;
 
 /**
  * Operation which inserts one or several rows into a table. Example usage:
@@ -68,7 +69,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
 public final class Insert implements Operation {
     private final String table;
     private final List<String> columnNames;
-    private final Map<String, Object> defaultValues;
+    private final Map<String, List<Object>> generatedValues;
     private final List<List<?>> rows;
     private final boolean metadataUsed;
 
@@ -77,14 +78,31 @@ public final class Insert implements Operation {
     private Insert(Builder builder) {
         this.table = builder.table;
         this.columnNames = builder.columnNames;
-        this.defaultValues = builder.defaultValues;
         this.rows = builder.rows;
+        this.generatedValues = generateValues(builder.valueGenerators, rows.size());
         this.binders = builder.binders;
         this.metadataUsed = builder.metadataUsed;
     }
 
+    private Map<String, List<Object>> generateValues(Map<String, ValueGenerator<?>> valueGenerators,
+                                                      int count) {
+        Map<String, List<Object>> result = new LinkedHashMap<String, List<Object>>();
+        for (Map.Entry<String, ValueGenerator<?>> entry : valueGenerators.entrySet()) {
+            result.put(entry.getKey(), generateValues(entry.getValue(), count));
+        }
+        return result;
+    }
+
+    private List<Object> generateValues(ValueGenerator<?> valueGenerator, int count) {
+        List<Object> result = new ArrayList<Object>(count);
+        for (int i = 0; i < count; i++) {
+            result.add(valueGenerator.nextValue());
+        }
+        return result;
+    }
+
     /**
-     * Inserts the values and default values in the table. Unless <code>useMetadata</code> has been set to
+     * Inserts the values and generated values in the table. Unless <code>useMetadata</code> has been set to
      * <code>false</code>, the given configuration is used to get the appropriate binder. Nevertheless, if a binder
      * has explicitely been associated to a given column, this binder will always be used for this column.
      */
@@ -96,7 +114,7 @@ public final class Insert implements Operation {
         StringBuilder sql = new StringBuilder("insert into ").append(table).append(" (");
 
         List<String> allColumnNames = new ArrayList<String>(columnNames);
-        allColumnNames.addAll(defaultValues.keySet());
+        allColumnNames.addAll(generatedValues.keySet());
 
         for (Iterator<String> it = allColumnNames.iterator(); it.hasNext(); ) {
             String columnName = it.next();
@@ -123,6 +141,7 @@ public final class Insert implements Operation {
                 initializeBinders(stmt, allColumnNames, configuration, metadataBinders);
             }
 
+            int rowIndex = 0;
             for (List<?> row : rows) {
                 int i = 0;
                 for (Object value : row) {
@@ -131,14 +150,16 @@ public final class Insert implements Operation {
                     binder.bind(stmt, i + 1, value);
                     i++;
                 }
-                for (Map.Entry<String, Object> defaultValue : defaultValues.entrySet()) {
-                    String columnName = defaultValue.getKey();
+                for (Map.Entry<String, List<Object>> entry : generatedValues.entrySet()) {
+                    String columnName = entry.getKey();
+                    List<Object> rowValues = entry.getValue();
                     Binder binder = getBinder(columnName, metadataBinders);
-                    binder.bind(stmt, i + 1, defaultValue.getValue());
+                    binder.bind(stmt, i + 1, rowValues.get(rowIndex));
                     i++;
                 }
 
                 stmt.executeUpdate();
+                rowIndex++;
             }
         }
         finally {
@@ -177,8 +198,8 @@ public final class Insert implements Operation {
                + table
                + " [columns="
                + columnNames
-               + ", defaultValues="
-               + defaultValues
+               + ", generatedValues="
+               + generatedValues
                + ", rows="
                + rows
                + ", metadataUsed="
@@ -195,7 +216,7 @@ public final class Insert implements Operation {
         int result = 1;
         result = prime * result + binders.hashCode();
         result = prime * result + columnNames.hashCode();
-        result = prime * result + defaultValues.hashCode();
+        result = prime * result + generatedValues.hashCode();
         result = prime * result + Boolean.valueOf(metadataUsed).hashCode();
         result = prime * result + rows.hashCode();
         result = prime * result + table.hashCode();
@@ -217,7 +238,7 @@ public final class Insert implements Operation {
 
         return binders.equals(other.binders)
                && columnNames.equals(other.columnNames)
-               && defaultValues.equals(other.defaultValues)
+               && generatedValues.equals(other.generatedValues)
                && metadataUsed == other.metadataUsed
                && rows.equals(other.rows)
                && table.equals(other.table);
@@ -242,7 +263,7 @@ public final class Insert implements Operation {
     public static final class Builder {
         private final String table;
         private final List<String> columnNames = new ArrayList<String>();
-        private final Map<String, Object> defaultValues = new LinkedHashMap<String, Object>();
+        private final Map<String, ValueGenerator<?>> valueGenerators = new LinkedHashMap<String, ValueGenerator<?>>();
         private final List<List<?>> rows = new ArrayList<List<?>>();
 
         private boolean metadataUsed = true;
@@ -260,17 +281,17 @@ public final class Insert implements Operation {
          * @param columns the names of the columns to insert into.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built, or if this method has already been
-         * called, or if one of the given columns is also specified as one of the "default value" columns.
+         * called, or if one of the given columns is also specified as one of the generated value columns.
          */
         public Builder columns(@Nonnull String... columns) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkState(columnNames.isEmpty(), "columns have already been specified");
             for (String column : columns) {
                 Preconditions.checkNotNull(column, "column may not be null");
-                Preconditions.checkState(!defaultValues.containsKey(column),
+                Preconditions.checkState(!valueGenerators.containsKey(column),
                                          "column "
                                              + column
-                                             + " has already been specified as default value column");
+                                             + " has already been specified as generated value column");
             }
             columnNames.addAll(Arrays.asList(columns));
             return this;
@@ -297,14 +318,14 @@ public final class Insert implements Operation {
          * @param columns the name of the columns to associate with the given Binder
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built, or if any of the given columns is not
-         * part of the columns or "default value" columns.
+         * part of the columns or "generated value" columns.
          */
         public Builder withBinder(@Nonnull Binder binder, @Nonnull String... columns) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkNotNull(binder, "binder may not be null");
             for (String columnName : columns) {
                 Preconditions.checkArgument(this.columnNames.contains(columnName)
-                                            || this.defaultValues.containsKey(columnName),
+                                            || this.valueGenerators.containsKey(columnName),
                                             "column "
                                                 + columnName
                                                 + " is not one of the registered column names");
@@ -315,6 +336,8 @@ public final class Insert implements Operation {
 
         /**
          * Specifies a default value to be inserted in a column for all the rows inserted by the Insert operation.
+         * Calling this method is equivalent to calling
+         * <code>withGeneratedValue(column, ValueGenerators.constant(value))</code>
          * @param column the name of the column
          * @param value the default value to insert into the column
          * @return this Builder instance, for chaining.
@@ -322,13 +345,27 @@ public final class Insert implements Operation {
          * of the columns to insert.
          */
         public Builder withDefaultValue(@Nonnull String column, Object value) {
+            return withGeneratedValue(column, ValueGenerators.constant(value));
+        }
+
+        /**
+         * Allows the given column to be populated by a value generator, which will be called for every row of the
+         * Insert operation being built.
+         * @param column the name of the column
+         * @param valueGenerator the generator generating values for the given column of every row
+         * @return this Builder instance, for chaining.
+         * @throws IllegalStateException if the Insert has already been built, or if the given column is part
+         * of the columns to insert.
+         */
+        public Builder withGeneratedValue(@Nonnull String column, @Nonnull ValueGenerator<?> valueGenerator) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkNotNull(column, "column may not be null");
+            Preconditions.checkNotNull(valueGenerator, "valueGenerator may not be null");
             Preconditions.checkArgument(!columnNames.contains(column),
                                         "column "
-                                            + column
-                                            + " is already listed in the list of column names");
-            defaultValues.put(column, value);
+                                        + column
+                                        + " is already listed in the list of column names");
+            valueGenerators.put(column, valueGenerator);
             return this;
         }
 
@@ -350,13 +387,13 @@ public final class Insert implements Operation {
         /**
          * Builds the Insert operation.
          * @return the created Insert operation.
-         * @throws IllegalStateException if the Insert has already been built, or if no column and no default value
+         * @throws IllegalStateException if the Insert has already been built, or if no column and no generated value
          * column has been specified.
          */
         public Insert build() {
             Preconditions.checkState(!built, "The insert has already been built");
-            Preconditions.checkState(!this.columnNames.isEmpty() || !this.defaultValues.isEmpty(),
-                                     "no column and no default value column has been specified");
+            Preconditions.checkState(!this.columnNames.isEmpty() || !this.valueGenerators.isEmpty(),
+                                     "no column and no generated value column has been specified");
             built = true;
             return new Insert(this);
         }

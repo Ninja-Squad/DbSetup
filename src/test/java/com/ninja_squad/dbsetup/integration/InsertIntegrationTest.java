@@ -24,7 +24,16 @@
 
 package com.ninja_squad.dbsetup.integration;
 
-import static org.junit.Assert.*;
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.DbSetupRuntimeException;
+import com.ninja_squad.dbsetup.Operations;
+import com.ninja_squad.dbsetup.bind.Binder;
+import com.ninja_squad.dbsetup.bind.Binders;
+import com.ninja_squad.dbsetup.operation.Insert;
+import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -36,16 +45,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.ninja_squad.dbsetup.DbSetup;
-import com.ninja_squad.dbsetup.DbSetupRuntimeException;
-import com.ninja_squad.dbsetup.Operations;
-import com.ninja_squad.dbsetup.bind.Binder;
-import com.ninja_squad.dbsetup.bind.Binders;
-import com.ninja_squad.dbsetup.operation.Insert;
+import static org.junit.Assert.*;
 
 /**
  * @author JB Nizet
@@ -73,6 +73,7 @@ public class InsertIntegrationTest {
                   .values(1L, 12.6, true, "1975-07-19", "14:15:22", "2012-12-25 13:05:12")
                   .values(2L, 13.6, false, "1976-10-16", "14:15:23", "2012-12-25 13:05:13")
                   .withDefaultValue("va", "hello")
+                  .withGeneratedValue("seq", ValueGenerators.sequence().startingAt(10L).incrementingBy(5))
                   .build();
         Insert insertB1 =
             Insert.into("B")
@@ -96,6 +97,7 @@ public class InsertIntegrationTest {
         assertEquals(Time.valueOf("14:15:22"), rs.getTime("tim"));
         assertEquals(Timestamp.valueOf("2012-12-25 13:05:12"), rs.getTimestamp("tis"));
         assertEquals("hello", rs.getString("va"));
+        assertEquals(10L, rs.getLong("seq"));
 
         assertTrue(rs.next());
         assertEquals(2L, rs.getLong("a_id"));
@@ -105,6 +107,7 @@ public class InsertIntegrationTest {
         assertEquals(Time.valueOf("14:15:23"), rs.getTime("tim"));
         assertEquals(Timestamp.valueOf("2012-12-25 13:05:13"), rs.getTimestamp("tis"));
         assertEquals("hello", rs.getString("va"));
+        assertEquals(15L, rs.getLong("seq"));
 
         rs = stmt.executeQuery("select * from B order by b_id");
         assertTrue(rs.next());
