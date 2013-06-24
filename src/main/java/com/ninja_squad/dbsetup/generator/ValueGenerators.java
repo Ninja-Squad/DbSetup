@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.ninja_squad.dbsetup.generator;
 
 import com.ninja_squad.dbsetup.util.Preconditions;
