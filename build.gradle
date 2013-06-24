@@ -1,18 +1,9 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "net.saliman:gradle-cobertura-plugin:1.0.1"
-    }
-}
-
 apply plugin : 'java'
 apply plugin : 'eclipse'
 apply plugin : 'checkstyle'
 apply plugin : 'pmd'
 apply plugin : 'findbugs'
-apply plugin : 'cobertura'
+apply plugin : 'jacoco'
 apply plugin : 'maven'
 apply plugin : 'signing'
 
@@ -23,7 +14,7 @@ repositories {
     mavenCentral()
 }
 
-build.dependsOn tasks.getByName("cobertura")
+check.dependsOn tasks.getByName("jacocoTestReport")
 
 dependencies {
     compile 'com.google.code.findbugs:jsr305:2.0.0'
@@ -231,5 +222,5 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.1'
+    gradleVersion = '1.6'
 }
