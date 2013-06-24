@@ -47,6 +47,7 @@
                         </ul>
                     </li>
                     <li><a href="#data-formats">Data formats</a></li>
+                    <li><a href="#generators">Value generators</a></li>
                     <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
                 </ul>
             </div>
@@ -268,6 +269,26 @@ public class VendorRepositoryTest {
             
             <hr/>
             
+            <h2><a id="generators"></a>Value generators</h2>
+            <p>
+                Database tables often have columns that are mandatory, must contain a unique value, but are irrelevant for your tests. Or sometimes,
+                you might simply want to populate a column by a constant or sequential value without having to specify the value for each row in the dataset. 
+                In these cases, you can use a <code>ValueGenerator</code>. Several implementations are available, that generate sequential numeric, string or date 
+                values, with customizable starting values and increments. Here's an example of a table where the <code>ID</code> column is populated with
+                a generator starting at 1000 and with an increment of 10:
+            </p>
+            <pre class="prettyprint">
+    Operation insertVendors = 
+        insertInto("PARAMETER")
+            .withGeneratedValue("ID", ValueGenerators.sequence().startingAt(1000L).incrementingBy(10))
+            .columns("CODE", "LABEL")
+            .values("AMA", "AMAZON")
+            .values("PMI", "Price Minister")
+            .values("EBA", "EBay")
+            .build();</pre>
+            
+            <hr/>
+            
             <h2><a id="cyclic-dependencies"></a>Cyclic dependencies and SQL support</h2>
             <p>
                 Sometimes, you need a data set that contains cyclic dependencies. For example you might have a foreign key to the
@@ -297,7 +318,7 @@ public class VendorRepositoryTest {
             
             <hr/>
             <footer>
-                <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012</small>
+                <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2013</small>
             </footer>
         </div>
         

@@ -1,0 +1,185 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * The MIT License<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * Copyright (c) 2012, Ninja Squad<a name="line.4"></a>
+<FONT color="green">005</FONT>     *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * Permission is hereby granted, free of charge, to any person obtaining a copy<a name="line.6"></a>
+<FONT color="green">007</FONT>     * of this software and associated documentation files (the "Software"), to deal<a name="line.7"></a>
+<FONT color="green">008</FONT>     * in the Software without restriction, including without limitation the rights<a name="line.8"></a>
+<FONT color="green">009</FONT>     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<a name="line.9"></a>
+<FONT color="green">010</FONT>     * copies of the Software, and to permit persons to whom the Software is<a name="line.10"></a>
+<FONT color="green">011</FONT>     * furnished to do so, subject to the following conditions:<a name="line.11"></a>
+<FONT color="green">012</FONT>     *<a name="line.12"></a>
+<FONT color="green">013</FONT>     * The above copyright notice and this permission notice shall be included in<a name="line.13"></a>
+<FONT color="green">014</FONT>     * all copies or substantial portions of the Software.<a name="line.14"></a>
+<FONT color="green">015</FONT>     *<a name="line.15"></a>
+<FONT color="green">016</FONT>     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<a name="line.17"></a>
+<FONT color="green">018</FONT>     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<a name="line.18"></a>
+<FONT color="green">019</FONT>     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<a name="line.19"></a>
+<FONT color="green">020</FONT>     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<a name="line.20"></a>
+<FONT color="green">021</FONT>     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN<a name="line.21"></a>
+<FONT color="green">022</FONT>     * THE SOFTWARE.<a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>    package com.ninja_squad.dbsetup.destination;<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.sql.Connection;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.sql.DriverManager;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.sql.SQLException;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>    import javax.annotation.Nonnull;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import javax.annotation.concurrent.Immutable;<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>    import com.ninja_squad.dbsetup.util.Preconditions;<a name="line.34"></a>
+<FONT color="green">035</FONT>    <a name="line.35"></a>
+<FONT color="green">036</FONT>    /**<a name="line.36"></a>
+<FONT color="green">037</FONT>     * A destination which uses the {@link DriverManager} to get a connection<a name="line.37"></a>
+<FONT color="green">038</FONT>     * @author JB Nizet<a name="line.38"></a>
+<FONT color="green">039</FONT>     */<a name="line.39"></a>
+<FONT color="green">040</FONT>    @Immutable<a name="line.40"></a>
+<FONT color="green">041</FONT>    public final class DriverManagerDestination implements Destination {<a name="line.41"></a>
+<FONT color="green">042</FONT>    <a name="line.42"></a>
+<FONT color="green">043</FONT>        private final String url;<a name="line.43"></a>
+<FONT color="green">044</FONT>        private final String user;<a name="line.44"></a>
+<FONT color="green">045</FONT>        private final String password;<a name="line.45"></a>
+<FONT color="green">046</FONT>    <a name="line.46"></a>
+<FONT color="green">047</FONT>        /**<a name="line.47"></a>
+<FONT color="green">048</FONT>         * Constructor<a name="line.48"></a>
+<FONT color="green">049</FONT>         * @param url the URL of the database<a name="line.49"></a>
+<FONT color="green">050</FONT>         * @param user the user used to get a connection<a name="line.50"></a>
+<FONT color="green">051</FONT>         * @param password the password used to get a connection<a name="line.51"></a>
+<FONT color="green">052</FONT>         */<a name="line.52"></a>
+<FONT color="green">053</FONT>        public DriverManagerDestination(@Nonnull String url, String user, String password) {<a name="line.53"></a>
+<FONT color="green">054</FONT>            Preconditions.checkNotNull(url, "url may not be null");<a name="line.54"></a>
+<FONT color="green">055</FONT>            this.url = url;<a name="line.55"></a>
+<FONT color="green">056</FONT>            this.user = user;<a name="line.56"></a>
+<FONT color="green">057</FONT>            this.password = password;<a name="line.57"></a>
+<FONT color="green">058</FONT>        }<a name="line.58"></a>
+<FONT color="green">059</FONT>    <a name="line.59"></a>
+<FONT color="green">060</FONT>        @Override<a name="line.60"></a>
+<FONT color="green">061</FONT>        public Connection getConnection() throws SQLException {<a name="line.61"></a>
+<FONT color="green">062</FONT>            return DriverManager.getConnection(url, user, password);<a name="line.62"></a>
+<FONT color="green">063</FONT>        }<a name="line.63"></a>
+<FONT color="green">064</FONT>    <a name="line.64"></a>
+<FONT color="green">065</FONT>        @Override<a name="line.65"></a>
+<FONT color="green">066</FONT>        public String toString() {<a name="line.66"></a>
+<FONT color="green">067</FONT>            return "DriverManagerDestination [url="<a name="line.67"></a>
+<FONT color="green">068</FONT>                   + url<a name="line.68"></a>
+<FONT color="green">069</FONT>                   + ", user="<a name="line.69"></a>
+<FONT color="green">070</FONT>                   + user<a name="line.70"></a>
+<FONT color="green">071</FONT>                   + ", password="<a name="line.71"></a>
+<FONT color="green">072</FONT>                   + password<a name="line.72"></a>
+<FONT color="green">073</FONT>                   + "]";<a name="line.73"></a>
+<FONT color="green">074</FONT>        }<a name="line.74"></a>
+<FONT color="green">075</FONT>    <a name="line.75"></a>
+<FONT color="green">076</FONT>        @Override<a name="line.76"></a>
+<FONT color="green">077</FONT>        public int hashCode() {<a name="line.77"></a>
+<FONT color="green">078</FONT>            final int prime = 31;<a name="line.78"></a>
+<FONT color="green">079</FONT>            int result = 1;<a name="line.79"></a>
+<FONT color="green">080</FONT>            result = prime * result + url.hashCode();<a name="line.80"></a>
+<FONT color="green">081</FONT>            result = prime * result + ((password == null) ? 0 : password.hashCode());<a name="line.81"></a>
+<FONT color="green">082</FONT>            result = prime * result + ((user == null) ? 0 : user.hashCode());<a name="line.82"></a>
+<FONT color="green">083</FONT>            return result;<a name="line.83"></a>
+<FONT color="green">084</FONT>        }<a name="line.84"></a>
+<FONT color="green">085</FONT>    <a name="line.85"></a>
+<FONT color="green">086</FONT>        @Override<a name="line.86"></a>
+<FONT color="green">087</FONT>        public boolean equals(Object obj) {<a name="line.87"></a>
+<FONT color="green">088</FONT>            if (this == obj) {<a name="line.88"></a>
+<FONT color="green">089</FONT>                return true;<a name="line.89"></a>
+<FONT color="green">090</FONT>            }<a name="line.90"></a>
+<FONT color="green">091</FONT>            if (obj == null) {<a name="line.91"></a>
+<FONT color="green">092</FONT>                return false;<a name="line.92"></a>
+<FONT color="green">093</FONT>            }<a name="line.93"></a>
+<FONT color="green">094</FONT>            if (getClass() != obj.getClass()) {<a name="line.94"></a>
+<FONT color="green">095</FONT>                return false;<a name="line.95"></a>
+<FONT color="green">096</FONT>            }<a name="line.96"></a>
+<FONT color="green">097</FONT>            DriverManagerDestination other = (DriverManagerDestination) obj;<a name="line.97"></a>
+<FONT color="green">098</FONT>            if (password == null) {<a name="line.98"></a>
+<FONT color="green">099</FONT>                if (other.password != null) {<a name="line.99"></a>
+<FONT color="green">100</FONT>                    return false;<a name="line.100"></a>
+<FONT color="green">101</FONT>                }<a name="line.101"></a>
+<FONT color="green">102</FONT>            }<a name="line.102"></a>
+<FONT color="green">103</FONT>            else if (!password.equals(other.password)) {<a name="line.103"></a>
+<FONT color="green">104</FONT>                return false;<a name="line.104"></a>
+<FONT color="green">105</FONT>            }<a name="line.105"></a>
+<FONT color="green">106</FONT>            if (!url.equals(other.url)) {<a name="line.106"></a>
+<FONT color="green">107</FONT>                return false;<a name="line.107"></a>
+<FONT color="green">108</FONT>            }<a name="line.108"></a>
+<FONT color="green">109</FONT>            if (user == null) {<a name="line.109"></a>
+<FONT color="green">110</FONT>                if (other.user != null) {<a name="line.110"></a>
+<FONT color="green">111</FONT>                    return false;<a name="line.111"></a>
+<FONT color="green">112</FONT>                }<a name="line.112"></a>
+<FONT color="green">113</FONT>            }<a name="line.113"></a>
+<FONT color="green">114</FONT>            else if (!user.equals(other.user)) {<a name="line.114"></a>
+<FONT color="green">115</FONT>                return false;<a name="line.115"></a>
+<FONT color="green">116</FONT>            }<a name="line.116"></a>
+<FONT color="green">117</FONT>            return true;<a name="line.117"></a>
+<FONT color="green">118</FONT>        }<a name="line.118"></a>
+<FONT color="green">119</FONT>    }<a name="line.119"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>
