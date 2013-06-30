@@ -92,7 +92,7 @@ public final class Binders {
      *   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a
      *   java.sql.Timestamp</code></li>
      *   <li><code>String</code>: the string is transformed to a <code>java.sql.Timestamp</code> using the
-     *       <code>Timestamp.valueOf()</code> method, or using the <code>java.sql.Date.valueOf() method if the
+     *       <code>Timestamp.valueOf()</code> method, or using the <code>java.sql.Date.valueOf()</code> method if the
      *       string has less than 19 characters</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
