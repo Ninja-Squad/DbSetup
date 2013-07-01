@@ -33,14 +33,15 @@ hr {
 
 /* Table colors */
 .TableHeadingColor, .TableSubHeadingColor {
-    background-color: #1B1B1B;
-    background-image: linear-gradient(to bottom, #222222, #111111);
+    background-color: #444444;
+    background-image: linear-gradient(to bottom, #444444, #333333);
     background-repeat: repeat-x;
     color: #FFFFFF;
 }
 
 .TableSubHeadingColor {
-    background-image: linear-gradient(to bottom, #444444, #333333);
+    background-color: #555555;
+    background-image: linear-gradient(to bottom, #555555, #444444);
 }
 .TableHeadingColor font, .TableSubHeadingColor  font { 
     font-size: inherit;
@@ -61,8 +62,12 @@ hr {
 }
 .FrameHeadingFont {
     font-size:  90%;
+    font-weight: bold;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
     color: #333333;
+}
+.FrameHeadingFont b {
+    font-weight: inherit;
 }
 .FrameItemFont { 
     font-size: 90%; 
@@ -72,9 +77,9 @@ hr {
 }
 
 /* Navigation bar fonts and colors */
-.NavBarCell1 { 
-    background-color: #1B1B1B;
-    background-image: linear-gradient(to bottom, #222222, #111111);
+.NavBarCell1 {
+    background-color: #444444;
+    background-image: linear-gradient(to bottom, #444444, #333333);
     background-repeat: repeat-x;
     color: #999999;
     border: 0;
@@ -89,8 +94,8 @@ hr {
     border: 0;
 }
 .NavBarCell1Rev { 
-    color: #FFFFFF; 
-    background-color: #1B1B1B !IMPORTANT;
+    color: #FFFFFF;
+    background-color: #444444 !IMPORTANT;
 } 
 .NavBarFont1    { 
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
