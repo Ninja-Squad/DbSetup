@@ -101,6 +101,7 @@ javadoc {
     options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
     options.noTimestamp true
     options.linkSource true
+    options.stylesheetFile file('config/javadoc/stylesheet.css')
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
