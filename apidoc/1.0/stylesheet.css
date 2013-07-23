@@ -1,29 +1,116 @@
-/* Javadoc style sheet */
-
-/* Define colors, fonts and other style attributes here to override the defaults */
-
-/* Page background color */
-body { background-color: #FFFFFF; color:#000000 }
+body { 
+    background-color: #FFFFFF; 
+    color: #333333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 
 /* Headings */
-h1 { font-size: 145% }
+h1 { 
+    text-align: left;
+}
+
+a {
+    color: #0088CC;
+}
+a:hover {
+    color: #005580;
+}
+
+table {
+    border-collapse: collapse;
+}
+th, td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+hr {
+    border-bottom: 0 none;
+    border-left: 0 none;
+    border-right: 0 none;
+    border-top: 1px solid #DDDDDD;
+}
 
 /* Table colors */
-.TableHeadingColor     { background: #CCCCFF; color:#000000 } /* Dark mauve */
-.TableSubHeadingColor  { background: #EEEEFF; color:#000000 } /* Light mauve */
-.TableRowColor         { background: #FFFFFF; color:#000000 } /* White */
+.TableHeadingColor, .TableSubHeadingColor {
+    background-color: #444444;
+    background-image: linear-gradient(to bottom, #444444, #333333);
+    background-repeat: repeat-x;
+    color: #FFFFFF;
+}
+
+.TableSubHeadingColor {
+    background-color: #555555;
+    background-image: linear-gradient(to bottom, #555555, #444444);
+}
+.TableHeadingColor font, .TableSubHeadingColor  font { 
+    font-size: inherit;
+}
+.TableRowColor {
+    background: #FFFFFF;
+    color: #333333;
+}
+.TableRowColor th, .TableRowColor td {
+    border: 1px solid #DDDDDD;
+}
 
 /* Font used in left-hand frame lists */
-.FrameTitleFont   { font-size: 100%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
-.FrameHeadingFont { font-size:  90%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
-.FrameItemFont    { font-size:  90%; font-family: Helvetica, Arial, sans-serif; color:#000000 }
+.FrameTitleFont   {
+    font-size: 100%; 
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #333333;
+}
+.FrameHeadingFont {
+    font-size:  90%;
+    font-weight: bold;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color: #333333;
+}
+.FrameHeadingFont b {
+    font-weight: inherit;
+}
+.FrameItemFont { 
+    font-size: 90%; 
+    font-family: 
+    "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color: #333333; 
+}
 
 /* Navigation bar fonts and colors */
-.NavBarCell1    { background-color:#EEEEFF; color:#000000} /* Light mauve */
-.NavBarCell1Rev { background-color:#00008B; color:#FFFFFF} /* Dark Blue */
-.NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000;color:#000000;}
-.NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;color:#FFFFFF;}
-
-.NavBarCell2    { font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF; color:#000000}
-.NavBarCell3    { font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF; color:#000000}
+.NavBarCell1 {
+    background-color: #444444;
+    background-image: linear-gradient(to bottom, #444444, #333333);
+    background-repeat: repeat-x;
+    color: #999999;
+    border: 0;
+}
+.NavBarCell1 a {
+    color: #999999; 
+}
+.NavBarCell1 a:hover { 
+    color:#FFFFFF; 
+}
+.NavBarCell1 table, .NavBarCell1 th, .NavBarCell1 td {
+    border: 0;
+}
+.NavBarCell1Rev { 
+    color: #FFFFFF;
+    background-color: #444444 !IMPORTANT;
+} 
+.NavBarFont1    { 
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color: #999999;
+}
+.NavBarFont1Rev { 
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color:#FFFFFF;
+}
+.NavBarCell2 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    border: 0;
+}
+.NavBarCell3 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    border: 0;
+}
 
