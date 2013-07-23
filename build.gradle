@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenRepo name: 'Bintray Javadoc Hotfix repo', url: 'http://dl.bintray.com/melix/gradle-javadoc-hotfix-plugin'
+    }
+
+    dependencies {
+        classpath 'me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1'
+    }
+}
+
 apply plugin : 'java'
 apply plugin : 'eclipse'
 apply plugin : 'checkstyle'
@@ -6,6 +16,7 @@ apply plugin : 'findbugs'
 apply plugin : 'jacoco'
 apply plugin : 'maven'
 apply plugin : 'signing'
+apply plugin : 'javadocHotfix'
 
 group = 'com.ninja-squad'
 sourceCompatibility = 1.6
@@ -102,6 +113,12 @@ javadoc {
     options.noTimestamp true
     options.linkSource true
     options.stylesheetFile file('config/javadoc/stylesheet.css')
+}
+
+javadoc << {
+    ant.delete {
+        fileset(dir: javadoc.destinationDir, includes: '**/*.orig')
+    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
