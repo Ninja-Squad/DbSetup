@@ -147,7 +147,7 @@ public final class Binders {
      * The implementation for {@link Binders#stringBinder()}
      * @author JB Nizet
      */
-    private static final class StringBinder implements Binder {
+    private static final class StringBinder implements Binder<Object> {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof String) {
@@ -174,7 +174,7 @@ public final class Binders {
      * The implementation for {@link Binders#timeBinder()}
      * @author JB Nizet
      */
-    private static final class TimeBinder implements Binder {
+    private static final class TimeBinder implements Binder<Object> {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof Time) {
@@ -204,7 +204,7 @@ public final class Binders {
      * The implementation for {@link Binders#integerBinder()}
      * @author JB Nizet
      */
-    private static final class IntegerBinder implements Binder {
+    private static final class IntegerBinder implements Binder<Object> {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof BigInteger) {
@@ -231,7 +231,7 @@ public final class Binders {
      * The implementation for {@link Binders#decimalBinder()}
      * @author JB Nizet
      */
-    private static final class DecimalBinder implements Binder {
+    private static final class DecimalBinder implements Binder<Object> {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof String) {
@@ -252,7 +252,7 @@ public final class Binders {
      * The implementation for {@link Binders#timestampBinder()}
      * @author JB Nizet
      */
-    private static final class TimestampBinder implements Binder {
+    private static final class TimestampBinder implements Binder<Object> {
         // the number of chars in yyyy-mm-dd hh:mm:ss
         private static final int MIN_NUMBER_OF_CHARS_FOR_TIMESTAMP = 19;
 
@@ -292,7 +292,7 @@ public final class Binders {
      * The implementation for {@link Binders#dateBinder()}
      * @author JB Nizet
      */
-    private static final class DateBinder implements Binder {
+    private static final class DateBinder implements Binder<Object> {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof Date) {
@@ -322,7 +322,7 @@ public final class Binders {
      * The implementation for {@link Binders#defaultBinder()}
      * @author JB Nizet
      */
-    private static final class DefaultBinder implements Binder {
+    private static final class DefaultBinder implements Binder<Object> {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             stmt.setObject(param, value);

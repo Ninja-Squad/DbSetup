@@ -175,11 +175,11 @@ public class InsertIntegrationTest {
         }
     }
 
-    private static class FooBinder implements Binder {
+    private static class FooBinder implements Binder<Foo> {
 
         @Override
-        public void bind(PreparedStatement statement, int param, Object value) throws SQLException {
-            statement.setString(param, ((Foo) value).getLabel());
+        public void bind(PreparedStatement statement, int param, Foo value) throws SQLException {
+            statement.setString(param, value.getLabel());
         }
 
     }
