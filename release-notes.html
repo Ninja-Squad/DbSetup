@@ -20,7 +20,7 @@
                                 <li><a href="approach.html">Why using it?</a></li>
                                 <li><a href="user-guide.html">User Guide</a></li>
                                 <li><a href="apidoc.html">API documentation</a></li>
-                                <li class="active"><a href="download.html">Download</a></li>
+                                <li><a href="download.html">Download</a></li>
                                 <li class="active"><a href="release-notes.html">Release Notes</a></li>
                                 <li><a href="license.html">License</a></li>
                             </ul>
@@ -29,28 +29,23 @@
                 </div>
             </div>
             <div class="page-header">
-                <h1>Downloads</h1>
+                <h1>Release Notes</h1>
             </div>
             
-            <p>
-                DbSetup is available, with its sources and its javadoc, in <a href="http://mvnrepository.com/artifact/com.ninja-squad/DbSetup">Maven central</a>.
-                You can download it there, or use your favorite dependency management tool to download it automatically.
-            </p>
+            <h2>1.1.0</h2>
+            <ul>
+                <li>Add <code>with()</code> factory methods to <code>DataSourceDestination</code> and <code>DriverManagerDestination</code>. Thanks to <a href="https://github.com/hasalex">Alexis Hassler</a>.
+                <li>Start using <a href="http://semver.org/">semantic versioning</a>. For the record, this release is backward-compatible with 1.0 and 1.0-RC1.
+            </ul>
             
-            <h2><a id="latest"></a>Latest version (1.1.0)</h2>
-            <h3>Gradle</h3>
-            <p>Add this to the <code>dependencies</code> section of your build.gradle file:</p>
-            <pre class="prettyprint">testCompile 'com.ninja-squad:DbSetup:1.1.0'</pre>
+            <h2>1.0</h2>
+            <ul>
+                <li>Add support for generated values in Insert operations. See the javadoc for <code>Insert.Builder.withGeneratedValue()</code> and for the classes in the package
+                    <code>com/ninja_squad/dbsetup/generator</code>. Thanks to <a href="https://github.com/gzoritchak">Gaetan Zoritchak</a> for this suggested evolution and his feedbacks</li>
+            </ul>
             
-            <h3>Maven</h3>
-            <p>Add this to the <code>dependencies</code> section of your pom.xml file:</p>
-            <pre class="prettyprint">
-&lt;dependency>
-    &lt;groupId&gt;com.ninja-squad&lt;/groupId&gt;
-    &lt;artifactId&gt;DbSetup&lt;/artifactId&gt;
-    &lt;version&gt;1.1.0&lt;/version&gt;
-    &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
+            <h2>1.0-RC1</h2>
+            <p>Initial release</p>
             
             <hr/>
             <footer>

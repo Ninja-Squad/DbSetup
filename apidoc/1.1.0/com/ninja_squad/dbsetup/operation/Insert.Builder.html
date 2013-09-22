@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<TITLE>
+Insert.Builder (DbSetup 1.1.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Insert.Builder (DbSetup 1.1.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.html" title="class in com.ninja_squad.dbsetup.operation"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/operation/Insert.Builder.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="Insert.Builder.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+com.ninja_squad.dbsetup.operation</FONT>
+<BR>
+Class Insert.Builder</H2>
+<PRE>
+java.lang.Object
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.ninja_squad.dbsetup.operation.Insert.Builder</B>
+</PRE>
+<DL>
+<DT><B>Enclosing class:</B><DD><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.html" title="class in com.ninja_squad.dbsetup.operation">Insert</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public static final class <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.html#line.263"><B>Insert.Builder</B></A><DT>extends java.lang.Object</DL>
+</PRE>
+
+<P>
+A builder used to create an Insert operation. Such a builder may only be used once. Once it has built its Insert
+ operation, all its methods throw an <CODE>IllegalStateException</CODE>.
+<P>
+
+<P>
+<DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.html#into(java.lang.String)"><CODE>Insert.into(String)</CODE></A></DL>
+<HR>
+
+<P>
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.html" title="class in com.ninja_squad.dbsetup.operation">Insert</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#build()">build</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Builds the Insert operation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#columns(java.lang.String...)">columns</A></B>(java.lang.String...&nbsp;columns)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies the list of columns into which values wil be inserted.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#useMetadata(boolean)">useMetadata</A></B>(boolean&nbsp;useMetadata)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Determines if the metadata must be used to get the appropriate binder for each inserted column (except
+ the ones which have been associated explicitely with a Binder).</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#values(java.lang.Object...)">values</A></B>(java.lang.Object...&nbsp;values)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adds a row of values to insert.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#withBinder(com.ninja_squad.dbsetup.bind.Binder, java.lang.String...)">withBinder</A></B>(<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A>&nbsp;binder,
+                     java.lang.String...&nbsp;columns)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Associates a Binder to one or several columns.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#withDefaultValue(java.lang.String, java.lang.Object)">withDefaultValue</A></B>(java.lang.String&nbsp;column,
+                                 java.lang.Object&nbsp;value)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specifies a default value to be inserted in a column for all the rows inserted by the Insert operation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#withGeneratedValue(java.lang.String, com.ninja_squad.dbsetup.generator.ValueGenerator)">withGeneratedValue</A></B>(java.lang.String&nbsp;column,
+                                     <A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator">ValueGenerator</A>&lt;?&gt;&nbsp;valueGenerator)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Allows the given column to be populated by a value generator, which will be called for every row of the
+ Insert operation being built.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="columns(java.lang.String...)"><!-- --></A><H3>
+columns</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.286"><B>columns</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                              java.lang.String...&nbsp;columns)</PRE>
+<DL>
+<DD>Specifies the list of columns into which values wil be inserted. The values must the be specified, after,
+ using the <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html#values(java.lang.Object...)"><CODE>values(Object...)</CODE></A> method.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>columns</CODE> - the names of the columns to insert into.
+<DT><B>Returns:</B><DD>this Builder instance, for chaining.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built, or if this method has already been
+ called, or if one of the given columns is also specified as one of the generated value columns.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="values(java.lang.Object...)"><!-- --></A><H3>
+values</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.307"><B>values</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                             java.lang.Object...&nbsp;values)</PRE>
+<DL>
+<DD>Adds a row of values to insert.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>values</CODE> - the values to insert.
+<DT><B>Returns:</B><DD>this Builder instance, for chaining.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built, or if the number of values doesn't match
+ the number of columns.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="withBinder(com.ninja_squad.dbsetup.bind.Binder, java.lang.String...)"><!-- --></A><H3>
+withBinder</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.323"><B>withBinder</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                 <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A>&nbsp;binder,
+                                 <FONT SIZE="-1">@Nonnull</FONT>
+                                 java.lang.String...&nbsp;columns)</PRE>
+<DL>
+<DD>Associates a Binder to one or several columns.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>binder</CODE> - the binder to use, regardless of the metadata, for the given columns<DD><CODE>columns</CODE> - the name of the columns to associate with the given Binder
+<DT><B>Returns:</B><DD>this Builder instance, for chaining.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built, or if any of the given columns is not
+ part of the columns or "generated value" columns.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="withDefaultValue(java.lang.String, java.lang.Object)"><!-- --></A><H3>
+withDefaultValue</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.347"><B>withDefaultValue</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                       java.lang.String&nbsp;column,
+                                       java.lang.Object&nbsp;value)</PRE>
+<DL>
+<DD>Specifies a default value to be inserted in a column for all the rows inserted by the Insert operation.
+ Calling this method is equivalent to calling
+ <code>withGeneratedValue(column, ValueGenerators.constant(value))</code>
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>column</CODE> - the name of the column<DD><CODE>value</CODE> - the default value to insert into the column
+<DT><B>Returns:</B><DD>this Builder instance, for chaining.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built, or if the given column is part
+ of the columns to insert.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="withGeneratedValue(java.lang.String, com.ninja_squad.dbsetup.generator.ValueGenerator)"><!-- --></A><H3>
+withGeneratedValue</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.360"><B>withGeneratedValue</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                         java.lang.String&nbsp;column,
+                                         <FONT SIZE="-1">@Nonnull</FONT>
+                                         <A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator">ValueGenerator</A>&lt;?&gt;&nbsp;valueGenerator)</PRE>
+<DL>
+<DD>Allows the given column to be populated by a value generator, which will be called for every row of the
+ Insert operation being built.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>column</CODE> - the name of the column<DD><CODE>valueGenerator</CODE> - the generator generating values for the given column of every row
+<DT><B>Returns:</B><DD>this Builder instance, for chaining.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built, or if the given column is part
+ of the columns to insert.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="useMetadata(boolean)"><!-- --></A><H3>
+useMetadata</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.381"><B>useMetadata</B></A>(boolean&nbsp;useMetadata)</PRE>
+<DL>
+<DD>Determines if the metadata must be used to get the appropriate binder for each inserted column (except
+ the ones which have been associated explicitely with a Binder). The default is <code>true</code>. The insert
+ can be faster if set to <code>false</code>, but in this case, the <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#defaultBinder()"><CODE>default
+ binder</CODE></A> will be used for all the columns (except the ones which have been associated explicitely with a
+ Binder).
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>this Builder instance, for chaining.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="build()"><!-- --></A><H3>
+build</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.html" title="class in com.ninja_squad.dbsetup.operation">Insert</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/operation/Insert.Builder.html#line.393"><B>build</B></A>()</PRE>
+<DL>
+<DD>Builds the Insert operation.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>the created Insert operation.
+<DT><B>Throws:</B>
+<DD><CODE>java.lang.IllegalStateException</CODE> - if the Insert has already been built, or if no column and no generated value
+ column has been specified.</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Insert.html" title="class in com.ninja_squad.dbsetup.operation"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/operation/Insert.Builder.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="Insert.Builder.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+
+</BODY>
+</HTML>
