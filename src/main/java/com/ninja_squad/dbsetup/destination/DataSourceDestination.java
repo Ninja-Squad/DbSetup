@@ -41,7 +41,7 @@ import com.ninja_squad.dbsetup.util.Preconditions;
 public final class DataSourceDestination implements Destination {
     private final DataSource dataSource;
 
-    public static DataSourceDestination to(@Nonnull DataSource dataSource) {
+    public static DataSourceDestination with(@Nonnull DataSource dataSource) {
         return new DataSourceDestination(dataSource);
     }
 

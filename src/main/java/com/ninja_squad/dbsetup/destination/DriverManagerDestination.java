@@ -44,7 +44,7 @@ public final class DriverManagerDestination implements Destination {
     private final String user;
     private final String password;
 
-    public static DriverManagerDestination to(@Nonnull String url, String user, String password) {
+    public static DriverManagerDestination with(@Nonnull String url, String user, String password) {
         return new DriverManagerDestination(url, user, password);
     }
 
