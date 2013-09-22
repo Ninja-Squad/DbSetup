@@ -44,6 +44,19 @@ public final class DriverManagerDestination implements Destination {
     private final String password;
 
     /**
+     * Constructor
+     * @param url the URL of the database
+     * @param user the user used to get a connection
+     * @param password the password used to get a connection
+     */
+    public DriverManagerDestination(@Nonnull String url, String user, String password) {
+        Preconditions.checkNotNull(url, "url may not be null");
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
+
+    /**
      * Factory method creating a new DriverManagerDestination. This allows a more readable style than using the
      * constructor:
      *
@@ -69,19 +82,6 @@ public final class DriverManagerDestination implements Destination {
      */
     public static DriverManagerDestination with(@Nonnull String url, String user, String password) {
         return new DriverManagerDestination(url, user, password);
-    }
-
-    /**
-     * Constructor
-     * @param url the URL of the database
-     * @param user the user used to get a connection
-     * @param password the password used to get a connection
-     */
-    public DriverManagerDestination(@Nonnull String url, String user, String password) {
-        Preconditions.checkNotNull(url, "url may not be null");
-        this.url = url;
-        this.user = user;
-        this.password = password;
     }
 
     @Override

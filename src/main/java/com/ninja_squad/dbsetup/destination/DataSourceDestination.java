@@ -41,6 +41,15 @@ public final class DataSourceDestination implements Destination {
     private final DataSource dataSource;
 
     /**
+     * Constructor
+     * @param dataSource the wrapped DataSource
+     */
+    public DataSourceDestination(@Nonnull DataSource dataSource) {
+        Preconditions.checkNotNull(dataSource, "dataSource may not be null");
+        this.dataSource = dataSource;
+    }
+
+    /**
      * Factory method creating a new DataSourceDestination. This allows a more readable style than using the
      * constructor:
      *
@@ -64,15 +73,6 @@ public final class DataSourceDestination implements Destination {
      */
     public static DataSourceDestination with(@Nonnull DataSource dataSource) {
         return new DataSourceDestination(dataSource);
-    }
-
-    /**
-     * Constructor
-     * @param dataSource the wrapped DataSource
-     */
-    public DataSourceDestination(@Nonnull DataSource dataSource) {
-        Preconditions.checkNotNull(dataSource, "dataSource may not be null");
-        this.dataSource = dataSource;
     }
 
     @Override
