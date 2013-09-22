@@ -24,14 +24,13 @@
 
 package com.ninja_squad.dbsetup.destination;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import com.ninja_squad.dbsetup.util.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.sql.DataSource;
-
-import com.ninja_squad.dbsetup.util.Preconditions;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * A destination which wraps a DataSource and gets its connection from the wrapped DataSource
@@ -41,6 +40,28 @@ import com.ninja_squad.dbsetup.util.Preconditions;
 public final class DataSourceDestination implements Destination {
     private final DataSource dataSource;
 
+    /**
+     * Factory method creating a new DataSourceDestination. This allows a more readable style than using the
+     * constructor:
+     *
+     * <pre>
+     *    DbSetup dbSetup = new DbSetup(DataSourceDestination.with(dataSource), operation);
+     * </pre>
+     *
+     * or, if this method is statically imported:
+     *
+     * <pre>
+     *    DbSetup dbSetup = new DbSetup(with(dataSource), operation);
+     * </pre>
+     *
+     * instead of
+     *
+     * <pre>
+     *    DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
+     * </pre>
+     *
+     * @param dataSource the wrapped DataSource
+     */
     public static DataSourceDestination with(@Nonnull DataSource dataSource) {
         return new DataSourceDestination(dataSource);
     }

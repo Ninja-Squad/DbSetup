@@ -24,15 +24,14 @@
 
 package com.ninja_squad.dbsetup.destination;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import org.junit.Test;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
-import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author JB Nizet
@@ -51,7 +50,7 @@ public class DataSourceDestinationTest {
         DataSource dataSource1 = mock(DataSource.class);
         DataSource dataSource2 = mock(DataSource.class);
         Destination dest1 = new DataSourceDestination(dataSource1);
-        Destination dest1bis = new DataSourceDestination(dataSource1);
+        Destination dest1bis = DataSourceDestination.with(dataSource1);
         Destination dest2 = new DataSourceDestination(dataSource2);
 
         assertEquals(dest1, dest1);

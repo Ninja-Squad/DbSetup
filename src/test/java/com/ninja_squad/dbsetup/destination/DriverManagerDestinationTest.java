@@ -35,7 +35,7 @@ public class DriverManagerDestinationTest {
     @Test
     public void equalsAndHashCodeWork() {
         Destination dest1 = new DriverManagerDestination("url", "user", "password");
-        Destination dest1bis = new DriverManagerDestination("url", "user", "password");
+        Destination dest1bis = DriverManagerDestination.with("url", "user", "password");
 
         assertEquals(dest1, dest1);
         assertEquals(dest1, dest1bis);

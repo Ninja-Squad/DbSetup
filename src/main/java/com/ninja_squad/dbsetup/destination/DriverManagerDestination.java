@@ -24,14 +24,13 @@
 
 package com.ninja_squad.dbsetup.destination;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.ninja_squad.dbsetup.util.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-
-import com.ninja_squad.dbsetup.util.Preconditions;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * A destination which uses the {@link DriverManager} to get a connection
@@ -44,6 +43,30 @@ public final class DriverManagerDestination implements Destination {
     private final String user;
     private final String password;
 
+    /**
+     * Factory method creating a new DriverManagerDestination. This allows a more readable style than using the
+     * constructor:
+     *
+     * <pre>
+     *    DbSetup dbSetup = new DbSetup(DriverManagerDestination.with(url, user, password), operation);
+     * </pre>
+     *
+     * or, if this method is statically imported:
+     *
+     * <pre>
+     *    DbSetup dbSetup = new DbSetup(with(url, user, password), operation);
+     * </pre>
+     *
+     * instead of
+     *
+     * <pre>
+     *    DbSetup dbSetup = new DbSetup(new DriverManagerDestination(url, user, password), operation);
+     * </pre>
+     *
+     * @param url the URL of the database
+     * @param user the user used to get a connection
+     * @param password the password used to get a connection
+     */
     public static DriverManagerDestination with(@Nonnull String url, String user, String password) {
         return new DriverManagerDestination(url, user, password);
     }
