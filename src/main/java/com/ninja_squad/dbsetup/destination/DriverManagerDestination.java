@@ -44,6 +44,10 @@ public final class DriverManagerDestination implements Destination {
     private final String user;
     private final String password;
 
+    public static DriverManagerDestination with(@Nonnull String url, String user, String password) {
+        return new DriverManagerDestination(url, user, password);
+    }
+
     /**
      * Constructor
      * @param url the URL of the database
