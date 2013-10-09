@@ -35,6 +35,8 @@ import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -64,6 +66,11 @@ public class InsertTest {
                               .columns("a", "b")
                               .values("a1", "b1")
                               .values("a2", "b2")
+                              .row().column("b", "b3")
+                                    .column("a", "a3")
+                                    .build()
+                              .row().column("a", "a4")
+                                    .build()
                               .withDefaultValue("c", "c3")
                               .withDefaultValue("d", "d4")
                               .withBinder(bBinder, "b")
@@ -79,6 +86,16 @@ public class InsertTest {
         inOrder.verify(statement).executeUpdate();
         inOrder.verify(aBinder).bind(statement, 1, "a2");
         inOrder.verify(bBinder).bind(statement, 2, "b2");
+        inOrder.verify(cBinder).bind(statement, 3, "c3");
+        inOrder.verify(dBinder).bind(statement, 4, "d4");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(aBinder).bind(statement, 1, "a3");
+        inOrder.verify(bBinder).bind(statement, 2, "b3");
+        inOrder.verify(cBinder).bind(statement, 3, "c3");
+        inOrder.verify(dBinder).bind(statement, 4, "d4");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(aBinder).bind(statement, 1, "a4");
+        inOrder.verify(bBinder).bind(statement, 2, null);
         inOrder.verify(cBinder).bind(statement, 3, "c3");
         inOrder.verify(dBinder).bind(statement, 4, "d4");
         inOrder.verify(statement).executeUpdate();
@@ -119,6 +136,20 @@ public class InsertTest {
         inOrder.verify(dBinder).bind(statement, 4, "d4");
         inOrder.verify(statement).executeUpdate();
         inOrder.verify(statement).close();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rowBuilderColumnFailsWhenMapContainsUnknownColumnName() {
+        Insert.into("A")
+              .columns("a", "b")
+              .row().column("c", "value of c");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void valuesFailsWhenMapContainsUnknownColumnName() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("c", "value of c");
+        Insert.into("A").values(map);
     }
 
     @Test
