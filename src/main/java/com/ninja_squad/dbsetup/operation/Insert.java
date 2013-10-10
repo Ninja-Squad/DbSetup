@@ -80,12 +80,12 @@ import java.util.Set;
  *                   .column("LAST_NAME", "Doe")
  *                   .column("DATE_OF_BIRTH", "1975-07-19")
  *                   .column("CLIENT_TYPE", ClientType.NORMAL)
- *                   .build()
+ *                   .end()
  *             .row().column("CLIENT_ID", 2L)
  *                   .column("FIRST_NAME", "Jack")
  *                   .column("LAST_NAME", "Smith")
  *                   .column("CLIENT_TYPE", ClientType.HIGH_PRIORITY)
- *                   .build() // null date of birth, because it's not in the map
+ *                   .end() // null date of birth, because it's not in the map
  *             .build();
  * </pre>
  *
@@ -511,19 +511,20 @@ public final class Insert implements Operation {
      *                   .column("LAST_NAME", "Doe")
      *                   .column("DATE_OF_BIRTH", "1975-07-19")
      *                   .column("CLIENT_TYPE", ClientType.NORMAL)
-     *                   .build()
+     *                   .end()
      *             .row().column("CLIENT_ID", 2L)
      *                   .column("FIRST_NAME", "Jack")
      *                   .column("LAST_NAME", "Smith")
      *                   .column("DATE_OF_BIRTH", "1969-08-22")
      *                   .column("CLIENT_TYPE", ClientType.HIGH_PRIORITY)
-     *                   .build()
+     *                   .end()
      *             .build();
      * </pre>
      */
     public static final class RowBuilder {
         private final Builder builder;
         private final Map<String, Object> row;
+        private boolean ended = false;
 
         private RowBuilder(Builder builder) {
             this.builder = builder;
@@ -547,10 +548,12 @@ public final class Insert implements Operation {
         }
 
         /**
-         * Adds the row to the Insert Builder and returns it, for chaining.
+         * Ends the row, adds it to the Insert Builder and returns it, for chaining.
          * @return the Insert Builder
          */
-        public Builder build() {
+        public Builder end() {
+            Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");
+            ended = true;
             return builder.addRow(row);
         }
     }
