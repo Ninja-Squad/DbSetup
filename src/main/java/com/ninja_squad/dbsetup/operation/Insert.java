@@ -79,13 +79,11 @@ import java.util.Set;
  *                   .column("FIRST_NAME", "John")
  *                   .column("LAST_NAME", "Doe")
  *                   .column("DATE_OF_BIRTH", "1975-07-19")
- *                   .column("CLIENT_TYPE", ClientType.NORMAL)
  *                   .end()
  *             .row().column("CLIENT_ID", 2L)
  *                   .column("FIRST_NAME", "Jack")
  *                   .column("LAST_NAME", "Smith")
- *                   .column("CLIENT_TYPE", ClientType.HIGH_PRIORITY)
- *                   .end() // null date of birth, because it's not in the map
+ *                   .end() // null date of birth, because it's not in the row
  *             .build();
  * </pre>
  *
@@ -97,19 +95,59 @@ import java.util.Set;
  *   johnDoe.put("FIRST_NAME", "John");
  *   johnDoe.put("LAST_NAME", "Doe");
  *   johnDoe.put("DATE_OF_BIRTH", "1975-07-19");
- *   johnDoe.put("CLIENT_TYPE", ClientType.NORMAL);
  *
  *   Map&lt;String, Object&gt; jackSmith = new HashMap&lt;String, Object&gt;();
  *   jackSmith.put("CLIENT_ID", 2L);
  *   jackSmith.put("FIRST_NAME", "Jack");
  *   jackSmith.put("LAST_NAME", "Smith");
- *   jackSmith.put("CLIENT_TYPE", ClientType.HIGH_PRIORITY); // null date of birth, because it's not in the map
  *
  *   Insert insert =
  *       Insert.into("CLIENT")
  *             .columns("CLIENT_ID", "FIRST_NAME", "LAST_NAME", "DATE_OF_BIRTH", "CLIENT_TYPE")
  *             .values(johnDoe)
  *             .values(jackSmith)
+ *             .build();
+ * </pre>
+ *
+ * When building the Insert using column/value associations, it might seem redundant to specify the set of column names
+ * before inserting the rows. Remember, though, that all the rows of an Insert are inserted using the same
+ * parameterized SQL query. We thus need a robust and easy way to know all the columns to insert for every row of the
+ * insert. To be able to spot errors easily and early, and to avoid complex rules, the rule is thus simple: the set of
+ * columns (excluding the generated ones) is specified either by columns(), or by the columns of the first row. All the
+ * subsequent rows may not have additional columns. And <code>null</code> is inserted for all the absent columns of the
+ * subsequent rows. The above example can thus be written as
+ *
+ * <pre>
+ *   Insert insert =
+ *       Insert.into("CLIENT")
+ *             .row().column("CLIENT_ID", 1L)
+ *                   .column("FIRST_NAME", "John")
+ *                   .column("LAST_NAME", "Doe")
+ *                   .column("DATE_OF_BIRTH", "1975-07-19")
+ *                   .end()
+ *             .row().column("CLIENT_ID", 2L)
+ *                   .column("FIRST_NAME", "Jack")
+ *                   .column("LAST_NAME", "Smith")
+ *                   .end() // null date of birth, because it's not in the row
+ *             .build();
+ * </pre>
+ *
+ * but the following will throw an exception, because the DATE_OF_BIRTH column is not part of the first row:
+ *
+ * <pre>
+ *   Insert insert =
+ *       Insert.into("CLIENT")
+ *             .row().column("CLIENT_ID", 2L)
+ *                   .column("FIRST_NAME", "Jack")
+ *                   .column("LAST_NAME", "Smith")
+ *                   .column("CLIENT_TYPE", ClientType.HIGH_PRIORITY)
+ *                   .end()
+ *             .row().column("CLIENT_ID", 1L)
+ *                   .column("FIRST_NAME", "John")
+ *                   .column("LAST_NAME", "Doe")
+ *                   .column("DATE_OF_BIRTH", "1975-07-19")
+ *                   .column("CLIENT_TYPE", ClientType.NORMAL)
+ *                   .end()
  *             .build();
  * </pre>
  *
@@ -333,7 +371,8 @@ public final class Insert implements Operation {
          * @param columns the names of the columns to insert into.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built, or if this method has already been
-         * called, or if one of the given columns is also specified as one of the generated value columns.
+         * called, or if one of the given columns is also specified as one of the generated value columns, or if the
+         * set of columns has already been defined by adding a first row to the builder.
          */
         public Builder columns(@Nonnull String... columns) {
             Preconditions.checkState(!built, "The insert has already been built");
@@ -365,7 +404,9 @@ public final class Insert implements Operation {
         }
 
         /**
-         * Starts building a new row with named columns to insert.
+         * Starts building a new row with named columns to insert. If the row is the first one being added and the
+         * columns haven't been set yet by calling <code>columns()</code>, then the columns of this row constitute the
+         * column names (excluding the generated ones) of the Insert being built
          * @return a {@link RowBuilder} instance, which, when built, will add a row to this insert builder.
          * @throws IllegalStateException if the Insert has already been built.
          * @see RowBuilder
@@ -376,10 +417,13 @@ public final class Insert implements Operation {
         }
 
         /**
-         * Adds a row to this builder.
+         * Adds a row to this builder. If no row has been added yet and the columns haven't been set yet by calling
+         * <code>columns()</code>, then the keys of this map constitute the column names (excluding the generated ones)
+         * of the Insert being built, in the order of the keys in the map (which is arbitrary unless an ordered or
+         * sorted map is used).
          * @param row the row to add. The keys of the map are the column names, which must match with
-         * the column names specified in the call to {@link #columns(String...)}. If a column name is not present
-         * in the map, null is inserted for this column.
+         * the column names specified in the call to {@link #columns(String...)}, or with the column names of the first
+         * added row. If a column name is not present in the map, null is inserted for this column.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built.
          * @throws IllegalArgumentException if a column name of the map doesn't match with any of the column names
@@ -389,18 +433,18 @@ public final class Insert implements Operation {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkNotNull(row, "The row may not be null");
 
-            Set<String> rowColumnNames = new HashSet<String>(row.keySet());
-            rowColumnNames.removeAll(columnNames);
-            if (!rowColumnNames.isEmpty()) {
-                throw new IllegalArgumentException("The following columns of the row don't match with any column name: "
-                                                       + rowColumnNames);
+            boolean setColumns = rows.isEmpty() && columnNames.isEmpty();
+            if (setColumns) {
+                columns(row.keySet().toArray(new String[row.size()]));
             }
-
-            return addRow(row);
-        }
-
-        private Builder addRow(@Nonnull Map<String, ?> row) {
-            Preconditions.checkState(!built, "The insert has already been built");
+            else {
+                Set<String> rowColumnNames = new HashSet<String>(row.keySet());
+                rowColumnNames.removeAll(columnNames);
+                if (!rowColumnNames.isEmpty()) {
+                    throw new IllegalArgumentException(
+                        "The following columns of the row don't match with any column name: " + rowColumnNames);
+                }
+            }
 
             List<Object> values = new ArrayList<Object>(columnNames.size());
             for (String columnName : columnNames) {
@@ -520,6 +564,9 @@ public final class Insert implements Operation {
      *                   .end()
      *             .build();
      * </pre>
+     *
+     * You may omit the call to <code>columns()</code>. In that case, the columns of the Insert will be the columns
+     * specified in the first added row.
      */
     public static final class RowBuilder {
         private final Builder builder;
@@ -528,7 +575,8 @@ public final class Insert implements Operation {
 
         private RowBuilder(Builder builder) {
             this.builder = builder;
-            this.row = new HashMap<String, Object>();
+            // note: very important to use a LinkedHashMap here, to guarantee the ordering of the columns.
+            this.row = new LinkedHashMap<String, Object>();
         }
 
         /**
@@ -540,9 +588,11 @@ public final class Insert implements Operation {
          * @throws IllegalArgumentException if the given name is not the name of one of the columns to insert
          */
         public RowBuilder column(@Nonnull String name, Object value) {
-            Preconditions.checkNotNull(name, "the column name may not be null");
-            Preconditions.checkArgument(builder.columnNames.contains(name),
-                                        "column " + name + " is not one of the registered column names");
+            if (!builder.columnNames.isEmpty()) {
+                Preconditions.checkNotNull(name, "the column name may not be null");
+                Preconditions.checkArgument(builder.columnNames.contains(name),
+                                            "column " + name + " is not one of the registered column names");
+            }
             row.put(name, value);
             return this;
         }
@@ -554,7 +604,7 @@ public final class Insert implements Operation {
         public Builder end() {
             Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");
             ended = true;
-            return builder.addRow(row);
+            return builder.values(row);
         }
     }
 }
