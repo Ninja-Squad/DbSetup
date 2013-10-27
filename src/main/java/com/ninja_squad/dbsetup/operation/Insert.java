@@ -571,7 +571,7 @@ public final class Insert implements Operation {
     public static final class RowBuilder {
         private final Builder builder;
         private final Map<String, Object> row;
-        private boolean ended = false;
+        private boolean ended;
 
         private RowBuilder(Builder builder) {
             this.builder = builder;
@@ -588,6 +588,7 @@ public final class Insert implements Operation {
          * @throws IllegalArgumentException if the given name is not the name of one of the columns to insert
          */
         public RowBuilder column(@Nonnull String name, Object value) {
+            Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");
             if (!builder.columnNames.isEmpty()) {
                 Preconditions.checkNotNull(name, "the column name may not be null");
                 Preconditions.checkArgument(builder.columnNames.contains(name),
