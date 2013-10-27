@@ -21,7 +21,11 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://dbsetup.ninja-squad.com/apidoc/1.0-RC1/</loc>
+        <loc>http://dbsetup.ninja-squad.com/release-notes.html</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>http://dbsetup.ninja-squad.com/apidoc/1.2.0/</loc>
         <priority>0.6</priority>
     </url>
 </urlset>
