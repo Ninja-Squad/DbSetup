@@ -1,6 +1,9 @@
 buildscript {
     repositories {
-        mavenRepo name: 'Bintray Javadoc Hotfix repo', url: 'http://dl.bintray.com/melix/gradle-javadoc-hotfix-plugin'
+        maven {
+            name = 'Bintray Javadoc Hotfix repo'
+            url = 'http://dl.bintray.com/melix/gradle-javadoc-hotfix-plugin'
+        }
     }
 
     dependencies {
@@ -240,5 +243,5 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.6'
+    gradleVersion = '1.8'
 }
