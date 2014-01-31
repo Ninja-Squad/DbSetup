@@ -51,6 +51,7 @@
                     <li><a href="#generators">Value generators</a></li>
                     <li><a href="#columns-in-rows">Column names in rows</li>
                     <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
+                    <li><a href="#metadata-and-mysql">A note on metadata and MySQL</a></li>
                 </ul>
             </div>
             
@@ -230,8 +231,9 @@ public class VendorRepositoryTest {
         
             <h2><a id="data-formats"></a>Data formats</h2>
             <p>
-                DbSetup uses the database metadata to detect the type of the columns it must insert into. Depending on the type
-                of the column, you may pass values of various types. Read the javadoc of the <code>DefaultBinderConfiguration</code> of 
+                DbSetup uses the <a href="#metadata-and-mysql">parameter metadata</a> to detect the type of the columns it must insert into. 
+                Depending on the type of the column, you may pass values of various types. Read the javadoc of the 
+                <code>DefaultBinderConfiguration</code> and 
                 <code>Binders</code> classes for a complete list of supported types and formats. Here are the most important ones:
             </p>
             <table class="table table-bordered">
@@ -356,6 +358,32 @@ public class VendorRepositoryTest {
             sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));</pre>
             
             <hr/>
+
+            <h2><a id="metadata-and-mysql"></a>A note on metadata and MySQL</h2>
+            <p>
+                If you tried using DbSetup with MySQL, you probably got the following exception: 
+            </p>
+            <pre class="prettyprint">
+java.sql.SQLException: Parameter metadata not available for the given statement.</pre>
+            <p>
+                DbSetup tries to know the type of the columns it inserts into in order to
+                know how to bind the parameter. For example, if you pass an enum as argument, and the type of the column is VARCHAR, it will store 
+                the name of the enum.
+                But if the column is of type NUMBER, it will store the ordinal of the enum. This works fine most of the time, but not with MySQL, because 
+                MySQL <span style="text-decoration: line-through;">sucks</span> is special. MySQL doesn't support parameter metadata (or at least I haven't found any way to make it support them). Adding <code>?useServerPrepStmts=true</code> to the URL makes it support them, 
+                but VARBINARY is returned whatever the type of the column actually is. Adding <code>?generateSimpleParameterMetadata=true</code> to 
+                the URL makes it support them, but VARCHAR is returned whatever the type of the column actually is.
+            </p>
+            <p>
+                So, what can you do? You could use a good database like PostgreSQL. If that's not an option, you'll have to disable the use of 
+                metadata for your insert statements, by calling <code>useMetadata(false)</code>
+                when building your Insert operations. Unfortunately, this also disables the features of DbSetup that are implemented thanks to the 
+                metadata. The default binder will be used for all the columns. If we go back to the enum example, you'll thus have to pass the name
+                or the ordinal of the enum explicitely, instead of simply passing the enum and let DbSetup decide how to bind it.
+            </p>
+
+            <hr/>
+
             <footer>
                 <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2013</small>
             </footer>
