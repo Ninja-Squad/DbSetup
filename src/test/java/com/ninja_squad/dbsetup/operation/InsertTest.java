@@ -107,8 +107,11 @@ public class InsertTest {
         Binder bBinder = mock(Binder.class);
         Binder dBinder = mock(Binder.class);
 
+        Binder defaultBinder = mock(Binder.class);
+
         Connection connection = mock(Connection.class);
         BinderConfiguration config = mock(BinderConfiguration.class);
+        when(config.getBinder(isNull(ParameterMetaData.class), anyInt())).thenReturn(defaultBinder);
         PreparedStatement statement = mock(PreparedStatement.class);
         when(connection.prepareStatement("insert into A (a, b, c, d) values (?, ?, ?, ?)")).thenReturn(statement);
 
@@ -124,15 +127,15 @@ public class InsertTest {
                               .build();
         insert.execute(connection, config);
 
-        InOrder inOrder = inOrder(bBinder, dBinder, statement);
-        inOrder.verify(statement).setObject(1, "a1");
+        InOrder inOrder = inOrder(defaultBinder, bBinder, dBinder, statement);
+        inOrder.verify(defaultBinder).bind(statement, 1, "a1");
         inOrder.verify(bBinder).bind(statement, 2, "b1");
-        inOrder.verify(statement).setObject(3, "c3");
+        inOrder.verify(defaultBinder).bind(statement, 3, "c3");
         inOrder.verify(dBinder).bind(statement, 4, "d4");
         inOrder.verify(statement).executeUpdate();
-        inOrder.verify(statement).setObject(1, "a2");
+        inOrder.verify(defaultBinder).bind(statement, 1, "a2");
         inOrder.verify(bBinder).bind(statement, 2, "b2");
-        inOrder.verify(statement).setObject(3, "c3");
+        inOrder.verify(defaultBinder).bind(statement, 3, "c3");
         inOrder.verify(dBinder).bind(statement, 4, "d4");
         inOrder.verify(statement).executeUpdate();
         inOrder.verify(statement).close();

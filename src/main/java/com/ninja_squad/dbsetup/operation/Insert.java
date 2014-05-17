@@ -199,11 +199,44 @@ public final class Insert implements Operation {
         justification = "The point here is precisely to compose a SQL String from column names coming from the user")
     @Override
     public void execute(Connection connection, BinderConfiguration configuration) throws SQLException {
-        StringBuilder sql = new StringBuilder("insert into ").append(table).append(" (");
-
         List<String> allColumnNames = new ArrayList<String>(columnNames);
         allColumnNames.addAll(generatedValues.keySet());
 
+        String query = generateSqlQuery(allColumnNames);
+
+        PreparedStatement stmt = connection.prepareStatement(query);
+
+        try {
+            Map<String, Binder> binders = initializeBinders(stmt, allColumnNames, configuration);
+
+            int rowIndex = 0;
+            for (List<?> row : rows) {
+                int i = 0;
+                for (Object value : row) {
+                    String columnName = columnNames.get(i);
+                    Binder binder = binders.get(columnName);
+                    binder.bind(stmt, i + 1, value);
+                    i++;
+                }
+                for (Map.Entry<String, List<Object>> entry : generatedValues.entrySet()) {
+                    String columnName = entry.getKey();
+                    List<Object> rowValues = entry.getValue();
+                    Binder binder = binders.get(columnName);
+                    binder.bind(stmt, i + 1, rowValues.get(rowIndex));
+                    i++;
+                }
+
+                stmt.executeUpdate();
+                rowIndex++;
+            }
+        }
+        finally {
+            stmt.close();
+        }
+    }
+
+    private String generateSqlQuery(List<String> allColumnNames) {
+        StringBuilder sql = new StringBuilder("insert into ").append(table).append(" (");
         for (Iterator<String> it = allColumnNames.iterator(); it.hasNext(); ) {
             String columnName = it.next();
             sql.append(columnName);
@@ -221,69 +254,34 @@ public final class Insert implements Operation {
         }
         sql.append(")");
 
-        PreparedStatement stmt = connection.prepareStatement(sql.toString());
-
-        try {
-            Map<String, Binder> metadataBinders = new HashMap<String, Binder>();
-            if (metadataUsed) {
-                initializeBinders(stmt, allColumnNames, configuration, metadataBinders);
-            }
-
-            int rowIndex = 0;
-            for (List<?> row : rows) {
-                int i = 0;
-                for (Object value : row) {
-                    String columnName = columnNames.get(i);
-                    Binder binder = getBinder(columnName, metadataBinders);
-                    binder.bind(stmt, i + 1, value);
-                    i++;
-                }
-                for (Map.Entry<String, List<Object>> entry : generatedValues.entrySet()) {
-                    String columnName = entry.getKey();
-                    List<Object> rowValues = entry.getValue();
-                    Binder binder = getBinder(columnName, metadataBinders);
-                    binder.bind(stmt, i + 1, rowValues.get(rowIndex));
-                    i++;
-                }
-
-                stmt.executeUpdate();
-                rowIndex++;
-            }
-        }
-        finally {
-            stmt.close();
-        }
+        return sql.toString();
     }
 
-    private void initializeBinders(PreparedStatement stmt,
-                                   List<String> allColumnNames,
-                                   BinderConfiguration configuration,
-                                   Map<String, Binder> metadataBinders) throws SQLException {
-        ParameterMetaData metadata;
-        try {
-            metadata = stmt.getParameterMetaData();
-        }
-        catch (SQLException e) {
-            // the parameter metadata are probably not supported by the database. Pass null to the configuration.
-            // The default configuration will return the default binder, just as if useMetadata(false) had been used
-            metadata = null;
+    private Map<String, Binder> initializeBinders(PreparedStatement stmt,
+                                                  List<String> allColumnNames,
+                                                  BinderConfiguration configuration) throws SQLException {
+        Map<String, Binder> result = new HashMap<String, Binder>();
+        ParameterMetaData metadata = null;
+        if (metadataUsed) {
+            try {
+                metadata = stmt.getParameterMetaData();
+            }
+            catch (SQLException e) {
+                // the parameter metadata are probably not supported by the database. Pass null to the configuration.
+                // The default configuration will return the default binder, just as if useMetadata(false) had been used
+            }
         }
         int i = 1;
         for (String columnName : allColumnNames) {
-            if (!this.binders.containsKey(columnName)) {
-                metadataBinders.put(columnName, configuration.getBinder(metadata, i));
+            Binder binder = this.binders.get(columnName);
+            if (binder == null) {
+                binder = configuration.getBinder(metadata, i);
+                if (binder == null) {
+                    throw new IllegalStateException("null binder returned from configuration " + configuration.getClass());
+                }
             }
+            result.put(columnName, binder);
             i++;
-        }
-    }
-
-    private Binder getBinder(String columnName, Map<String, Binder> metadataBinders) {
-        Binder result = binders.get(columnName);
-        if (result == null) {
-            result = metadataBinders.get(columnName);
-        }
-        if (result == null) {
-            result = Binders.defaultBinder();
         }
         return result;
     }
@@ -523,12 +521,14 @@ public final class Insert implements Operation {
         /**
          * Determines if the metadata must be used to get the appropriate binder for each inserted column (except
          * the ones which have been associated explicitely with a Binder). The default is <code>true</code>. The insert
-         * can be faster if set to <code>false</code>, but in this case, the {@link Binders#defaultBinder() default
-         * binder} will be used for all the columns (except the ones which have been associated explicitely with a
-         * Binder).<br/>
-         * Note that since version 1.3.0, if useMetadata is true (the default) but the database doesn't support
-         * metadata, then the BinderConfiguration is asked for a binder with a null metadata. And the default
-         * binder configuration returns the default binder in this case. Using this method is thus normally unnecessary.
+         * can be faster if set to <code>false</code>, but in this case, the binder used will be the one returned
+         * by the {@link BinderConfiguration} for a null metadata (which is, by default, the
+         * {@link Binders#defaultBinder() default binder}), except the ones which have been associated explicitely with
+         * a Binder.<br/>
+         * Note that since version 1.3.0, if <code>useMetadata</code> is true (the default) but the database doesn't
+         * support metadata, then the BinderConfiguration is asked for a binder with a null metadata. And the default
+         * binder configuration returns the default binder in this case. Using this method is thus normally unnecessary
+         * as of 1.3.0.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built.
          */
