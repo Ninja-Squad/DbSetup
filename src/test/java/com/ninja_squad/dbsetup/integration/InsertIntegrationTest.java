@@ -29,8 +29,8 @@ import com.ninja_squad.dbsetup.DbSetupRuntimeException;
 import com.ninja_squad.dbsetup.Operations;
 import com.ninja_squad.dbsetup.bind.Binder;
 import com.ninja_squad.dbsetup.bind.Binders;
-import com.ninja_squad.dbsetup.operation.Insert;
 import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import com.ninja_squad.dbsetup.operation.Insert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +44,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
@@ -161,6 +162,61 @@ public class InsertIntegrationTest {
         assertEquals(Time.valueOf("14:15:23"), rs.getTime("tim"));
         assertEquals(Timestamp.valueOf("2012-12-25 13:05:13"), rs.getTimestamp("tis"));
         assertEquals("hello", rs.getString("va"));
+    }
+
+    @Test
+    public void insertEnumToVarcharColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "va")
+                  .values(1, TestEnum.BAR)
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertJavaUtilDateToDateColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "da")
+                  .values(1, new java.util.Date())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertJavaUtilCalendarToDateColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "da")
+                  .values(1, Calendar.getInstance())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertJavaUtilDateToTimestampColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tis")
+                  .values(1, new java.util.Date())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertJavaUtilCalendarToTimestampColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tis")
+                  .values(1, Calendar.getInstance())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
     }
 
     private static class Foo {

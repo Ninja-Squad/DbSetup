@@ -24,7 +24,8 @@
 
 package com.ninja_squad.dbsetup.bind;
 
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -36,8 +37,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Calendar;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 public class BindersTest {
 
@@ -60,6 +60,30 @@ public class BindersTest {
         Binder binder = Binders.defaultBinder();
         binder.bind(stmt, 1, null);
         verify(stmt).setObject(1, null);
+    }
+
+    @Test
+    public void defaultBinderBindsEnum() throws SQLException {
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, TestEnum.BAR);
+        verify(stmt).setObject(1, TestEnum.BAR.name());
+    }
+
+    @Test
+    public void defaultBinderBindsUtilDate() throws SQLException {
+        java.util.Date date = new java.util.Date(Date.valueOf("1975-07-19").getTime());
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, date);
+        verify(stmt).setObject(1, new Timestamp(date.getTime()));
+    }
+
+    @Test
+    public void defaultBinderBindsCalendar() throws SQLException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Date.valueOf("1975-07-19").getTime());
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, calendar);
+        verify(stmt).setObject(1, new Timestamp(calendar.getTime().getTime()));
     }
 
     @Test

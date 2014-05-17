@@ -30,6 +30,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Calendar;
 
 /**
  * Utility class allowing to get various kinds of binders. The {@link DefaultBinderConfiguration} uses binders
@@ -50,7 +51,15 @@ public final class Binders {
     }
 
     /**
-     * Returns the default binder, which uses <code>stmt.setObject()</code> to bind the parameter.
+     * Returns the default binder. This binder is normally used for columns of a type that is not handled by the other
+     * binders. It is also used when the metadata are not used and the Insert thus doesn't know the type of the column.
+     * It simply uses <code>stmt.setObject()</code> to bind the parameter, except if the value being bound is of some
+     * some well-known type not handled by JDBC:
+     * <ul>
+     *     <li><code>enum</code>: the name of the enum is bound</li>
+     *     <li><code>java.util.Date</code>: the date is transformed to a java.sql.Timestamp</li>
+     *     <li><code>java.util.Calendar</code>: the date is transformed to a java.sql.Timestamp</li>
+     * </ul>
      */
     public static Binder defaultBinder() {
         return DEFAULT_BINDER;
@@ -325,7 +334,20 @@ public final class Binders {
     private static final class DefaultBinder implements Binder {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
-            stmt.setObject(param, value);
+            Object boundValue;
+            if (value instanceof Enum) {
+                boundValue = ((Enum) value).name();
+            }
+            else if (value instanceof java.util.Date) {
+                boundValue = new Timestamp(((java.util.Date) value).getTime());
+            }
+            else if (value instanceof Calendar) {
+                boundValue = new Timestamp(((Calendar) value).getTime().getTime());
+            }
+            else {
+                boundValue = value;
+            }
+            stmt.setObject(param, boundValue);
         }
 
         @Override
