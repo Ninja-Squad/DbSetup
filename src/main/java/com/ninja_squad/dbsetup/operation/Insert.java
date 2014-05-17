@@ -259,7 +259,15 @@ public final class Insert implements Operation {
                                    List<String> allColumnNames,
                                    BinderConfiguration configuration,
                                    Map<String, Binder> metadataBinders) throws SQLException {
-        ParameterMetaData metadata = stmt.getParameterMetaData();
+        ParameterMetaData metadata;
+        try {
+            metadata = stmt.getParameterMetaData();
+        }
+        catch (SQLException e) {
+            // the parameter metadata are probably not supported by the database. Pass null to the configuration.
+            // The default configuration will return the default binder, just as if useMetadata(false) had been used
+            metadata = null;
+        }
         int i = 1;
         for (String columnName : allColumnNames) {
             if (!this.binders.containsKey(columnName)) {
@@ -517,7 +525,10 @@ public final class Insert implements Operation {
          * the ones which have been associated explicitely with a Binder). The default is <code>true</code>. The insert
          * can be faster if set to <code>false</code>, but in this case, the {@link Binders#defaultBinder() default
          * binder} will be used for all the columns (except the ones which have been associated explicitely with a
-         * Binder).
+         * Binder).<br/>
+         * Note that since version 1.3.0, if useMetadata is true (the default) but the database doesn't support
+         * metadata, then the BinderConfiguration is asked for a binder with a null metadata. And the default
+         * binder configuration returns the default binder in this case. Using this method is thus normally unnecessary.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built.
          */

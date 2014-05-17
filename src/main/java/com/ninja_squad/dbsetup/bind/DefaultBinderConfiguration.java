@@ -24,11 +24,11 @@
 
 package com.ninja_squad.dbsetup.bind;
 
+import com.ninja_squad.dbsetup.DbSetup;
+
 import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import com.ninja_squad.dbsetup.DbSetup;
 
 /**
  * Default implementation of {@link BinderConfiguration}, used by default by {@link DbSetup}.
@@ -52,6 +52,7 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
      * Uses the parameter type of the given parameter and returns the following Binders depending on the type
      * got from the metadata.
      * <ul>
+     *   <li>null metadata (i.e. metadata not supported): {@link Binders#defaultBinder()}</li>
      *   <li>VARCHAR, CHAR, LONGNVARCHAR, LONGVARCHAR, NCHAR, NVARCHAR :
      *       {@link Binders#stringBinder()}</li>
      *   <li>DATE : {@link Binders#dateBinder()}</li>
@@ -63,6 +64,9 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
      */
     @Override
     public Binder getBinder(ParameterMetaData metadata, int param) throws SQLException {
+        if (metadata == null) {
+            return Binders.defaultBinder();
+        }
         int sqlType = metadata.getParameterType(param);
         if (sqlType == Types.DATE) {
             return Binders.dateBinder();

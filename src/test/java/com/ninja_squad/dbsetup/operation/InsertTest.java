@@ -139,6 +139,31 @@ public class InsertTest {
     }
 
     @Test
+    public void insertWorksWhenMetadataNotSupported() throws SQLException {
+        Binder defaultBinder = mock(Binder.class);
+
+        Connection connection = mock(Connection.class);
+        BinderConfiguration config = mock(BinderConfiguration.class);
+        PreparedStatement statement = mock(PreparedStatement.class);
+        when(config.getBinder(null, 1)).thenReturn(defaultBinder);
+        when(config.getBinder(null, 2)).thenReturn(defaultBinder);
+
+        when(connection.prepareStatement("insert into A (a, b) values (?, ?)")).thenReturn(statement);
+
+        Insert insert = Insert.into("A")
+                              .columns("a", "b")
+                              .values("a1", "b1")
+                              .build();
+        insert.execute(connection, config);
+
+        InOrder inOrder = inOrder(statement, defaultBinder);
+        inOrder.verify(defaultBinder).bind(statement, 1, "a1");
+        inOrder.verify(defaultBinder).bind(statement, 2, "b1");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(statement).close();
+    }
+
+    @Test
     public void insertWorksWhenColumnsSpecifiedByFirstRow() throws SQLException {
         Binder aBinder = mock(Binder.class);
         Binder bBinder = mock(Binder.class);
@@ -166,7 +191,6 @@ public class InsertTest {
                               .withBinder(bBinder, "b")
                               .withBinder(dBinder, "d")
                               .build();
-        System.out.println("insert = " + insert);
 
         insert.execute(connection, config);
 
