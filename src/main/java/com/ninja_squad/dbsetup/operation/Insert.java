@@ -207,21 +207,21 @@ public final class Insert implements Operation {
         PreparedStatement stmt = connection.prepareStatement(query);
 
         try {
-            Map<String, Binder> binders = initializeBinders(stmt, allColumnNames, configuration);
+            Map<String, Binder> usedBinders = initializeBinders(stmt, allColumnNames, configuration);
 
             int rowIndex = 0;
             for (List<?> row : rows) {
                 int i = 0;
                 for (Object value : row) {
                     String columnName = columnNames.get(i);
-                    Binder binder = binders.get(columnName);
+                    Binder binder = usedBinders.get(columnName);
                     binder.bind(stmt, i + 1, value);
                     i++;
                 }
                 for (Map.Entry<String, List<Object>> entry : generatedValues.entrySet()) {
                     String columnName = entry.getKey();
                     List<Object> rowValues = entry.getValue();
-                    Binder binder = binders.get(columnName);
+                    Binder binder = usedBinders.get(columnName);
                     binder.bind(stmt, i + 1, rowValues.get(rowIndex));
                     i++;
                 }
@@ -267,6 +267,7 @@ public final class Insert implements Operation {
                 metadata = stmt.getParameterMetaData();
             }
             catch (SQLException e) {
+                metadata = null;
                 // the parameter metadata are probably not supported by the database. Pass null to the configuration.
                 // The default configuration will return the default binder, just as if useMetadata(false) had been used
             }
@@ -277,7 +278,8 @@ public final class Insert implements Operation {
             if (binder == null) {
                 binder = configuration.getBinder(metadata, i);
                 if (binder == null) {
-                    throw new IllegalStateException("null binder returned from configuration " + configuration.getClass());
+                    throw new IllegalStateException("null binder returned from configuration "
+                                                    + configuration.getClass());
                 }
             }
             result.put(columnName, binder);
@@ -525,10 +527,11 @@ public final class Insert implements Operation {
          * by the {@link BinderConfiguration} for a null metadata (which is, by default, the
          * {@link Binders#defaultBinder() default binder}), except the ones which have been associated explicitely with
          * a Binder.<br/>
-         * Note that since version 1.3.0, if <code>useMetadata</code> is true (the default) but the database doesn't
-         * support metadata, then the BinderConfiguration is asked for a binder with a null metadata. And the default
-         * binder configuration returns the default binder in this case. Using this method is thus normally unnecessary
-         * as of 1.3.0.
+         * Before version 1.3.0, a SQLException was thrown if the database doesn't support parameter metadata and
+         * <code>useMetadata(false)</code> wasn't called. Since version 1.3.0, if <code>useMetadata</code> is true
+         * (the default) but the database doesn't support metadata, then the BinderConfiguration is asked for a binder
+         * with a null metadata. And the default binder configuration returns the default binder in this case. Using
+         * this method is thus normally unnecessary as of 1.3.0.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built.
          */
