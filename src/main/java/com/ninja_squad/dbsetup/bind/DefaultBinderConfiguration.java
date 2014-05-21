@@ -67,7 +67,14 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
         if (metadata == null) {
             return Binders.defaultBinder();
         }
-        int sqlType = metadata.getParameterType(param);
+        int sqlType = 0;
+        try {
+            sqlType = metadata.getParameterType(param);
+        } catch (SQLException e) {
+            return Binders.defaultBinder();
+            // if the parameter type is not supported by the database,
+            // the default binder is used, just as if metadata is null (= useMetadata(false) had been used)
+        }
         if (sqlType == Types.DATE) {
             return Binders.dateBinder();
         }
