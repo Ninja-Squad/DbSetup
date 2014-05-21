@@ -529,9 +529,8 @@ public final class Insert implements Operation {
          * a Binder.<br/>
          * Before version 1.3.0, a SQLException was thrown if the database doesn't support parameter metadata and
          * <code>useMetadata(false)</code> wasn't called. Since version 1.3.0, if <code>useMetadata</code> is true
-         * (the default) but the database doesn't support metadata, then the BinderConfiguration is asked for a binder
-         * with a null metadata. And the default binder configuration returns the default binder in this case. Using
-         * this method is thus normally unnecessary as of 1.3.0.
+         * (the default) but the database doesn't support metadata, then the default binder configuration returns the
+         * default binder. Using this method is thus normally unnecessary as of 1.3.0.
          * @return this Builder instance, for chaining.
          * @throws IllegalStateException if the Insert has already been built.
          */

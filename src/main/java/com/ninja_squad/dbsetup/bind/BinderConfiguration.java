@@ -46,8 +46,9 @@ public interface BinderConfiguration {
 
     /**
      * Returns the appropriate {@link Binder} for the given parameter, based on the given metadata.
-     * @param metadata the metadata allowing to decide which Binder to return. <code>null</code> if the database
-     * doesn't support parameter metadata, or if the Insert has been configured to not use metadata.
+     * @param metadata the metadata allowing to decide which Binder to return. <code>null</code> if the Insert has been
+     * configured to not use metadata, or if the JDBC driver returned null metadata, or the JDBC driver threw a
+     * SQLException when asked for the metadata
      * @param param the param for which a binder is requested
      * @return the binder for the given param and its metadata
      * @throws SQLException if a SQLException occurs while using the metadata

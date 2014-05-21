@@ -52,7 +52,7 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
      * Uses the parameter type of the given parameter and returns the following Binders depending on the type
      * got from the metadata.
      * <ul>
-     *   <li>null metadata (i.e. metadata not supported): {@link Binders#defaultBinder()}</li>
+     *   <li>null metadata (i.e. metadata not used or not returned): {@link Binders#defaultBinder()}</li>
      *   <li>VARCHAR, CHAR, LONGNVARCHAR, LONGVARCHAR, NCHAR, NVARCHAR :
      *       {@link Binders#stringBinder()}</li>
      *   <li>DATE : {@link Binders#dateBinder()}</li>
@@ -61,44 +61,53 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
      *   <li>INTEGER, BIGINT, SMALLINT, TINYINT : {@link Binders#integerBinder()}</li>
      *   <li>DECIMAL, DOUBLE, FLOAT, NUMERIC, REAL : {@link Binders#decimalBinder()}</li>
      *   <li>other : {@link Binders#defaultBinder()}</li>
+     * </ul>
+     *
+     * If the parameter type can't be obtained from the metadata, the default binder is returned.
      */
     @Override
     public Binder getBinder(ParameterMetaData metadata, int param) throws SQLException {
         if (metadata == null) {
             return Binders.defaultBinder();
         }
-        int sqlType = metadata.getParameterType(param);
-        if (sqlType == Types.DATE) {
-            return Binders.dateBinder();
+        try {
+            int sqlType = metadata.getParameterType(param);
+            if (sqlType == Types.DATE) {
+                return Binders.dateBinder();
+            }
+            if (sqlType == Types.TIME) {
+                return Binders.timeBinder();
+            }
+            if (sqlType == Types.TIMESTAMP) {
+                return Binders.timestampBinder();
+            }
+            if (sqlType == Types.BIGINT
+                || sqlType == Types.INTEGER
+                || sqlType == Types.SMALLINT
+                || sqlType == Types.TINYINT) {
+                return Binders.integerBinder();
+            }
+            if (sqlType == Types.DECIMAL
+                || sqlType == Types.DOUBLE
+                || sqlType == Types.FLOAT
+                || sqlType == Types.NUMERIC
+                || sqlType == Types.REAL) {
+                return Binders.decimalBinder();
+            }
+            if (sqlType == Types.VARCHAR
+                || sqlType == Types.CHAR
+                || sqlType == Types.LONGNVARCHAR
+                || sqlType == Types.LONGVARCHAR
+                || sqlType == Types.NCHAR
+                || sqlType == Types.NVARCHAR) {
+                return Binders.stringBinder();
+            }
+            return Binders.defaultBinder();
         }
-        if (sqlType == Types.TIME) {
-            return Binders.timeBinder();
+        catch (SQLException e) {
+            // the database can't return types from parameters. Fall back to default binder.
+            return Binders.defaultBinder();
         }
-        if (sqlType == Types.TIMESTAMP) {
-            return Binders.timestampBinder();
-        }
-        if (sqlType == Types.BIGINT
-            || sqlType == Types.INTEGER
-            || sqlType == Types.SMALLINT
-            || sqlType == Types.TINYINT) {
-            return Binders.integerBinder();
-        }
-        if (sqlType == Types.DECIMAL
-            || sqlType == Types.DOUBLE
-            || sqlType == Types.FLOAT
-            || sqlType == Types.NUMERIC
-            || sqlType == Types.REAL) {
-            return Binders.decimalBinder();
-        }
-        if (sqlType == Types.VARCHAR
-            || sqlType == Types.CHAR
-            || sqlType == Types.LONGNVARCHAR
-            || sqlType == Types.LONGVARCHAR
-            || sqlType == Types.NCHAR
-            || sqlType == Types.NVARCHAR) {
-            return Binders.stringBinder();
-        }
-        return Binders.defaultBinder();
     }
 
     @Override
