@@ -101,4 +101,9 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
     public String toString() {
         return "DefaultBinderConfiguration";
     }
+
+    @Override
+    public boolean isMetadataEnabled() {
+        return true;
+    }
 }
