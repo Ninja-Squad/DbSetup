@@ -28,28 +28,36 @@ import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 
 import com.ninja_squad.dbsetup.DbSetup;
-import com.ninja_squad.dbsetup.DbSetupTracker;
 
 /**
- * An object which returns the appropriate {@link Binder} based on the metadata of the prepared statement.
- * The default instance of this interface is {@link DefaultBinderConfiguration}. If the binders returned by this
- * default configuration don't fit for the particular database you're using, or if you would like the binders
- * returned by the configuration to support additional data types, you might want to provide a different implementation
- * of this interface to the {@link DbSetup}.
- * <p>
- * It's advised to make implementations of this interface immutable, and to make them implement equals and hashCode
- * in order for {@link DbSetupTracker} to function properly, or to make them singletons.
- * @author JB Nizet
+ * Implementation of {@link BinderConfiguration}, to be used with {@link DbSetup} when metadata is always disabled.
+ * @author Joel Takvorian
  */
-public interface BinderConfiguration {
+public class DisabledBinderConfiguration implements BinderConfiguration {
 
     /**
-     * Returns the appropriate {@link Binder} for the given parameter, based on the given metadata.
-     * @param metadata the metadata allowing to decide which Binder to return
-     * @param param the param for which a binder is requested
-     * @return the binder for the given param and its metadata
-     * @throws SQLException if a SQLException occurs while using the metadata
+     * A shareable, reusable instance of this class.
      */
-    Binder getBinder(ParameterMetaData metadata, int param) throws SQLException;
-    boolean isMetadataEnabled();
+    public static final DisabledBinderConfiguration INSTANCE = new DisabledBinderConfiguration();
+
+    private DisabledBinderConfiguration() {
+    }
+
+    /**
+     * Throws UnsupportedOperationException
+     */
+    @Override
+    public Binder getBinder(ParameterMetaData metadata, int param) throws SQLException {
+        throw new UnsupportedOperationException("Binder is disabled");
+    }
+
+    @Override
+    public String toString() {
+        return "DisabledBinderConfiguration";
+    }
+
+    @Override
+    public boolean isMetadataEnabled() {
+        return false;
+    }
 }

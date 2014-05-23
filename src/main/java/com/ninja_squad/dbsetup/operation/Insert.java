@@ -225,7 +225,7 @@ public final class Insert implements Operation {
 
         try {
             Map<String, Binder> metadataBinders = new HashMap<String, Binder>();
-            if (metadataUsed) {
+            if (metadataUsed && configuration.isMetadataEnabled()) {
                 initializeBinders(stmt, allColumnNames, configuration, metadataBinders);
             }
 
