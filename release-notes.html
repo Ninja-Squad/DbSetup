@@ -36,7 +36,7 @@
             <ul>
                 <li>There is no need to call <code>useMetadata(false)</code> for every insert with databases like Oracle and MySQL which don't
                     support parameter metadata. In previous versions, a SQLException was thrown and, if metadata usage was turned off, the default binder
-                    was used. Now the active BinderConfiguration can catch the exception and return the binder it wants. The default BunderConfiguration
+                    was used. Now the active BinderConfiguration can catch the exception and return the binder it wants. The default BinderConfiguration
                     does that and returns the default binder.</li>
                 <li>The default binder has been improved. It now inspects the type of the value to bind. If it's a <code>java.util.Date</code> or a 
                     <code>java.util.Calendar</code>, the bound value is a <code>java.sql.Timestamp</code>. If it's an enum, the name of the enum is bound.</li>
