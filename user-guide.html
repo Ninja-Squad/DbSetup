@@ -51,7 +51,7 @@
                     <li><a href="#generators">Value generators</a></li>
                     <li><a href="#columns-in-rows">Column names in rows</li>
                     <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
-                    <li><a href="#metadata-and-mysql">A note on metadata and MySQL</a></li>
+                    <li><a href="#metadata-and-mysql">A note on metadata, MySQL and Oracle</a></li>
                 </ul>
             </div>
             
@@ -270,6 +270,10 @@ public class VendorRepositoryTest {
             <p>
                 To support additional types or formats, create an instance of BinderConfiguration, and pass an instance to the DbSetup constructor.
             </p>
+            <p>Some databases, like MySQL and Oracle, don't allow knowing the type of a column from parameter metadata. In that case, since version 1.3.0,
+                the default <code>BinderConfiguration</code> returns the default binder instead of throwing a SQLException. This binder only supports standard JDBC 
+                types (bound using <code>PreparedStatement.setObject()</code>), <code>java.util.Date</code> and <code>java.util.Calendar</code> (bound as JDBC Timestamp),
+                and enums (whose name is bound as String). 
             
             <hr/>
             
@@ -359,33 +363,37 @@ public class VendorRepositoryTest {
             
             <hr/>
 
-            <h2><a id="metadata-and-mysql"></a>A note on metadata and MySQL</h2>
+            <h2><a id="metadata-and-mysql"></a>A note on metadata, MySQL and Oracle</h2>
             <p>
-                If you tried using DbSetup with MySQL, you probably got the following exception: 
+                If you tried using DbSetup before version 1.3.0 with MySQL or Oracle, you probably got one of the following exceptions: 
             </p>
             <pre class="prettyprint">
-java.sql.SQLException: Parameter metadata not available for the given statement.</pre>
+java.sql.SQLException: Parameter metadata not available for the given statement.
+java.sql.SQLException: Unsupported feature.</pre>
             <p>
                 DbSetup tries to know the type of the columns it inserts into in order to
                 know how to bind the parameter. For example, if you pass an enum as argument, and the type of the column is VARCHAR, it will store 
                 the name of the enum.
-                But if the column is of type NUMBER, it will store the ordinal of the enum. This works fine most of the time, but not with MySQL, because 
-                MySQL <span style="text-decoration: line-through;">sucks</span> is special. MySQL doesn't support parameter metadata (or at least I haven't found any way to make it support them). Adding <code>?useServerPrepStmts=true</code> to the URL makes it support them, 
+                But if the column is of type NUMBER, it will store the ordinal of the enum. This works fine most of the time, but not with MySQL and Oracle
+                which don't support this feature.
+            </p>
+            <p>
+                MySQL <span style="text-decoration: line-through;">sucks</span> is special in that regard. MySQL doesn't support parameter metadata (or at least I haven't found any way to make it support them). Adding <code>?useServerPrepStmts=true</code> to the URL makes it support them, 
                 but VARBINARY is returned whatever the type of the column actually is. Adding <code>?generateSimpleParameterMetadata=true</code> to 
                 the URL makes it support them, but VARCHAR is returned whatever the type of the column actually is.
             </p>
             <p>
-                So, what can you do? You could use a good database like PostgreSQL. If that's not an option, you'll have to disable the use of 
-                metadata for your insert statements, by calling <code>useMetadata(false)</code>
-                when building your Insert operations. Unfortunately, this also disables the features of DbSetup that are implemented thanks to the 
-                metadata. The default binder will be used for all the columns. If we go back to the enum example, you'll thus have to pass the name
-                or the ordinal of the enum explicitely, instead of simply passing the enum and let DbSetup decide how to bind it.
+                In previous versions of DbSetup, you had to call <code>useMetadata(false)</code> to avoid this
+                exception. DbSetup degrades nicely since 1.3.0. The default binder configuration catches the exception and returns the default binder, which 
+                uses <code>setObject()</code> on the prepared statement for any value passed, except for Date and Calendar instances which are transformed to Timestamp,
+                and enums which are transformed to their name. So if we go back to the enum example, if you want to bind its ordinal value, you will thus have to 
+                pass the ordinal of the enum explicitely, instead of simply passing the enum and let DbSetup decide how to bind it.
             </p>
 
             <hr/>
 
             <footer>
-                <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2013</small>
+                <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2014</small>
             </footer>
         </div>
         

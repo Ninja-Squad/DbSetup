@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<TITLE>
+DefaultBinderConfiguration (DbSetup 1.3.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="DefaultBinderConfiguration (DbSetup 1.3.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html" title="class in com.ninja_squad.dbsetup.bind"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="DefaultBinderConfiguration.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+com.ninja_squad.dbsetup.bind</FONT>
+<BR>
+Class DefaultBinderConfiguration</H2>
+<PRE>
+java.lang.Object
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html" title="interface in com.ninja_squad.dbsetup.bind">BinderConfiguration</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public class <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#line.37"><B>DefaultBinderConfiguration</B></A><DT>extends java.lang.Object<DT>implements <A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html" title="interface in com.ninja_squad.dbsetup.bind">BinderConfiguration</A></DL>
+</PRE>
+
+<P>
+Default implementation of <A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html" title="interface in com.ninja_squad.dbsetup.bind"><CODE>BinderConfiguration</CODE></A>, used by default by <A HREF="../../../../com/ninja_squad/dbsetup/DbSetup.html" title="class in com.ninja_squad.dbsetup"><CODE>DbSetup</CODE></A>.
+<P>
+
+<P>
+<HR>
+
+<P>
+<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" title="class in com.ninja_squad.dbsetup.bind">DefaultBinderConfiguration</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#INSTANCE">INSTANCE</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A shareable, reusable instance of this class.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected </CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#DefaultBinderConfiguration()">DefaultBinderConfiguration</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constructor.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#getBinder(java.sql.ParameterMetaData, int)">getBinder</A></B>(java.sql.ParameterMetaData&nbsp;metadata,
+                   int&nbsp;param)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uses the parameter type of the given parameter and returns the following Binders depending on the type
+ got from the metadata.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.String</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#toString()">toString</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ FIELD DETAIL =========== -->
+
+<A NAME="field_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Field Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="INSTANCE"><!-- --></A><H3>
+INSTANCE</H3>
+<PRE>
+public static final <A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" title="class in com.ninja_squad.dbsetup.bind">DefaultBinderConfiguration</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#line.42"><B>INSTANCE</B></A></PRE>
+<DL>
+<DD>A shareable, reusable instance of this class.
+<P>
+<DL>
+</DL>
+</DL>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="DefaultBinderConfiguration()"><!-- --></A><H3>
+DefaultBinderConfiguration</H3>
+<PRE>
+protected <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#line.48"><B>DefaultBinderConfiguration</B></A>()</PRE>
+<DL>
+<DD>Constructor. Protected because it doesn't make much sense to instantiate this class,
+ but extending it can be useful.
+<P>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="getBinder(java.sql.ParameterMetaData, int)"><!-- --></A><H3>
+getBinder</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#line.69"><B>getBinder</B></A>(java.sql.ParameterMetaData&nbsp;metadata,
+                        int&nbsp;param)
+                 throws java.sql.SQLException</PRE>
+<DL>
+<DD>Uses the parameter type of the given parameter and returns the following Binders depending on the type
+ got from the metadata.
+ <ul>
+   <li>null metadata (i.e. metadata not used or not returned): <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#defaultBinder()"><CODE>Binders.defaultBinder()</CODE></A></li>
+   <li>VARCHAR, CHAR, LONGNVARCHAR, LONGVARCHAR, NCHAR, NVARCHAR :
+       <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#stringBinder()"><CODE>Binders.stringBinder()</CODE></A></li>
+   <li>DATE : <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#dateBinder()"><CODE>Binders.dateBinder()</CODE></A></li>
+   <li>TIME : <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#timeBinder()"><CODE>Binders.timeBinder()</CODE></A></li>
+   <li>TIMESTAMP : <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#timestampBinder()"><CODE>Binders.timestampBinder()</CODE></A></li>
+   <li>INTEGER, BIGINT, SMALLINT, TINYINT : <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#integerBinder()"><CODE>Binders.integerBinder()</CODE></A></li>
+   <li>DECIMAL, DOUBLE, FLOAT, NUMERIC, REAL : <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#decimalBinder()"><CODE>Binders.decimalBinder()</CODE></A></li>
+   <li>other : <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#defaultBinder()"><CODE>Binders.defaultBinder()</CODE></A></li>
+ </ul>
+
+ If the parameter type can't be obtained from the metadata, the default binder is returned.
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html#getBinder(java.sql.ParameterMetaData, int)">getBinder</A></CODE> in interface <CODE><A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html" title="interface in com.ninja_squad.dbsetup.bind">BinderConfiguration</A></CODE></DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>metadata</CODE> - the metadata allowing to decide which Binder to return. <code>null</code> if the Insert has been
+ configured to not use metadata, or if the JDBC driver returned null metadata, or the JDBC driver threw a
+ SQLException when asked for the metadata<DD><CODE>param</CODE> - the param for which a binder is requested
+<DT><B>Returns:</B><DD>the binder for the given param and its metadata
+<DT><B>Throws:</B>
+<DD><CODE>java.sql.SQLException</CODE> - if a SQLException occurs while using the metadata</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="toString()"><!-- --></A><H3>
+toString</H3>
+<PRE>
+public java.lang.String <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html#line.114"><B>toString</B></A>()</PRE>
+<DL>
+<DD><DL>
+<DT><B>Overrides:</B><DD><CODE>toString</CODE> in class <CODE>java.lang.Object</CODE></DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html" title="class in com.ninja_squad.dbsetup.bind"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="DefaultBinderConfiguration.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+
+</BODY>
+</HTML>
