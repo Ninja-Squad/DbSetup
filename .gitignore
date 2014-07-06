@@ -6,6 +6,7 @@
 /build
 /.classpath
 /.classpath.idea/
+/.java-version
 DbSetup.iml
 .idea
 out

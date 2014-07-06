@@ -74,7 +74,7 @@ pmd {
 
 pmdMain {
     ignoreFailures = true
-    ruleSetFiles = files('config/pmd/ruleSet.xml')
+    ruleSetFiles = files('config/pmd/ruleset.xml')
 }
 
 findbugs {
