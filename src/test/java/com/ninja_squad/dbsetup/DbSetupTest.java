@@ -57,6 +57,19 @@ public class DbSetupTest {
         inOrder.verify(operation).execute(connection, DefaultBinderConfiguration.INSTANCE);
         inOrder.verify(connection).commit();
     }
+    
+    @Test
+    public void launchWorksWithConnectionDestination() throws SQLException {
+        Connection connection = mock(Connection.class);
+        Operation operation = mock(Operation.class);
+
+        DbSetup setup = new DbSetup(connection, operation);
+        setup.launch();
+        InOrder inOrder = inOrder(connection, operation);
+        inOrder.verify(operation).execute(connection, DefaultBinderConfiguration.INSTANCE);
+        inOrder.verify(connection).commit();
+    }
+
 
     @Test
     public void launchWorksWithCustomConfiguration() throws SQLException {

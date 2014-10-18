@@ -31,6 +31,7 @@ import javax.annotation.Nonnull;
 
 import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 import com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration;
+import com.ninja_squad.dbsetup.destination.ConnectionDestination;
 import com.ninja_squad.dbsetup.destination.Destination;
 import com.ninja_squad.dbsetup.operation.Operation;
 import com.ninja_squad.dbsetup.util.Preconditions;
@@ -74,6 +75,17 @@ public final class DbSetup {
      */
     public DbSetup(@Nonnull Destination destination, @Nonnull Operation operation) {
         this(destination, operation, DefaultBinderConfiguration.INSTANCE);
+    }
+    
+    /**
+     * Constructor which uses the {@link DefaultBinderConfiguration#INSTANCE default binder configuration}.
+     * @param connection will be used to execute the sequence of database operations
+     * @param operation the operation to execute (most of the time, an instance of
+     * {@link com.ninja_squad.dbsetup.operation.CompositeOperation}
+     * @author Abner Oliveira (http://github.com/abner)
+     */
+    public DbSetup(@Nonnull Connection connection, @Nonnull Operation operation) {
+        this(new ConnectionDestination(connection) , operation, DefaultBinderConfiguration.INSTANCE);
     }
 
     /**
