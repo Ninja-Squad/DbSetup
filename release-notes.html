@@ -32,6 +32,14 @@
                 <h1>Release Notes</h1>
             </div>
             
+            <h2>1.3.1</h2>
+            <ul>
+                <li>Fix for <a href="https://github.com/Ninja-Squad/DbSetup/issues/31">#31</a>: H2 doesn't seem to support passing a BigInteger to <code>setObject()</code>.
+                    Passing a String to a column of type BIGINT transformed the String into a BigInteger and passed that BigInteger to the prepared statement. This resulted
+                    to a strange, misleading error message from H2. Given that JDBC doesn't have official support for BigInteger, the strategy has been reversed: passing a BigInteger transforms the BigInteger to a String and this String is passed to the prepared statement. See the <a href="http://dbsetup.ninja-squad.com/apidoc/1.3.1/com/ninja_squad/dbsetup/bind/Binders.html#integerBinder%28%29">javadoc of Binders.integerBinder()</a> for details.
+                </li>
+            </ul>
+
             <h2>1.3.0</h2>
             <ul>
                 <li>There is no need to call <code>useMetadata(false)</code> for every insert with databases like Oracle and MySQL which don't

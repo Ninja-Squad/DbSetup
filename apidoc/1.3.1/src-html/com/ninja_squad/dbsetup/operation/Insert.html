@@ -1,0 +1,690 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * The MIT License<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     * Copyright (c) 2012-2013, Ninja Squad<a name="line.4"></a>
+<FONT color="green">005</FONT>     *<a name="line.5"></a>
+<FONT color="green">006</FONT>     * Permission is hereby granted, free of charge, to any person obtaining a copy<a name="line.6"></a>
+<FONT color="green">007</FONT>     * of this software and associated documentation files (the "Software"), to deal<a name="line.7"></a>
+<FONT color="green">008</FONT>     * in the Software without restriction, including without limitation the rights<a name="line.8"></a>
+<FONT color="green">009</FONT>     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<a name="line.9"></a>
+<FONT color="green">010</FONT>     * copies of the Software, and to permit persons to whom the Software is<a name="line.10"></a>
+<FONT color="green">011</FONT>     * furnished to do so, subject to the following conditions:<a name="line.11"></a>
+<FONT color="green">012</FONT>     *<a name="line.12"></a>
+<FONT color="green">013</FONT>     * The above copyright notice and this permission notice shall be included in<a name="line.13"></a>
+<FONT color="green">014</FONT>     * all copies or substantial portions of the Software.<a name="line.14"></a>
+<FONT color="green">015</FONT>     *<a name="line.15"></a>
+<FONT color="green">016</FONT>     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<a name="line.17"></a>
+<FONT color="green">018</FONT>     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<a name="line.18"></a>
+<FONT color="green">019</FONT>     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<a name="line.19"></a>
+<FONT color="green">020</FONT>     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<a name="line.20"></a>
+<FONT color="green">021</FONT>     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN<a name="line.21"></a>
+<FONT color="green">022</FONT>     * THE SOFTWARE.<a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>    package com.ninja_squad.dbsetup.operation;<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>    import com.ninja_squad.dbsetup.bind.Binder;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import com.ninja_squad.dbsetup.bind.BinderConfiguration;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import com.ninja_squad.dbsetup.bind.Binders;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import com.ninja_squad.dbsetup.generator.ValueGenerator;<a name="line.30"></a>
+<FONT color="green">031</FONT>    import com.ninja_squad.dbsetup.generator.ValueGenerators;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import com.ninja_squad.dbsetup.util.Preconditions;<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>    import javax.annotation.Nonnull;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import javax.annotation.concurrent.Immutable;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import java.sql.Connection;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import java.sql.ParameterMetaData;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import java.sql.PreparedStatement;<a name="line.38"></a>
+<FONT color="green">039</FONT>    import java.sql.SQLException;<a name="line.39"></a>
+<FONT color="green">040</FONT>    import java.util.ArrayList;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import java.util.Arrays;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import java.util.HashMap;<a name="line.42"></a>
+<FONT color="green">043</FONT>    import java.util.HashSet;<a name="line.43"></a>
+<FONT color="green">044</FONT>    import java.util.Iterator;<a name="line.44"></a>
+<FONT color="green">045</FONT>    import java.util.LinkedHashMap;<a name="line.45"></a>
+<FONT color="green">046</FONT>    import java.util.List;<a name="line.46"></a>
+<FONT color="green">047</FONT>    import java.util.Map;<a name="line.47"></a>
+<FONT color="green">048</FONT>    import java.util.Set;<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>    /**<a name="line.50"></a>
+<FONT color="green">051</FONT>     * Operation which inserts one or several rows into a table. Example usage:<a name="line.51"></a>
+<FONT color="green">052</FONT>     * &lt;pre&gt;<a name="line.52"></a>
+<FONT color="green">053</FONT>     *   Insert insert =<a name="line.53"></a>
+<FONT color="green">054</FONT>     *       Insert.into("CLIENT")<a name="line.54"></a>
+<FONT color="green">055</FONT>     *             .columns("CLIENT_ID", "FIRST_NAME", "LAST_NAME", "DATE_OF_BIRTH", "CLIENT_TYPE")<a name="line.55"></a>
+<FONT color="green">056</FONT>     *             .values(1L, "John", "Doe", "1975-07-19", ClientType.NORMAL)<a name="line.56"></a>
+<FONT color="green">057</FONT>     *             .values(2L, "Jack", "Smith", "1969-08-22", ClientType.HIGH_PRIORITY)<a name="line.57"></a>
+<FONT color="green">058</FONT>     *             .withDefaultValue("DELETED", false)<a name="line.58"></a>
+<FONT color="green">059</FONT>     *             .withDefaultValue("VERSION", 1)<a name="line.59"></a>
+<FONT color="green">060</FONT>     *             .withBinder(new ClientTypeBinder(), "CLIENT_TYPE")<a name="line.60"></a>
+<FONT color="green">061</FONT>     *             .build();<a name="line.61"></a>
+<FONT color="green">062</FONT>     * &lt;/pre&gt;<a name="line.62"></a>
+<FONT color="green">063</FONT>     *<a name="line.63"></a>
+<FONT color="green">064</FONT>     * The above operation will insert two rows inside the CLIENT table. For each row, the column DELETED will be set to<a name="line.64"></a>
+<FONT color="green">065</FONT>     * &lt;code&gt;false&lt;/code&gt; and the column VERSION will be set to 1. For the column CLIENT_TYPE, instead of using the<a name="line.65"></a>
+<FONT color="green">066</FONT>     * {@link Binder} associated to the type of the column found in the metadata of the table, a custom binder will be used.<a name="line.66"></a>
+<FONT color="green">067</FONT>     * &lt;p&gt;<a name="line.67"></a>
+<FONT color="green">068</FONT>     * Instead of specifying values as an ordered sequence which must match the sequence of column names, some might prefer<a name="line.68"></a>
+<FONT color="green">069</FONT>     * passing a map of column/value associations. This makes things more verbose, but can be more readable in some cases,<a name="line.69"></a>
+<FONT color="green">070</FONT>     * when the number of columns is high. This also allows not specifying any value for columns that must stay null.<a name="line.70"></a>
+<FONT color="green">071</FONT>     * The map can be constructed like any other map and passed to the builder, or it can be added using a fluent builder.<a name="line.71"></a>
+<FONT color="green">072</FONT>     * The following snippet:<a name="line.72"></a>
+<FONT color="green">073</FONT>     *<a name="line.73"></a>
+<FONT color="green">074</FONT>     * &lt;pre&gt;<a name="line.74"></a>
+<FONT color="green">075</FONT>     *   Insert insert =<a name="line.75"></a>
+<FONT color="green">076</FONT>     *       Insert.into("CLIENT")<a name="line.76"></a>
+<FONT color="green">077</FONT>     *             .columns("CLIENT_ID", "FIRST_NAME", "LAST_NAME", "DATE_OF_BIRTH", "CLIENT_TYPE")<a name="line.77"></a>
+<FONT color="green">078</FONT>     *             .row().column("CLIENT_ID", 1L)<a name="line.78"></a>
+<FONT color="green">079</FONT>     *                   .column("FIRST_NAME", "John")<a name="line.79"></a>
+<FONT color="green">080</FONT>     *                   .column("LAST_NAME", "Doe")<a name="line.80"></a>
+<FONT color="green">081</FONT>     *                   .column("DATE_OF_BIRTH", "1975-07-19")<a name="line.81"></a>
+<FONT color="green">082</FONT>     *                   .end()<a name="line.82"></a>
+<FONT color="green">083</FONT>     *             .row().column("CLIENT_ID", 2L)<a name="line.83"></a>
+<FONT color="green">084</FONT>     *                   .column("FIRST_NAME", "Jack")<a name="line.84"></a>
+<FONT color="green">085</FONT>     *                   .column("LAST_NAME", "Smith")<a name="line.85"></a>
+<FONT color="green">086</FONT>     *                   .end() // null date of birth, because it's not in the row<a name="line.86"></a>
+<FONT color="green">087</FONT>     *             .build();<a name="line.87"></a>
+<FONT color="green">088</FONT>     * &lt;/pre&gt;<a name="line.88"></a>
+<FONT color="green">089</FONT>     *<a name="line.89"></a>
+<FONT color="green">090</FONT>     * is thus equivalent to:<a name="line.90"></a>
+<FONT color="green">091</FONT>     *<a name="line.91"></a>
+<FONT color="green">092</FONT>     * &lt;pre&gt;<a name="line.92"></a>
+<FONT color="green">093</FONT>     *   Map&amp;lt;String, Object&amp;gt; johnDoe = new HashMap&amp;lt;String, Object&amp;gt;();<a name="line.93"></a>
+<FONT color="green">094</FONT>     *   johnDoe.put("CLIENT_ID", 1L);<a name="line.94"></a>
+<FONT color="green">095</FONT>     *   johnDoe.put("FIRST_NAME", "John");<a name="line.95"></a>
+<FONT color="green">096</FONT>     *   johnDoe.put("LAST_NAME", "Doe");<a name="line.96"></a>
+<FONT color="green">097</FONT>     *   johnDoe.put("DATE_OF_BIRTH", "1975-07-19");<a name="line.97"></a>
+<FONT color="green">098</FONT>     *<a name="line.98"></a>
+<FONT color="green">099</FONT>     *   Map&amp;lt;String, Object&amp;gt; jackSmith = new HashMap&amp;lt;String, Object&amp;gt;();<a name="line.99"></a>
+<FONT color="green">100</FONT>     *   jackSmith.put("CLIENT_ID", 2L);<a name="line.100"></a>
+<FONT color="green">101</FONT>     *   jackSmith.put("FIRST_NAME", "Jack");<a name="line.101"></a>
+<FONT color="green">102</FONT>     *   jackSmith.put("LAST_NAME", "Smith");<a name="line.102"></a>
+<FONT color="green">103</FONT>     *<a name="line.103"></a>
+<FONT color="green">104</FONT>     *   Insert insert =<a name="line.104"></a>
+<FONT color="green">105</FONT>     *       Insert.into("CLIENT")<a name="line.105"></a>
+<FONT color="green">106</FONT>     *             .columns("CLIENT_ID", "FIRST_NAME", "LAST_NAME", "DATE_OF_BIRTH", "CLIENT_TYPE")<a name="line.106"></a>
+<FONT color="green">107</FONT>     *             .values(johnDoe)<a name="line.107"></a>
+<FONT color="green">108</FONT>     *             .values(jackSmith)<a name="line.108"></a>
+<FONT color="green">109</FONT>     *             .build();<a name="line.109"></a>
+<FONT color="green">110</FONT>     * &lt;/pre&gt;<a name="line.110"></a>
+<FONT color="green">111</FONT>     *<a name="line.111"></a>
+<FONT color="green">112</FONT>     * When building the Insert using column/value associations, it might seem redundant to specify the set of column names<a name="line.112"></a>
+<FONT color="green">113</FONT>     * before inserting the rows. Remember, though, that all the rows of an Insert are inserted using the same<a name="line.113"></a>
+<FONT color="green">114</FONT>     * parameterized SQL query. We thus need a robust and easy way to know all the columns to insert for every row of the<a name="line.114"></a>
+<FONT color="green">115</FONT>     * insert. To be able to spot errors easily and early, and to avoid complex rules, the rule is thus simple: the set of<a name="line.115"></a>
+<FONT color="green">116</FONT>     * columns (excluding the generated ones) is specified either by columns(), or by the columns of the first row. All the<a name="line.116"></a>
+<FONT color="green">117</FONT>     * subsequent rows may not have additional columns. And &lt;code&gt;null&lt;/code&gt; is inserted for all the absent columns of the<a name="line.117"></a>
+<FONT color="green">118</FONT>     * subsequent rows. The above example can thus be written as<a name="line.118"></a>
+<FONT color="green">119</FONT>     *<a name="line.119"></a>
+<FONT color="green">120</FONT>     * &lt;pre&gt;<a name="line.120"></a>
+<FONT color="green">121</FONT>     *   Insert insert =<a name="line.121"></a>
+<FONT color="green">122</FONT>     *       Insert.into("CLIENT")<a name="line.122"></a>
+<FONT color="green">123</FONT>     *             .row().column("CLIENT_ID", 1L)<a name="line.123"></a>
+<FONT color="green">124</FONT>     *                   .column("FIRST_NAME", "John")<a name="line.124"></a>
+<FONT color="green">125</FONT>     *                   .column("LAST_NAME", "Doe")<a name="line.125"></a>
+<FONT color="green">126</FONT>     *                   .column("DATE_OF_BIRTH", "1975-07-19")<a name="line.126"></a>
+<FONT color="green">127</FONT>     *                   .end()<a name="line.127"></a>
+<FONT color="green">128</FONT>     *             .row().column("CLIENT_ID", 2L)<a name="line.128"></a>
+<FONT color="green">129</FONT>     *                   .column("FIRST_NAME", "Jack")<a name="line.129"></a>
+<FONT color="green">130</FONT>     *                   .column("LAST_NAME", "Smith")<a name="line.130"></a>
+<FONT color="green">131</FONT>     *                   .end() // null date of birth, because it's not in the row<a name="line.131"></a>
+<FONT color="green">132</FONT>     *             .build();<a name="line.132"></a>
+<FONT color="green">133</FONT>     * &lt;/pre&gt;<a name="line.133"></a>
+<FONT color="green">134</FONT>     *<a name="line.134"></a>
+<FONT color="green">135</FONT>     * but the following will throw an exception, because the DATE_OF_BIRTH column is not part of the first row:<a name="line.135"></a>
+<FONT color="green">136</FONT>     *<a name="line.136"></a>
+<FONT color="green">137</FONT>     * &lt;pre&gt;<a name="line.137"></a>
+<FONT color="green">138</FONT>     *   Insert insert =<a name="line.138"></a>
+<FONT color="green">139</FONT>     *       Insert.into("CLIENT")<a name="line.139"></a>
+<FONT color="green">140</FONT>     *             .row().column("CLIENT_ID", 2L)<a name="line.140"></a>
+<FONT color="green">141</FONT>     *                   .column("FIRST_NAME", "Jack")<a name="line.141"></a>
+<FONT color="green">142</FONT>     *                   .column("LAST_NAME", "Smith")<a name="line.142"></a>
+<FONT color="green">143</FONT>     *                   .column("CLIENT_TYPE", ClientType.HIGH_PRIORITY)<a name="line.143"></a>
+<FONT color="green">144</FONT>     *                   .end()<a name="line.144"></a>
+<FONT color="green">145</FONT>     *             .row().column("CLIENT_ID", 1L)<a name="line.145"></a>
+<FONT color="green">146</FONT>     *                   .column("FIRST_NAME", "John")<a name="line.146"></a>
+<FONT color="green">147</FONT>     *                   .column("LAST_NAME", "Doe")<a name="line.147"></a>
+<FONT color="green">148</FONT>     *                   .column("DATE_OF_BIRTH", "1975-07-19")<a name="line.148"></a>
+<FONT color="green">149</FONT>     *                   .column("CLIENT_TYPE", ClientType.NORMAL)<a name="line.149"></a>
+<FONT color="green">150</FONT>     *                   .end()<a name="line.150"></a>
+<FONT color="green">151</FONT>     *             .build();<a name="line.151"></a>
+<FONT color="green">152</FONT>     * &lt;/pre&gt;<a name="line.152"></a>
+<FONT color="green">153</FONT>     *<a name="line.153"></a>
+<FONT color="green">154</FONT>     * @author JB Nizet<a name="line.154"></a>
+<FONT color="green">155</FONT>     */<a name="line.155"></a>
+<FONT color="green">156</FONT>    @Immutable<a name="line.156"></a>
+<FONT color="green">157</FONT>    public final class Insert implements Operation {<a name="line.157"></a>
+<FONT color="green">158</FONT>        private final String table;<a name="line.158"></a>
+<FONT color="green">159</FONT>        private final List&lt;String&gt; columnNames;<a name="line.159"></a>
+<FONT color="green">160</FONT>        private final Map&lt;String, List&lt;Object&gt;&gt; generatedValues;<a name="line.160"></a>
+<FONT color="green">161</FONT>        private final List&lt;List&lt;?&gt;&gt; rows;<a name="line.161"></a>
+<FONT color="green">162</FONT>        private final boolean metadataUsed;<a name="line.162"></a>
+<FONT color="green">163</FONT>    <a name="line.163"></a>
+<FONT color="green">164</FONT>        private final Map&lt;String, Binder&gt; binders;<a name="line.164"></a>
+<FONT color="green">165</FONT>    <a name="line.165"></a>
+<FONT color="green">166</FONT>        private Insert(Builder builder) {<a name="line.166"></a>
+<FONT color="green">167</FONT>            this.table = builder.table;<a name="line.167"></a>
+<FONT color="green">168</FONT>            this.columnNames = builder.columnNames;<a name="line.168"></a>
+<FONT color="green">169</FONT>            this.rows = builder.rows;<a name="line.169"></a>
+<FONT color="green">170</FONT>            this.generatedValues = generateValues(builder.valueGenerators, rows.size());<a name="line.170"></a>
+<FONT color="green">171</FONT>            this.binders = builder.binders;<a name="line.171"></a>
+<FONT color="green">172</FONT>            this.metadataUsed = builder.metadataUsed;<a name="line.172"></a>
+<FONT color="green">173</FONT>        }<a name="line.173"></a>
+<FONT color="green">174</FONT>    <a name="line.174"></a>
+<FONT color="green">175</FONT>        private Map&lt;String, List&lt;Object&gt;&gt; generateValues(Map&lt;String, ValueGenerator&lt;?&gt;&gt; valueGenerators,<a name="line.175"></a>
+<FONT color="green">176</FONT>                                                          int count) {<a name="line.176"></a>
+<FONT color="green">177</FONT>            Map&lt;String, List&lt;Object&gt;&gt; result = new LinkedHashMap&lt;String, List&lt;Object&gt;&gt;();<a name="line.177"></a>
+<FONT color="green">178</FONT>            for (Map.Entry&lt;String, ValueGenerator&lt;?&gt;&gt; entry : valueGenerators.entrySet()) {<a name="line.178"></a>
+<FONT color="green">179</FONT>                result.put(entry.getKey(), generateValues(entry.getValue(), count));<a name="line.179"></a>
+<FONT color="green">180</FONT>            }<a name="line.180"></a>
+<FONT color="green">181</FONT>            return result;<a name="line.181"></a>
+<FONT color="green">182</FONT>        }<a name="line.182"></a>
+<FONT color="green">183</FONT>    <a name="line.183"></a>
+<FONT color="green">184</FONT>        private List&lt;Object&gt; generateValues(ValueGenerator&lt;?&gt; valueGenerator, int count) {<a name="line.184"></a>
+<FONT color="green">185</FONT>            List&lt;Object&gt; result = new ArrayList&lt;Object&gt;(count);<a name="line.185"></a>
+<FONT color="green">186</FONT>            for (int i = 0; i &lt; count; i++) {<a name="line.186"></a>
+<FONT color="green">187</FONT>                result.add(valueGenerator.nextValue());<a name="line.187"></a>
+<FONT color="green">188</FONT>            }<a name="line.188"></a>
+<FONT color="green">189</FONT>            return result;<a name="line.189"></a>
+<FONT color="green">190</FONT>        }<a name="line.190"></a>
+<FONT color="green">191</FONT>    <a name="line.191"></a>
+<FONT color="green">192</FONT>        /**<a name="line.192"></a>
+<FONT color="green">193</FONT>         * Inserts the values and generated values in the table. Unless &lt;code&gt;useMetadata&lt;/code&gt; has been set to<a name="line.193"></a>
+<FONT color="green">194</FONT>         * &lt;code&gt;false&lt;/code&gt;, the given configuration is used to get the appropriate binder. Nevertheless, if a binder<a name="line.194"></a>
+<FONT color="green">195</FONT>         * has explicitely been associated to a given column, this binder will always be used for this column.<a name="line.195"></a>
+<FONT color="green">196</FONT>         */<a name="line.196"></a>
+<FONT color="green">197</FONT>        @edu.umd.cs.findbugs.annotations.SuppressWarnings(<a name="line.197"></a>
+<FONT color="green">198</FONT>            value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",<a name="line.198"></a>
+<FONT color="green">199</FONT>            justification = "The point here is precisely to compose a SQL String from column names coming from the user")<a name="line.199"></a>
+<FONT color="green">200</FONT>        @Override<a name="line.200"></a>
+<FONT color="green">201</FONT>        public void execute(Connection connection, BinderConfiguration configuration) throws SQLException {<a name="line.201"></a>
+<FONT color="green">202</FONT>            List&lt;String&gt; allColumnNames = new ArrayList&lt;String&gt;(columnNames);<a name="line.202"></a>
+<FONT color="green">203</FONT>            allColumnNames.addAll(generatedValues.keySet());<a name="line.203"></a>
+<FONT color="green">204</FONT>    <a name="line.204"></a>
+<FONT color="green">205</FONT>            String query = generateSqlQuery(allColumnNames);<a name="line.205"></a>
+<FONT color="green">206</FONT>    <a name="line.206"></a>
+<FONT color="green">207</FONT>            PreparedStatement stmt = connection.prepareStatement(query);<a name="line.207"></a>
+<FONT color="green">208</FONT>    <a name="line.208"></a>
+<FONT color="green">209</FONT>            try {<a name="line.209"></a>
+<FONT color="green">210</FONT>                Map&lt;String, Binder&gt; usedBinders = initializeBinders(stmt, allColumnNames, configuration);<a name="line.210"></a>
+<FONT color="green">211</FONT>    <a name="line.211"></a>
+<FONT color="green">212</FONT>                int rowIndex = 0;<a name="line.212"></a>
+<FONT color="green">213</FONT>                for (List&lt;?&gt; row : rows) {<a name="line.213"></a>
+<FONT color="green">214</FONT>                    int i = 0;<a name="line.214"></a>
+<FONT color="green">215</FONT>                    for (Object value : row) {<a name="line.215"></a>
+<FONT color="green">216</FONT>                        String columnName = columnNames.get(i);<a name="line.216"></a>
+<FONT color="green">217</FONT>                        Binder binder = usedBinders.get(columnName);<a name="line.217"></a>
+<FONT color="green">218</FONT>                        binder.bind(stmt, i + 1, value);<a name="line.218"></a>
+<FONT color="green">219</FONT>                        i++;<a name="line.219"></a>
+<FONT color="green">220</FONT>                    }<a name="line.220"></a>
+<FONT color="green">221</FONT>                    for (Map.Entry&lt;String, List&lt;Object&gt;&gt; entry : generatedValues.entrySet()) {<a name="line.221"></a>
+<FONT color="green">222</FONT>                        String columnName = entry.getKey();<a name="line.222"></a>
+<FONT color="green">223</FONT>                        List&lt;Object&gt; rowValues = entry.getValue();<a name="line.223"></a>
+<FONT color="green">224</FONT>                        Binder binder = usedBinders.get(columnName);<a name="line.224"></a>
+<FONT color="green">225</FONT>                        binder.bind(stmt, i + 1, rowValues.get(rowIndex));<a name="line.225"></a>
+<FONT color="green">226</FONT>                        i++;<a name="line.226"></a>
+<FONT color="green">227</FONT>                    }<a name="line.227"></a>
+<FONT color="green">228</FONT>    <a name="line.228"></a>
+<FONT color="green">229</FONT>                    stmt.executeUpdate();<a name="line.229"></a>
+<FONT color="green">230</FONT>                    rowIndex++;<a name="line.230"></a>
+<FONT color="green">231</FONT>                }<a name="line.231"></a>
+<FONT color="green">232</FONT>            }<a name="line.232"></a>
+<FONT color="green">233</FONT>            finally {<a name="line.233"></a>
+<FONT color="green">234</FONT>                stmt.close();<a name="line.234"></a>
+<FONT color="green">235</FONT>            }<a name="line.235"></a>
+<FONT color="green">236</FONT>        }<a name="line.236"></a>
+<FONT color="green">237</FONT>    <a name="line.237"></a>
+<FONT color="green">238</FONT>        private String generateSqlQuery(List&lt;String&gt; allColumnNames) {<a name="line.238"></a>
+<FONT color="green">239</FONT>            StringBuilder sql = new StringBuilder("insert into ").append(table).append(" (");<a name="line.239"></a>
+<FONT color="green">240</FONT>            for (Iterator&lt;String&gt; it = allColumnNames.iterator(); it.hasNext(); ) {<a name="line.240"></a>
+<FONT color="green">241</FONT>                String columnName = it.next();<a name="line.241"></a>
+<FONT color="green">242</FONT>                sql.append(columnName);<a name="line.242"></a>
+<FONT color="green">243</FONT>                if (it.hasNext()) {<a name="line.243"></a>
+<FONT color="green">244</FONT>                    sql.append(", ");<a name="line.244"></a>
+<FONT color="green">245</FONT>                }<a name="line.245"></a>
+<FONT color="green">246</FONT>            }<a name="line.246"></a>
+<FONT color="green">247</FONT>            sql.append(") values (");<a name="line.247"></a>
+<FONT color="green">248</FONT>            for (Iterator&lt;String&gt; it = allColumnNames.iterator(); it.hasNext(); ) {<a name="line.248"></a>
+<FONT color="green">249</FONT>                it.next();<a name="line.249"></a>
+<FONT color="green">250</FONT>                sql.append("?");<a name="line.250"></a>
+<FONT color="green">251</FONT>                if (it.hasNext()) {<a name="line.251"></a>
+<FONT color="green">252</FONT>                    sql.append(", ");<a name="line.252"></a>
+<FONT color="green">253</FONT>                }<a name="line.253"></a>
+<FONT color="green">254</FONT>            }<a name="line.254"></a>
+<FONT color="green">255</FONT>            sql.append(")");<a name="line.255"></a>
+<FONT color="green">256</FONT>    <a name="line.256"></a>
+<FONT color="green">257</FONT>            return sql.toString();<a name="line.257"></a>
+<FONT color="green">258</FONT>        }<a name="line.258"></a>
+<FONT color="green">259</FONT>    <a name="line.259"></a>
+<FONT color="green">260</FONT>        private Map&lt;String, Binder&gt; initializeBinders(PreparedStatement stmt,<a name="line.260"></a>
+<FONT color="green">261</FONT>                                                      List&lt;String&gt; allColumnNames,<a name="line.261"></a>
+<FONT color="green">262</FONT>                                                      BinderConfiguration configuration) throws SQLException {<a name="line.262"></a>
+<FONT color="green">263</FONT>            Map&lt;String, Binder&gt; result = new HashMap&lt;String, Binder&gt;();<a name="line.263"></a>
+<FONT color="green">264</FONT>            ParameterMetaData metadata = null;<a name="line.264"></a>
+<FONT color="green">265</FONT>            if (metadataUsed) {<a name="line.265"></a>
+<FONT color="green">266</FONT>                try {<a name="line.266"></a>
+<FONT color="green">267</FONT>                    metadata = stmt.getParameterMetaData();<a name="line.267"></a>
+<FONT color="green">268</FONT>                }<a name="line.268"></a>
+<FONT color="green">269</FONT>                catch (SQLException e) {<a name="line.269"></a>
+<FONT color="green">270</FONT>                    metadata = null;<a name="line.270"></a>
+<FONT color="green">271</FONT>                    // the parameter metadata are probably not supported by the database. Pass null to the configuration.<a name="line.271"></a>
+<FONT color="green">272</FONT>                    // The default configuration will return the default binder, just as if useMetadata(false) had been used<a name="line.272"></a>
+<FONT color="green">273</FONT>                }<a name="line.273"></a>
+<FONT color="green">274</FONT>            }<a name="line.274"></a>
+<FONT color="green">275</FONT>            int i = 1;<a name="line.275"></a>
+<FONT color="green">276</FONT>            for (String columnName : allColumnNames) {<a name="line.276"></a>
+<FONT color="green">277</FONT>                Binder binder = this.binders.get(columnName);<a name="line.277"></a>
+<FONT color="green">278</FONT>                if (binder == null) {<a name="line.278"></a>
+<FONT color="green">279</FONT>                    binder = configuration.getBinder(metadata, i);<a name="line.279"></a>
+<FONT color="green">280</FONT>                    if (binder == null) {<a name="line.280"></a>
+<FONT color="green">281</FONT>                        throw new IllegalStateException("null binder returned from configuration "<a name="line.281"></a>
+<FONT color="green">282</FONT>                                                        + configuration.getClass());<a name="line.282"></a>
+<FONT color="green">283</FONT>                    }<a name="line.283"></a>
+<FONT color="green">284</FONT>                }<a name="line.284"></a>
+<FONT color="green">285</FONT>                result.put(columnName, binder);<a name="line.285"></a>
+<FONT color="green">286</FONT>                i++;<a name="line.286"></a>
+<FONT color="green">287</FONT>            }<a name="line.287"></a>
+<FONT color="green">288</FONT>            return result;<a name="line.288"></a>
+<FONT color="green">289</FONT>        }<a name="line.289"></a>
+<FONT color="green">290</FONT>    <a name="line.290"></a>
+<FONT color="green">291</FONT>        @Override<a name="line.291"></a>
+<FONT color="green">292</FONT>        public String toString() {<a name="line.292"></a>
+<FONT color="green">293</FONT>            return "insert into "<a name="line.293"></a>
+<FONT color="green">294</FONT>                   + table<a name="line.294"></a>
+<FONT color="green">295</FONT>                   + " [columns="<a name="line.295"></a>
+<FONT color="green">296</FONT>                   + columnNames<a name="line.296"></a>
+<FONT color="green">297</FONT>                   + ", generatedValues="<a name="line.297"></a>
+<FONT color="green">298</FONT>                   + generatedValues<a name="line.298"></a>
+<FONT color="green">299</FONT>                   + ", rows="<a name="line.299"></a>
+<FONT color="green">300</FONT>                   + rows<a name="line.300"></a>
+<FONT color="green">301</FONT>                   + ", metadataUsed="<a name="line.301"></a>
+<FONT color="green">302</FONT>                   + metadataUsed<a name="line.302"></a>
+<FONT color="green">303</FONT>                   + ", binders="<a name="line.303"></a>
+<FONT color="green">304</FONT>                   + binders<a name="line.304"></a>
+<FONT color="green">305</FONT>                   + "]";<a name="line.305"></a>
+<FONT color="green">306</FONT>    <a name="line.306"></a>
+<FONT color="green">307</FONT>        }<a name="line.307"></a>
+<FONT color="green">308</FONT>    <a name="line.308"></a>
+<FONT color="green">309</FONT>        @Override<a name="line.309"></a>
+<FONT color="green">310</FONT>        public int hashCode() {<a name="line.310"></a>
+<FONT color="green">311</FONT>            final int prime = 31;<a name="line.311"></a>
+<FONT color="green">312</FONT>            int result = 1;<a name="line.312"></a>
+<FONT color="green">313</FONT>            result = prime * result + binders.hashCode();<a name="line.313"></a>
+<FONT color="green">314</FONT>            result = prime * result + columnNames.hashCode();<a name="line.314"></a>
+<FONT color="green">315</FONT>            result = prime * result + generatedValues.hashCode();<a name="line.315"></a>
+<FONT color="green">316</FONT>            result = prime * result + Boolean.valueOf(metadataUsed).hashCode();<a name="line.316"></a>
+<FONT color="green">317</FONT>            result = prime * result + rows.hashCode();<a name="line.317"></a>
+<FONT color="green">318</FONT>            result = prime * result + table.hashCode();<a name="line.318"></a>
+<FONT color="green">319</FONT>            return result;<a name="line.319"></a>
+<FONT color="green">320</FONT>        }<a name="line.320"></a>
+<FONT color="green">321</FONT>    <a name="line.321"></a>
+<FONT color="green">322</FONT>        @Override<a name="line.322"></a>
+<FONT color="green">323</FONT>        public boolean equals(Object obj) {<a name="line.323"></a>
+<FONT color="green">324</FONT>            if (this == obj) {<a name="line.324"></a>
+<FONT color="green">325</FONT>                return true;<a name="line.325"></a>
+<FONT color="green">326</FONT>            }<a name="line.326"></a>
+<FONT color="green">327</FONT>            if (obj == null) {<a name="line.327"></a>
+<FONT color="green">328</FONT>                return false;<a name="line.328"></a>
+<FONT color="green">329</FONT>            }<a name="line.329"></a>
+<FONT color="green">330</FONT>            if (getClass() != obj.getClass()) {<a name="line.330"></a>
+<FONT color="green">331</FONT>                return false;<a name="line.331"></a>
+<FONT color="green">332</FONT>            }<a name="line.332"></a>
+<FONT color="green">333</FONT>            Insert other = (Insert) obj;<a name="line.333"></a>
+<FONT color="green">334</FONT>    <a name="line.334"></a>
+<FONT color="green">335</FONT>            return binders.equals(other.binders)<a name="line.335"></a>
+<FONT color="green">336</FONT>                   &amp;&amp; columnNames.equals(other.columnNames)<a name="line.336"></a>
+<FONT color="green">337</FONT>                   &amp;&amp; generatedValues.equals(other.generatedValues)<a name="line.337"></a>
+<FONT color="green">338</FONT>                   &amp;&amp; metadataUsed == other.metadataUsed<a name="line.338"></a>
+<FONT color="green">339</FONT>                   &amp;&amp; rows.equals(other.rows)<a name="line.339"></a>
+<FONT color="green">340</FONT>                   &amp;&amp; table.equals(other.table);<a name="line.340"></a>
+<FONT color="green">341</FONT>        }<a name="line.341"></a>
+<FONT color="green">342</FONT>    <a name="line.342"></a>
+<FONT color="green">343</FONT>        /**<a name="line.343"></a>
+<FONT color="green">344</FONT>         * Creates a new Builder instance, in order to build an Insert operation into the given table<a name="line.344"></a>
+<FONT color="green">345</FONT>         * @param table the name of the table to insert into<a name="line.345"></a>
+<FONT color="green">346</FONT>         * @return the created Builder<a name="line.346"></a>
+<FONT color="green">347</FONT>         */<a name="line.347"></a>
+<FONT color="green">348</FONT>        public static Builder into(@Nonnull String table) {<a name="line.348"></a>
+<FONT color="green">349</FONT>            Preconditions.checkNotNull(table, "table may not be null");<a name="line.349"></a>
+<FONT color="green">350</FONT>            return new Builder(table);<a name="line.350"></a>
+<FONT color="green">351</FONT>        }<a name="line.351"></a>
+<FONT color="green">352</FONT>    <a name="line.352"></a>
+<FONT color="green">353</FONT>        /**<a name="line.353"></a>
+<FONT color="green">354</FONT>         * A builder used to create an Insert operation. Such a builder may only be used once. Once it has built its Insert<a name="line.354"></a>
+<FONT color="green">355</FONT>         * operation, all its methods throw an {@link IllegalStateException}.<a name="line.355"></a>
+<FONT color="green">356</FONT>         * @see Insert<a name="line.356"></a>
+<FONT color="green">357</FONT>         * @see Insert#into(String)<a name="line.357"></a>
+<FONT color="green">358</FONT>         * @author JB Nizet<a name="line.358"></a>
+<FONT color="green">359</FONT>         */<a name="line.359"></a>
+<FONT color="green">360</FONT>        public static final class Builder {<a name="line.360"></a>
+<FONT color="green">361</FONT>            private final String table;<a name="line.361"></a>
+<FONT color="green">362</FONT>            private final List&lt;String&gt; columnNames = new ArrayList&lt;String&gt;();<a name="line.362"></a>
+<FONT color="green">363</FONT>            private final Map&lt;String, ValueGenerator&lt;?&gt;&gt; valueGenerators = new LinkedHashMap&lt;String, ValueGenerator&lt;?&gt;&gt;();<a name="line.363"></a>
+<FONT color="green">364</FONT>            private final List&lt;List&lt;?&gt;&gt; rows = new ArrayList&lt;List&lt;?&gt;&gt;();<a name="line.364"></a>
+<FONT color="green">365</FONT>    <a name="line.365"></a>
+<FONT color="green">366</FONT>            private boolean metadataUsed = true;<a name="line.366"></a>
+<FONT color="green">367</FONT>            private final Map&lt;String, Binder&gt; binders = new HashMap&lt;String, Binder&gt;();<a name="line.367"></a>
+<FONT color="green">368</FONT>    <a name="line.368"></a>
+<FONT color="green">369</FONT>            private boolean built;<a name="line.369"></a>
+<FONT color="green">370</FONT>    <a name="line.370"></a>
+<FONT color="green">371</FONT>            private Builder(String table) {<a name="line.371"></a>
+<FONT color="green">372</FONT>                this.table = table;<a name="line.372"></a>
+<FONT color="green">373</FONT>            }<a name="line.373"></a>
+<FONT color="green">374</FONT>    <a name="line.374"></a>
+<FONT color="green">375</FONT>            /**<a name="line.375"></a>
+<FONT color="green">376</FONT>             * Specifies the list of columns into which values will be inserted. The values must the be specified, after,<a name="line.376"></a>
+<FONT color="green">377</FONT>             * using the {@link #values(Object...)} method, or with the {@link #values(java.util.Map)} method, or by adding<a name="line.377"></a>
+<FONT color="green">378</FONT>             * a row with named columns fluently using {@link #row()}.<a name="line.378"></a>
+<FONT color="green">379</FONT>             * @param columns the names of the columns to insert into.<a name="line.379"></a>
+<FONT color="green">380</FONT>             * @return this Builder instance, for chaining.<a name="line.380"></a>
+<FONT color="green">381</FONT>             * @throws IllegalStateException if the Insert has already been built, or if this method has already been<a name="line.381"></a>
+<FONT color="green">382</FONT>             * called, or if one of the given columns is also specified as one of the generated value columns, or if the<a name="line.382"></a>
+<FONT color="green">383</FONT>             * set of columns has already been defined by adding a first row to the builder.<a name="line.383"></a>
+<FONT color="green">384</FONT>             */<a name="line.384"></a>
+<FONT color="green">385</FONT>            public Builder columns(@Nonnull String... columns) {<a name="line.385"></a>
+<FONT color="green">386</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.386"></a>
+<FONT color="green">387</FONT>                Preconditions.checkState(columnNames.isEmpty(), "columns have already been specified");<a name="line.387"></a>
+<FONT color="green">388</FONT>                for (String column : columns) {<a name="line.388"></a>
+<FONT color="green">389</FONT>                    Preconditions.checkNotNull(column, "column may not be null");<a name="line.389"></a>
+<FONT color="green">390</FONT>                    Preconditions.checkState(!valueGenerators.containsKey(column),<a name="line.390"></a>
+<FONT color="green">391</FONT>                                             "column "<a name="line.391"></a>
+<FONT color="green">392</FONT>                                                 + column<a name="line.392"></a>
+<FONT color="green">393</FONT>                                                 + " has already been specified as generated value column");<a name="line.393"></a>
+<FONT color="green">394</FONT>                }<a name="line.394"></a>
+<FONT color="green">395</FONT>                columnNames.addAll(Arrays.asList(columns));<a name="line.395"></a>
+<FONT color="green">396</FONT>                return this;<a name="line.396"></a>
+<FONT color="green">397</FONT>            }<a name="line.397"></a>
+<FONT color="green">398</FONT>    <a name="line.398"></a>
+<FONT color="green">399</FONT>            /**<a name="line.399"></a>
+<FONT color="green">400</FONT>             * Adds a row of values to insert.<a name="line.400"></a>
+<FONT color="green">401</FONT>             * @param values the values to insert.<a name="line.401"></a>
+<FONT color="green">402</FONT>             * @return this Builder instance, for chaining.<a name="line.402"></a>
+<FONT color="green">403</FONT>             * @throws IllegalStateException if the Insert has already been built, or if the number of values doesn't match<a name="line.403"></a>
+<FONT color="green">404</FONT>             * the number of columns.<a name="line.404"></a>
+<FONT color="green">405</FONT>             */<a name="line.405"></a>
+<FONT color="green">406</FONT>            public Builder values(@Nonnull Object... values) {<a name="line.406"></a>
+<FONT color="green">407</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.407"></a>
+<FONT color="green">408</FONT>                Preconditions.checkArgument(values.length == columnNames.size(),<a name="line.408"></a>
+<FONT color="green">409</FONT>                                            "The number of values doesn't match the number of columns");<a name="line.409"></a>
+<FONT color="green">410</FONT>                rows.add(new ArrayList&lt;Object&gt;(Arrays.asList(values)));<a name="line.410"></a>
+<FONT color="green">411</FONT>                return this;<a name="line.411"></a>
+<FONT color="green">412</FONT>            }<a name="line.412"></a>
+<FONT color="green">413</FONT>    <a name="line.413"></a>
+<FONT color="green">414</FONT>            /**<a name="line.414"></a>
+<FONT color="green">415</FONT>             * Starts building a new row with named columns to insert. If the row is the first one being added and the<a name="line.415"></a>
+<FONT color="green">416</FONT>             * columns haven't been set yet by calling &lt;code&gt;columns()&lt;/code&gt;, then the columns of this row constitute the<a name="line.416"></a>
+<FONT color="green">417</FONT>             * column names (excluding the generated ones) of the Insert being built<a name="line.417"></a>
+<FONT color="green">418</FONT>             * @return a {@link RowBuilder} instance, which, when built, will add a row to this insert builder.<a name="line.418"></a>
+<FONT color="green">419</FONT>             * @throws IllegalStateException if the Insert has already been built.<a name="line.419"></a>
+<FONT color="green">420</FONT>             * @see RowBuilder<a name="line.420"></a>
+<FONT color="green">421</FONT>             */<a name="line.421"></a>
+<FONT color="green">422</FONT>            public RowBuilder row() {<a name="line.422"></a>
+<FONT color="green">423</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.423"></a>
+<FONT color="green">424</FONT>                return new RowBuilder(this);<a name="line.424"></a>
+<FONT color="green">425</FONT>            }<a name="line.425"></a>
+<FONT color="green">426</FONT>    <a name="line.426"></a>
+<FONT color="green">427</FONT>            /**<a name="line.427"></a>
+<FONT color="green">428</FONT>             * Adds a row to this builder. If no row has been added yet and the columns haven't been set yet by calling<a name="line.428"></a>
+<FONT color="green">429</FONT>             * &lt;code&gt;columns()&lt;/code&gt;, then the keys of this map constitute the column names (excluding the generated ones)<a name="line.429"></a>
+<FONT color="green">430</FONT>             * of the Insert being built, in the order of the keys in the map (which is arbitrary unless an ordered or<a name="line.430"></a>
+<FONT color="green">431</FONT>             * sorted map is used).<a name="line.431"></a>
+<FONT color="green">432</FONT>             * @param row the row to add. The keys of the map are the column names, which must match with<a name="line.432"></a>
+<FONT color="green">433</FONT>             * the column names specified in the call to {@link #columns(String...)}, or with the column names of the first<a name="line.433"></a>
+<FONT color="green">434</FONT>             * added row. If a column name is not present in the map, null is inserted for this column.<a name="line.434"></a>
+<FONT color="green">435</FONT>             * @return this Builder instance, for chaining.<a name="line.435"></a>
+<FONT color="green">436</FONT>             * @throws IllegalStateException if the Insert has already been built.<a name="line.436"></a>
+<FONT color="green">437</FONT>             * @throws IllegalArgumentException if a column name of the map doesn't match with any of the column names<a name="line.437"></a>
+<FONT color="green">438</FONT>             * specified with {@link #columns(String...)}<a name="line.438"></a>
+<FONT color="green">439</FONT>             */<a name="line.439"></a>
+<FONT color="green">440</FONT>            public Builder values(@Nonnull Map&lt;String, ?&gt; row) {<a name="line.440"></a>
+<FONT color="green">441</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.441"></a>
+<FONT color="green">442</FONT>                Preconditions.checkNotNull(row, "The row may not be null");<a name="line.442"></a>
+<FONT color="green">443</FONT>    <a name="line.443"></a>
+<FONT color="green">444</FONT>                boolean setColumns = rows.isEmpty() &amp;&amp; columnNames.isEmpty();<a name="line.444"></a>
+<FONT color="green">445</FONT>                if (setColumns) {<a name="line.445"></a>
+<FONT color="green">446</FONT>                    columns(row.keySet().toArray(new String[row.size()]));<a name="line.446"></a>
+<FONT color="green">447</FONT>                }<a name="line.447"></a>
+<FONT color="green">448</FONT>                else {<a name="line.448"></a>
+<FONT color="green">449</FONT>                    Set&lt;String&gt; rowColumnNames = new HashSet&lt;String&gt;(row.keySet());<a name="line.449"></a>
+<FONT color="green">450</FONT>                    rowColumnNames.removeAll(columnNames);<a name="line.450"></a>
+<FONT color="green">451</FONT>                    if (!rowColumnNames.isEmpty()) {<a name="line.451"></a>
+<FONT color="green">452</FONT>                        throw new IllegalArgumentException(<a name="line.452"></a>
+<FONT color="green">453</FONT>                            "The following columns of the row don't match with any column name: " + rowColumnNames);<a name="line.453"></a>
+<FONT color="green">454</FONT>                    }<a name="line.454"></a>
+<FONT color="green">455</FONT>                }<a name="line.455"></a>
+<FONT color="green">456</FONT>    <a name="line.456"></a>
+<FONT color="green">457</FONT>                List&lt;Object&gt; values = new ArrayList&lt;Object&gt;(columnNames.size());<a name="line.457"></a>
+<FONT color="green">458</FONT>                for (String columnName : columnNames) {<a name="line.458"></a>
+<FONT color="green">459</FONT>                    values.add(row.get(columnName));<a name="line.459"></a>
+<FONT color="green">460</FONT>                }<a name="line.460"></a>
+<FONT color="green">461</FONT>                rows.add(values);<a name="line.461"></a>
+<FONT color="green">462</FONT>                return this;<a name="line.462"></a>
+<FONT color="green">463</FONT>            }<a name="line.463"></a>
+<FONT color="green">464</FONT>    <a name="line.464"></a>
+<FONT color="green">465</FONT>            /**<a name="line.465"></a>
+<FONT color="green">466</FONT>             * Associates a Binder to one or several columns.<a name="line.466"></a>
+<FONT color="green">467</FONT>             * @param binder the binder to use, regardless of the metadata, for the given columns<a name="line.467"></a>
+<FONT color="green">468</FONT>             * @param columns the name of the columns to associate with the given Binder<a name="line.468"></a>
+<FONT color="green">469</FONT>             * @return this Builder instance, for chaining.<a name="line.469"></a>
+<FONT color="green">470</FONT>             * @throws IllegalStateException if the Insert has already been built,<a name="line.470"></a>
+<FONT color="green">471</FONT>             * @throws IllegalArgumentException if any of the given columns is not<a name="line.471"></a>
+<FONT color="green">472</FONT>             * part of the columns or "generated value" columns.<a name="line.472"></a>
+<FONT color="green">473</FONT>             */<a name="line.473"></a>
+<FONT color="green">474</FONT>            public Builder withBinder(@Nonnull Binder binder, @Nonnull String... columns) {<a name="line.474"></a>
+<FONT color="green">475</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.475"></a>
+<FONT color="green">476</FONT>                Preconditions.checkNotNull(binder, "binder may not be null");<a name="line.476"></a>
+<FONT color="green">477</FONT>                for (String columnName : columns) {<a name="line.477"></a>
+<FONT color="green">478</FONT>                    Preconditions.checkArgument(this.columnNames.contains(columnName)<a name="line.478"></a>
+<FONT color="green">479</FONT>                                                || this.valueGenerators.containsKey(columnName),<a name="line.479"></a>
+<FONT color="green">480</FONT>                                                "column "<a name="line.480"></a>
+<FONT color="green">481</FONT>                                                    + columnName<a name="line.481"></a>
+<FONT color="green">482</FONT>                                                    + " is not one of the registered column names");<a name="line.482"></a>
+<FONT color="green">483</FONT>                    binders.put(columnName, binder);<a name="line.483"></a>
+<FONT color="green">484</FONT>                }<a name="line.484"></a>
+<FONT color="green">485</FONT>                return this;<a name="line.485"></a>
+<FONT color="green">486</FONT>            }<a name="line.486"></a>
+<FONT color="green">487</FONT>    <a name="line.487"></a>
+<FONT color="green">488</FONT>            /**<a name="line.488"></a>
+<FONT color="green">489</FONT>             * Specifies a default value to be inserted in a column for all the rows inserted by the Insert operation.<a name="line.489"></a>
+<FONT color="green">490</FONT>             * Calling this method is equivalent to calling<a name="line.490"></a>
+<FONT color="green">491</FONT>             * &lt;code&gt;withGeneratedValue(column, ValueGenerators.constant(value))&lt;/code&gt;<a name="line.491"></a>
+<FONT color="green">492</FONT>             * @param column the name of the column<a name="line.492"></a>
+<FONT color="green">493</FONT>             * @param value the default value to insert into the column<a name="line.493"></a>
+<FONT color="green">494</FONT>             * @return this Builder instance, for chaining.<a name="line.494"></a>
+<FONT color="green">495</FONT>             * @throws IllegalStateException if the Insert has already been built, or if the given column is part<a name="line.495"></a>
+<FONT color="green">496</FONT>             * of the columns to insert.<a name="line.496"></a>
+<FONT color="green">497</FONT>             */<a name="line.497"></a>
+<FONT color="green">498</FONT>            public Builder withDefaultValue(@Nonnull String column, Object value) {<a name="line.498"></a>
+<FONT color="green">499</FONT>                return withGeneratedValue(column, ValueGenerators.constant(value));<a name="line.499"></a>
+<FONT color="green">500</FONT>            }<a name="line.500"></a>
+<FONT color="green">501</FONT>    <a name="line.501"></a>
+<FONT color="green">502</FONT>            /**<a name="line.502"></a>
+<FONT color="green">503</FONT>             * Allows the given column to be populated by a value generator, which will be called for every row of the<a name="line.503"></a>
+<FONT color="green">504</FONT>             * Insert operation being built.<a name="line.504"></a>
+<FONT color="green">505</FONT>             * @param column the name of the column<a name="line.505"></a>
+<FONT color="green">506</FONT>             * @param valueGenerator the generator generating values for the given column of every row<a name="line.506"></a>
+<FONT color="green">507</FONT>             * @return this Builder instance, for chaining.<a name="line.507"></a>
+<FONT color="green">508</FONT>             * @throws IllegalStateException if the Insert has already been built, or if the given column is part<a name="line.508"></a>
+<FONT color="green">509</FONT>             * of the columns to insert.<a name="line.509"></a>
+<FONT color="green">510</FONT>             */<a name="line.510"></a>
+<FONT color="green">511</FONT>            public Builder withGeneratedValue(@Nonnull String column, @Nonnull ValueGenerator&lt;?&gt; valueGenerator) {<a name="line.511"></a>
+<FONT color="green">512</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.512"></a>
+<FONT color="green">513</FONT>                Preconditions.checkNotNull(column, "column may not be null");<a name="line.513"></a>
+<FONT color="green">514</FONT>                Preconditions.checkNotNull(valueGenerator, "valueGenerator may not be null");<a name="line.514"></a>
+<FONT color="green">515</FONT>                Preconditions.checkArgument(!columnNames.contains(column),<a name="line.515"></a>
+<FONT color="green">516</FONT>                                            "column "<a name="line.516"></a>
+<FONT color="green">517</FONT>                                            + column<a name="line.517"></a>
+<FONT color="green">518</FONT>                                            + " is already listed in the list of column names");<a name="line.518"></a>
+<FONT color="green">519</FONT>                valueGenerators.put(column, valueGenerator);<a name="line.519"></a>
+<FONT color="green">520</FONT>                return this;<a name="line.520"></a>
+<FONT color="green">521</FONT>            }<a name="line.521"></a>
+<FONT color="green">522</FONT>    <a name="line.522"></a>
+<FONT color="green">523</FONT>            /**<a name="line.523"></a>
+<FONT color="green">524</FONT>             * Determines if the metadata must be used to get the appropriate binder for each inserted column (except<a name="line.524"></a>
+<FONT color="green">525</FONT>             * the ones which have been associated explicitely with a Binder). The default is &lt;code&gt;true&lt;/code&gt;. The insert<a name="line.525"></a>
+<FONT color="green">526</FONT>             * can be faster if set to &lt;code&gt;false&lt;/code&gt;, but in this case, the binder used will be the one returned<a name="line.526"></a>
+<FONT color="green">527</FONT>             * by the {@link BinderConfiguration} for a null metadata (which is, by default, the<a name="line.527"></a>
+<FONT color="green">528</FONT>             * {@link Binders#defaultBinder() default binder}), except the ones which have been associated explicitely with<a name="line.528"></a>
+<FONT color="green">529</FONT>             * a Binder.&lt;br/&gt;<a name="line.529"></a>
+<FONT color="green">530</FONT>             * Before version 1.3.0, a SQLException was thrown if the database doesn't support parameter metadata and<a name="line.530"></a>
+<FONT color="green">531</FONT>             * &lt;code&gt;useMetadata(false)&lt;/code&gt; wasn't called. Since version 1.3.0, if &lt;code&gt;useMetadata&lt;/code&gt; is true<a name="line.531"></a>
+<FONT color="green">532</FONT>             * (the default) but the database doesn't support metadata, then the default binder configuration returns the<a name="line.532"></a>
+<FONT color="green">533</FONT>             * default binder. Using this method is thus normally unnecessary as of 1.3.0.<a name="line.533"></a>
+<FONT color="green">534</FONT>             * @return this Builder instance, for chaining.<a name="line.534"></a>
+<FONT color="green">535</FONT>             * @throws IllegalStateException if the Insert has already been built.<a name="line.535"></a>
+<FONT color="green">536</FONT>             */<a name="line.536"></a>
+<FONT color="green">537</FONT>            public Builder useMetadata(boolean useMetadata) {<a name="line.537"></a>
+<FONT color="green">538</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.538"></a>
+<FONT color="green">539</FONT>                this.metadataUsed = useMetadata;<a name="line.539"></a>
+<FONT color="green">540</FONT>                return this;<a name="line.540"></a>
+<FONT color="green">541</FONT>            }<a name="line.541"></a>
+<FONT color="green">542</FONT>    <a name="line.542"></a>
+<FONT color="green">543</FONT>            /**<a name="line.543"></a>
+<FONT color="green">544</FONT>             * Builds the Insert operation.<a name="line.544"></a>
+<FONT color="green">545</FONT>             * @return the created Insert operation.<a name="line.545"></a>
+<FONT color="green">546</FONT>             * @throws IllegalStateException if the Insert has already been built, or if no column and no generated value<a name="line.546"></a>
+<FONT color="green">547</FONT>             * column has been specified.<a name="line.547"></a>
+<FONT color="green">548</FONT>             */<a name="line.548"></a>
+<FONT color="green">549</FONT>            public Insert build() {<a name="line.549"></a>
+<FONT color="green">550</FONT>                Preconditions.checkState(!built, "The insert has already been built");<a name="line.550"></a>
+<FONT color="green">551</FONT>                Preconditions.checkState(!this.columnNames.isEmpty() || !this.valueGenerators.isEmpty(),<a name="line.551"></a>
+<FONT color="green">552</FONT>                                         "no column and no generated value column has been specified");<a name="line.552"></a>
+<FONT color="green">553</FONT>                built = true;<a name="line.553"></a>
+<FONT color="green">554</FONT>                return new Insert(this);<a name="line.554"></a>
+<FONT color="green">555</FONT>            }<a name="line.555"></a>
+<FONT color="green">556</FONT>        }<a name="line.556"></a>
+<FONT color="green">557</FONT>    <a name="line.557"></a>
+<FONT color="green">558</FONT>        /**<a name="line.558"></a>
+<FONT color="green">559</FONT>         * A row builder, constructed with {@link com.ninja_squad.dbsetup.operation.Insert.Builder#row()}. This builder<a name="line.559"></a>
+<FONT color="green">560</FONT>         * allows adding a row with named columns to an Insert:<a name="line.560"></a>
+<FONT color="green">561</FONT>         *<a name="line.561"></a>
+<FONT color="green">562</FONT>         * &lt;pre&gt;<a name="line.562"></a>
+<FONT color="green">563</FONT>         *   Insert insert =<a name="line.563"></a>
+<FONT color="green">564</FONT>         *       Insert.into("CLIENT")<a name="line.564"></a>
+<FONT color="green">565</FONT>         *             .columns("CLIENT_ID", "FIRST_NAME", "LAST_NAME", "DATE_OF_BIRTH", "CLIENT_TYPE")<a name="line.565"></a>
+<FONT color="green">566</FONT>         *             .row().column("CLIENT_ID", 1L)<a name="line.566"></a>
+<FONT color="green">567</FONT>         *                   .column("FIRST_NAME", "John")<a name="line.567"></a>
+<FONT color="green">568</FONT>         *                   .column("LAST_NAME", "Doe")<a name="line.568"></a>
+<FONT color="green">569</FONT>         *                   .column("DATE_OF_BIRTH", "1975-07-19")<a name="line.569"></a>
+<FONT color="green">570</FONT>         *                   .column("CLIENT_TYPE", ClientType.NORMAL)<a name="line.570"></a>
+<FONT color="green">571</FONT>         *                   .end()<a name="line.571"></a>
+<FONT color="green">572</FONT>         *             .row().column("CLIENT_ID", 2L)<a name="line.572"></a>
+<FONT color="green">573</FONT>         *                   .column("FIRST_NAME", "Jack")<a name="line.573"></a>
+<FONT color="green">574</FONT>         *                   .column("LAST_NAME", "Smith")<a name="line.574"></a>
+<FONT color="green">575</FONT>         *                   .column("DATE_OF_BIRTH", "1969-08-22")<a name="line.575"></a>
+<FONT color="green">576</FONT>         *                   .column("CLIENT_TYPE", ClientType.HIGH_PRIORITY)<a name="line.576"></a>
+<FONT color="green">577</FONT>         *                   .end()<a name="line.577"></a>
+<FONT color="green">578</FONT>         *             .build();<a name="line.578"></a>
+<FONT color="green">579</FONT>         * &lt;/pre&gt;<a name="line.579"></a>
+<FONT color="green">580</FONT>         *<a name="line.580"></a>
+<FONT color="green">581</FONT>         * You may omit the call to &lt;code&gt;columns()&lt;/code&gt;. In that case, the columns of the Insert will be the columns<a name="line.581"></a>
+<FONT color="green">582</FONT>         * specified in the first added row.<a name="line.582"></a>
+<FONT color="green">583</FONT>         */<a name="line.583"></a>
+<FONT color="green">584</FONT>        public static final class RowBuilder {<a name="line.584"></a>
+<FONT color="green">585</FONT>            private final Builder builder;<a name="line.585"></a>
+<FONT color="green">586</FONT>            private final Map&lt;String, Object&gt; row;<a name="line.586"></a>
+<FONT color="green">587</FONT>            private boolean ended;<a name="line.587"></a>
+<FONT color="green">588</FONT>    <a name="line.588"></a>
+<FONT color="green">589</FONT>            private RowBuilder(Builder builder) {<a name="line.589"></a>
+<FONT color="green">590</FONT>                this.builder = builder;<a name="line.590"></a>
+<FONT color="green">591</FONT>                // note: very important to use a LinkedHashMap here, to guarantee the ordering of the columns.<a name="line.591"></a>
+<FONT color="green">592</FONT>                this.row = new LinkedHashMap&lt;String, Object&gt;();<a name="line.592"></a>
+<FONT color="green">593</FONT>            }<a name="line.593"></a>
+<FONT color="green">594</FONT>    <a name="line.594"></a>
+<FONT color="green">595</FONT>            /**<a name="line.595"></a>
+<FONT color="green">596</FONT>             * Adds a new named column to the row. If a previous value has already been added for the same column, it's<a name="line.596"></a>
+<FONT color="green">597</FONT>             * replaced by this new value.<a name="line.597"></a>
+<FONT color="green">598</FONT>             * @param name the name of the column, which must match with a column name defined in the Insert Builder<a name="line.598"></a>
+<FONT color="green">599</FONT>             * @param value the value of the column for the constructed row<a name="line.599"></a>
+<FONT color="green">600</FONT>             * @return this builder, for chaining<a name="line.600"></a>
+<FONT color="green">601</FONT>             * @throws IllegalArgumentException if the given name is not the name of one of the columns to insert<a name="line.601"></a>
+<FONT color="green">602</FONT>             */<a name="line.602"></a>
+<FONT color="green">603</FONT>            public RowBuilder column(@Nonnull String name, Object value) {<a name="line.603"></a>
+<FONT color="green">604</FONT>                Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");<a name="line.604"></a>
+<FONT color="green">605</FONT>                if (!builder.columnNames.isEmpty()) {<a name="line.605"></a>
+<FONT color="green">606</FONT>                    Preconditions.checkNotNull(name, "the column name may not be null");<a name="line.606"></a>
+<FONT color="green">607</FONT>                    Preconditions.checkArgument(builder.columnNames.contains(name),<a name="line.607"></a>
+<FONT color="green">608</FONT>                                                "column " + name + " is not one of the registered column names");<a name="line.608"></a>
+<FONT color="green">609</FONT>                }<a name="line.609"></a>
+<FONT color="green">610</FONT>                row.put(name, value);<a name="line.610"></a>
+<FONT color="green">611</FONT>                return this;<a name="line.611"></a>
+<FONT color="green">612</FONT>            }<a name="line.612"></a>
+<FONT color="green">613</FONT>    <a name="line.613"></a>
+<FONT color="green">614</FONT>            /**<a name="line.614"></a>
+<FONT color="green">615</FONT>             * Ends the row, adds it to the Insert Builder and returns it, for chaining.<a name="line.615"></a>
+<FONT color="green">616</FONT>             * @return the Insert Builder<a name="line.616"></a>
+<FONT color="green">617</FONT>             */<a name="line.617"></a>
+<FONT color="green">618</FONT>            public Builder end() {<a name="line.618"></a>
+<FONT color="green">619</FONT>                Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");<a name="line.619"></a>
+<FONT color="green">620</FONT>                ended = true;<a name="line.620"></a>
+<FONT color="green">621</FONT>                return builder.values(row);<a name="line.621"></a>
+<FONT color="green">622</FONT>            }<a name="line.622"></a>
+<FONT color="green">623</FONT>        }<a name="line.623"></a>
+<FONT color="green">624</FONT>    }<a name="line.624"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>
