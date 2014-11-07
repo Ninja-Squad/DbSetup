@@ -24,8 +24,8 @@
 
 package com.ninja_squad.dbsetup.bind;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -37,7 +37,8 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Calendar;
 
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
 
 public class BindersTest {
 
@@ -286,14 +287,14 @@ public class BindersTest {
     public void integerBinderBindsBigInteger() throws SQLException {
         Binder binder = Binders.integerBinder();
         binder.bind(stmt, 1, new BigInteger("12"));
-        verify(stmt).setObject(1, new BigInteger("12"), Types.BIGINT);
+        verify(stmt).setObject(1, "12", Types.BIGINT);
     }
 
     @Test
     public void integerBinderBindsString() throws SQLException {
         Binder binder = Binders.integerBinder();
         binder.bind(stmt, 1, "12");
-        verify(stmt).setObject(1, new BigInteger("12"), Types.BIGINT);
+        verify(stmt).setObject(1, "12", Types.BIGINT);
     }
 
     @Test

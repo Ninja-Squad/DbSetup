@@ -142,9 +142,13 @@ public final class Binders {
     /**
      * Returns a binder suitable for numeric, integer columns. The returned binder supports values of type
      * <ul>
+     *   <li><code>BigInteger</code>: the object is transformed to a String and bound using
+     *       <code>stmt.setObject()</code>, with <code>BIGINT</code> as target type.
+     *   </li>
      *   <li><code>enum</code>: the enum is transformed into an integer by taking its ordinal</li>
-     *   <li><code>String</code>: the string is transformed to a <code>java.math.BigInteger</code> using its
-     *      constructor</li>
+     *   <li><code>String</code>: the string is bound using <code>stmt.setObject()</code>, with <code>BIGINT</code> as
+     *       target type.
+     *   </li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
@@ -217,13 +221,13 @@ public final class Binders {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
             if (value instanceof BigInteger) {
-                stmt.setObject(param, value, Types.BIGINT);
+                stmt.setObject(param, value.toString(), Types.BIGINT);
             }
             else if (value instanceof Enum<?>) {
                 stmt.setInt(param, ((Enum<?>) value).ordinal());
             }
             else if (value instanceof String) {
-                stmt.setObject(param, new BigInteger((String) value), Types.BIGINT);
+                stmt.setObject(param, value, Types.BIGINT);
             }
             else {
                 stmt.setObject(param, value);
