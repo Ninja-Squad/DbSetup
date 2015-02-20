@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2012-2013, Ninja Squad
+ * Copyright (c) 2012-2015, Ninja Squad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,6 @@
 
 package com.ninja_squad.dbsetup.operation;
 
-import com.ninja_squad.dbsetup.bind.Binder;
-import com.ninja_squad.dbsetup.bind.BinderConfiguration;
-import com.ninja_squad.dbsetup.bind.Binders;
-import com.ninja_squad.dbsetup.generator.ValueGenerator;
-import com.ninja_squad.dbsetup.generator.ValueGenerators;
-import com.ninja_squad.dbsetup.util.Preconditions;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import java.sql.Connection;
@@ -46,6 +39,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.ninja_squad.dbsetup.bind.Binder;
+import com.ninja_squad.dbsetup.bind.BinderConfiguration;
+import com.ninja_squad.dbsetup.bind.Binders;
+import com.ninja_squad.dbsetup.generator.ValueGenerator;
+import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import com.ninja_squad.dbsetup.util.Preconditions;
 
 /**
  * Operation which inserts one or several rows into a table. Example usage:
@@ -233,6 +233,13 @@ public final class Insert implements Operation {
         finally {
             stmt.close();
         }
+    }
+
+    /**
+     * Gets the number of rows that are inserted in the database table when this insert operation is executed.
+     */
+    public int getRowCount() {
+        return rows.size();
     }
 
     private String generateSqlQuery(List<String> allColumnNames) {

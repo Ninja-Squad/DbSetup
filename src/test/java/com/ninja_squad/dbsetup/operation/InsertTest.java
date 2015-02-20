@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2012, Ninja Squad
+ * Copyright (c) 2012-2015, Ninja Squad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +24,8 @@
 
 package com.ninja_squad.dbsetup.operation;
 
-import com.ninja_squad.dbsetup.bind.Binder;
-import com.ninja_squad.dbsetup.bind.BinderConfiguration;
-import com.ninja_squad.dbsetup.bind.Binders;
-import com.ninja_squad.dbsetup.generator.ValueGenerators;
-import org.junit.Test;
-import org.mockito.InOrder;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
@@ -38,8 +34,12 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import com.ninja_squad.dbsetup.bind.Binder;
+import com.ninja_squad.dbsetup.bind.BinderConfiguration;
+import com.ninja_squad.dbsetup.bind.Binders;
+import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import org.junit.Test;
+import org.mockito.InOrder;
 
 /**
  * @author JB Nizet
@@ -345,5 +345,15 @@ public class InsertTest {
                         .useMetadata(false)
                         .build();
         assertFalse(insertA.equals(insertB));
+    }
+
+    @Test
+    public void getRowCountWorks() {
+        Insert insert = Insert.into("A")
+                              .columns("a", "b")
+                              .values("a1", "b1")
+                              .values("a2", "b2")
+                              .build();
+        assertEquals(2, insert.getRowCount());
     }
 }
