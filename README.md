@@ -32,7 +32,7 @@ from the gh-pages branch.
 
 # Bugs and RFEs
 
-To submit bugs or RFEs, sign up on [our JIRA instance](https://ninjasquad.atlassian.net), hosted by Atlassian.
+To submit bugs or RFEs, use [Github](https://github.com/Ninja-Squad/DbSetup/issues).
 
 # How to...
 ## build
