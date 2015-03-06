@@ -560,6 +560,25 @@ public final class Insert implements Operation {
             built = true;
             return new Insert(this);
         }
+
+        @Override
+        public String toString() {
+            return "insert into "
+                + table
+                + " [columns="
+                + columnNames
+                + ", rows="
+                + rows
+                + ", valueGenerators="
+                + valueGenerators
+                + ", metadataUsed="
+                + metadataUsed
+                + ", binders="
+                + binders
+                + ", built="
+                + built
+                + "]";
+        }
     }
 
     /**

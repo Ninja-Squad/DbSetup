@@ -255,6 +255,40 @@ public class InsertTest {
     }
 
     @Test
+    public void builderToStringWorks() {
+        Insert.Builder builder =  Insert.into("A");
+
+        assertNotNull(builder.toString());
+
+        builder.columns("a", "b");
+
+        assertNotNull(builder.toString());
+
+        builder.values("a1", "b1")
+               .values("a2", "b2");
+
+        assertNotNull(builder.toString());
+
+        builder.withDefaultValue("c", "c3")
+               .withDefaultValue("d", "d4");
+
+        assertNotNull(builder.toString());
+
+        builder.withBinder(Binders.decimalBinder(), "b")
+               .withBinder(Binders.dateBinder(), "d");
+
+        assertNotNull(builder.toString());
+
+        builder.useMetadata(false);
+
+        assertNotNull(builder.toString());
+
+        builder.build();
+
+        assertNotNull(builder.toString());
+    }
+
+    @Test
     public void equalsAndHashCodeWork() {
         Insert insertA = Insert.into("A")
                                .columns("a", "b")
