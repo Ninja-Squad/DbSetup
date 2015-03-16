@@ -390,4 +390,105 @@ public class InsertTest {
                               .build();
         assertEquals(2, insert.getRowCount());
     }
+
+    @Test
+    public void should_use_object_to_populate_insert() throws Exception {
+        //Given
+        InsertTest.ValuesObject firstObject = new ValuesObject();
+        firstObject.setA("a1");
+        firstObject.setB(true);
+        firstObject.setC(31);
+        InsertTest.ValuesObject secondObject = new ValuesObject();
+        firstObject.setA("a2");
+        firstObject.setB(false);
+        firstObject.setC(32);
+        //When
+        final Insert a_using_values = Insert.into("A")
+                .columns("a", "b", "c")
+                .values(firstObject.getA(), firstObject.isB(), firstObject.getC())
+                .values(secondObject.getA(), secondObject.isB(), secondObject.getC())
+                .values("a3", null, 33)
+                .build();
+        final Insert a_using_object = Insert.into("A")
+                .columns("a", "b", "c")
+                .object(firstObject)
+                .object(secondObject)
+                .values("a3", null, 33)
+                .build();
+        //Then
+        assertEquals(a_using_object, a_using_values);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void unable_to_use_object_if_object_null() throws Exception {
+        //Given
+
+        //When
+        Insert.into("A")
+                .columns("a", "b", "c")
+                .object(null)
+                .build();
+        //Then
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void unable_to_use_object_if_object_dont_have_all_columns() throws Exception {
+        //Given
+        InsertTest.ValuesObject object = new ValuesObject();
+        object.setA("a1");
+        object.setB(true);
+        object.setC(31);
+        //When
+        Insert.into("A")
+                .columns("a", "b", "c", "d")
+                .object(object)
+                .build();
+        //Then
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void unable_to_use_object_if_object_dont_the_same_number_of_field_as_columns() throws Exception {
+        //Given
+        InsertTest.ValuesObject object = new ValuesObject();
+        object.setA("a1");
+        object.setB(true);
+        object.setC(31);
+        //When
+        Insert.into("A")
+                .columns("d", "e", "f")
+                .object(object)
+                .build();
+        //Then
+    }
+
+
+    class ValuesObject {
+        private String a;
+        private boolean b;
+        private int c;
+
+        public String getA() {
+            return a;
+        }
+
+        public void setA(String a) {
+            this.a = a;
+        }
+
+        public boolean isB() {
+            return b;
+        }
+
+        public void setB(boolean b) {
+            this.b = b;
+        }
+
+        public int getC() {
+            return c;
+        }
+
+        public void setC(int c) {
+            this.c = c;
+        }
+    }
 }

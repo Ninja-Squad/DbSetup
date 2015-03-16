@@ -39,6 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.lang.reflect.Field;
 
 import com.ninja_squad.dbsetup.bind.Binder;
 import com.ninja_squad.dbsetup.bind.BinderConfiguration;
@@ -413,8 +414,43 @@ public final class Insert implements Operation {
         public Builder values(@Nonnull Object... values) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkArgument(values.length == columnNames.size(),
-                                        "The number of values doesn't match the number of columns");
+                    "The number of values doesn't match the number of columns");
             rows.add(new ArrayList<Object>(Arrays.asList(values)));
+            return this;
+        }
+
+        /**
+         * Adds a row of values (extracted from object) to insert.
+         *
+         * @param object the object containing the values.
+         * @return this Builder instance, for chaining.
+         * @throws IllegalStateException if the Insert has already been built, or if the object is null or not contains all necessary values.
+         */
+        public Builder object(Object object) throws IllegalAccessException {
+            Preconditions.checkState(!built, "The insert has already been built");
+            Preconditions.checkState((null != object), "The object is null");
+            final Field[] declaredFields = object.getClass().getDeclaredFields();
+            final Map<String, Field> index = new HashMap<String, Field>();
+            for (Field field : declaredFields) {
+                index.put(field.getName(), field);
+            }
+            if (index.keySet().size()-1 < columnNames.size()) {
+                throw new IllegalArgumentException("The object doesn't have all fields regarding the columnNames");
+            }
+            Set<String> rowColumnNames = new HashSet<String>(columnNames);
+            rowColumnNames.removeAll(index.keySet());
+            if (!rowColumnNames.isEmpty()) {
+                throw new IllegalArgumentException(
+                        "The following columns of the row don't match with any column name: " + rowColumnNames);
+            }
+
+            List<Object> values = new ArrayList<Object>(columnNames.size());
+            for (String columnName : columnNames) {
+                final Field field = index.get(columnName);
+                field.setAccessible(true);
+                values.add(field.get(object));
+            }
+            rows.add(values);
             return this;
         }
 
