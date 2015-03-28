@@ -24,14 +24,13 @@
 
 package com.ninja_squad.dbsetup.operation;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 
 import com.ninja_squad.dbsetup.bind.BinderConfiguration;
 
@@ -100,7 +99,7 @@ public final class CompositeOperation implements Operation {
         boolean first = true;
         for (Operation operation : operations) {
             if (!first) {
-                builder.append("\n");
+                builder.append('\n');
             }
             else {
                 first = false;

@@ -254,12 +254,12 @@ public final class Insert implements Operation {
         sql.append(") values (");
         for (Iterator<String> it = allColumnNames.iterator(); it.hasNext(); ) {
             it.next();
-            sql.append("?");
+            sql.append('?');
             if (it.hasNext()) {
                 sql.append(", ");
             }
         }
-        sql.append(")");
+        sql.append(')');
 
         return sql.toString();
     }

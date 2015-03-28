@@ -78,6 +78,7 @@ pmdMain {
 }
 
 findbugs {
+    toolVersion = '2.0.3'
     sourceSets = [sourceSets.main]
     ignoreFailures = true
 }
@@ -243,5 +244,5 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.8'
+    gradleVersion = '2.3'
 }

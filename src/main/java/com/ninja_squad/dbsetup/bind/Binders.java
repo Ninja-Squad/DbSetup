@@ -196,8 +196,8 @@ public final class Binders {
             else if (value instanceof java.util.Date) {
                 stmt.setTime(param, new Time(((java.util.Date) value).getTime()));
             }
-            else if (value instanceof java.util.Calendar) {
-                stmt.setTime(param, new Time(((java.util.Calendar) value).getTimeInMillis()));
+            else if (value instanceof Calendar) {
+                stmt.setTime(param, new Time(((Calendar) value).getTimeInMillis()));
             }
             else if (value instanceof String) {
                 stmt.setTime(param, Time.valueOf((String) value));
@@ -277,8 +277,8 @@ public final class Binders {
             else if (value instanceof java.util.Date) {
                 stmt.setTimestamp(param, new Timestamp(((java.util.Date) value).getTime()));
             }
-            else if (value instanceof java.util.Calendar) {
-                stmt.setTimestamp(param, new Timestamp(((java.util.Calendar) value).getTimeInMillis()));
+            else if (value instanceof Calendar) {
+                stmt.setTimestamp(param, new Timestamp(((Calendar) value).getTimeInMillis()));
             }
             else if (value instanceof String) {
                 String valueAsString = (String) value;
@@ -314,8 +314,8 @@ public final class Binders {
             else if (value instanceof java.util.Date) {
                 stmt.setDate(param, new Date(((java.util.Date) value).getTime()));
             }
-            else if (value instanceof java.util.Calendar) {
-                stmt.setDate(param, new Date(((java.util.Calendar) value).getTimeInMillis()));
+            else if (value instanceof Calendar) {
+                stmt.setDate(param, new Date(((Calendar) value).getTimeInMillis()));
             }
             else if (value instanceof String) {
                 stmt.setDate(param, Date.valueOf((String) value));
