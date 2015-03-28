@@ -20,6 +20,7 @@ apply plugin : 'jacoco'
 apply plugin : 'maven'
 apply plugin : 'signing'
 apply plugin : 'javadocHotfix'
+apply plugin : 'osgi'
 
 group = 'com.ninja-squad'
 sourceCompatibility = 1.6
@@ -103,6 +104,13 @@ def sharedManifest = manifest {
 jar {
     manifest { 
         from sharedManifest
+        instruction 'Bundle-Vendor', 'ninja-squad.com'
+        instructionReplace 'Export-Package',
+                           'com.ninja_squad.dbsetup',
+                           'com.ninja_squad.dbsetup.bind',
+                           'com.ninja_squad.dbsetup.destination',
+                           'com.ninja_squad.dbsetup.generator',
+                           'com.ninja_squad.dbsetup.operation'
     }
 }
 
