@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<TITLE>
+Operations (DbSetup 1.5.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Operations (DbSetup 1.5.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/DbSetupTracker.html" title="class in com.ninja_squad.dbsetup"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../index.html?com/ninja_squad/dbsetup/Operations.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="Operations.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+com.ninja_squad.dbsetup</FONT>
+<BR>
+Class Operations</H2>
+<PRE>
+java.lang.Object
+  <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>com.ninja_squad.dbsetup.Operations</B>
+</PRE>
+<HR>
+<DL>
+<DT><PRE>public final class <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.42"><B>Operations</B></A><DT>extends java.lang.Object</DL>
+</PRE>
+
+<P>
+A static factory class for operations. Static import of this class can help make the code more readable.
+<P>
+
+<P>
+<HR>
+
+<P>
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#deleteAllFrom(java.util.List)">deleteAllFrom</A></B>(java.util.List&lt;java.lang.String&gt;&nbsp;tables)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of <code>delete from ...</code> operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#deleteAllFrom(java.lang.String...)">deleteAllFrom</A></B>(java.lang.String...&nbsp;tables)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of <code>delete from table</code> operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/DeleteAll.html" title="class in com.ninja_squad.dbsetup.operation">DeleteAll</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#deleteAllFrom(java.lang.String)">deleteAllFrom</A></B>(java.lang.String&nbsp;table)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a <code>delete from table</code> operation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#insertInto(java.lang.String)">insertInto</A></B>(java.lang.String&nbsp;table)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a builder for a sequence of insert operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#sequenceOf(java.util.List)">sequenceOf</A></B>(java.util.List&lt;? extends <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A>&gt;&nbsp;operations)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#sequenceOf(com.ninja_squad.dbsetup.operation.Operation...)">sequenceOf</A></B>(<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A>...&nbsp;operations)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#sql(java.util.List)">sql</A></B>(java.util.List&lt;java.lang.String&gt;&nbsp;sqlStatements)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of SQL operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#sql(java.lang.String...)">sql</A></B>(java.lang.String...&nbsp;sqlStatements)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of SQL operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/SqlOperation.html" title="class in com.ninja_squad.dbsetup.operation">SqlOperation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#sql(java.lang.String)">sql</A></B>(java.lang.String&nbsp;sqlStatement)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a SQL operation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#truncate(java.util.List)">truncate</A></B>(java.util.List&lt;java.lang.String&gt;&nbsp;tables)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of <code>truncate table ...</code> operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#truncate(java.lang.String...)">truncate</A></B>(java.lang.String...&nbsp;tables)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a sequence of <code>truncate table ...</code> operations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/operation/Truncate.html" title="class in com.ninja_squad.dbsetup.operation">Truncate</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/ninja_squad/dbsetup/Operations.html#truncate(java.lang.String)">truncate</A></B>(java.lang.String&nbsp;table)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a <code>truncate table ...</code> operation.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="deleteAllFrom(java.lang.String)"><!-- --></A><H3>
+deleteAllFrom</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/DeleteAll.html" title="class in com.ninja_squad.dbsetup.operation">DeleteAll</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.51"><B>deleteAllFrom</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                      java.lang.String&nbsp;table)</PRE>
+<DL>
+<DD>Creates a <code>delete from table</code> operation.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>table</CODE> - the table to delete all from<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/DeleteAll.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>DeleteAll</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="deleteAllFrom(java.lang.String...)"><!-- --></A><H3>
+deleteAllFrom</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.60"><B>deleteAllFrom</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                      java.lang.String...&nbsp;tables)</PRE>
+<DL>
+<DD>Creates a sequence of <code>delete from table</code> operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>tables</CODE> - the tables to delete all from<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/DeleteAll.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>DeleteAll</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="deleteAllFrom(java.util.List)"><!-- --></A><H3>
+deleteAllFrom</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.69"><B>deleteAllFrom</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                      java.util.List&lt;java.lang.String&gt;&nbsp;tables)</PRE>
+<DL>
+<DD>Creates a sequence of <code>delete from ...</code> operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>tables</CODE> - the tables to delete all from<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/DeleteAll.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>DeleteAll</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="truncate(java.lang.String)"><!-- --></A><H3>
+truncate</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Truncate.html" title="class in com.ninja_squad.dbsetup.operation">Truncate</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.78"><B>truncate</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                java.lang.String&nbsp;table)</PRE>
+<DL>
+<DD>Creates a <code>truncate table ...</code> operation.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>table</CODE> - the table to truncate<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/Truncate.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>Truncate</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="truncate(java.lang.String...)"><!-- --></A><H3>
+truncate</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.87"><B>truncate</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                 java.lang.String...&nbsp;tables)</PRE>
+<DL>
+<DD>Creates a sequence of <code>truncate table ...</code> operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>tables</CODE> - the tables to truncate<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/Truncate.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>Truncate</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="truncate(java.util.List)"><!-- --></A><H3>
+truncate</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.96"><B>truncate</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                 java.util.List&lt;java.lang.String&gt;&nbsp;tables)</PRE>
+<DL>
+<DD>Creates a sequence of <code>truncate table ...</code> operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>tables</CODE> - the tables to truncate<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/Truncate.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>Truncate</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="sql(java.lang.String)"><!-- --></A><H3>
+sql</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/SqlOperation.html" title="class in com.ninja_squad.dbsetup.operation">SqlOperation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.105"><B>sql</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                               java.lang.String&nbsp;sqlStatement)</PRE>
+<DL>
+<DD>Creates a SQL operation.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>sqlStatement</CODE> - the SQL statement to execute (using <CODE>Statement.executeUpdate(String)</CODE>)<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/SqlOperation.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>SqlOperation</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="sql(java.lang.String...)"><!-- --></A><H3>
+sql</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.114"><B>sql</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                            java.lang.String...&nbsp;sqlStatements)</PRE>
+<DL>
+<DD>Creates a sequence of SQL operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>sqlStatements</CODE> - the SQL statements to execute (using <CODE>Statement.executeUpdate(String)</CODE>)<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/SqlOperation.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>SqlOperation</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="sql(java.util.List)"><!-- --></A><H3>
+sql</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.123"><B>sql</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                            java.util.List&lt;java.lang.String&gt;&nbsp;sqlStatements)</PRE>
+<DL>
+<DD>Creates a sequence of SQL operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>sqlStatements</CODE> - the SQL statements to execute (using <CODE>Statement.executeUpdate(String)</CODE>)<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/SqlOperation.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>SqlOperation</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="insertInto(java.lang.String)"><!-- --></A><H3>
+insertInto</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Insert.Builder.html" title="class in com.ninja_squad.dbsetup.operation">Insert.Builder</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.132"><B>insertInto</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                        java.lang.String&nbsp;table)</PRE>
+<DL>
+<DD>Creates a builder for a sequence of insert operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>table</CODE> - the table to insert into<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/Insert.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>Insert</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="sequenceOf(com.ninja_squad.dbsetup.operation.Operation...)"><!-- --></A><H3>
+sequenceOf</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.141"><B>sequenceOf</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                   <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A>...&nbsp;operations)</PRE>
+<DL>
+<DD>Creates a sequence of operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>operations</CODE> - the operations to put in a sequence<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/CompositeOperation.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>CompositeOperation</CODE></A></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="sequenceOf(java.util.List)"><!-- --></A><H3>
+sequenceOf</H3>
+<PRE>
+public static <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A> <A HREF="../../../src-html/com/ninja_squad/dbsetup/Operations.html#line.150"><B>sequenceOf</B></A>(<FONT SIZE="-1">@Nonnull</FONT>
+                                   java.util.List&lt;? extends <A HREF="../../../com/ninja_squad/dbsetup/operation/Operation.html" title="interface in com.ninja_squad.dbsetup.operation">Operation</A>&gt;&nbsp;operations)</PRE>
+<DL>
+<DD>Creates a sequence of operations.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>operations</CODE> - the operations to put in a sequence<DT><B>See Also:</B><DD><A HREF="../../../com/ninja_squad/dbsetup/operation/CompositeOperation.html" title="class in com.ninja_squad.dbsetup.operation"><CODE>CompositeOperation</CODE></A></DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../com/ninja_squad/dbsetup/DbSetupTracker.html" title="class in com.ninja_squad.dbsetup"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../index.html?com/ninja_squad/dbsetup/Operations.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="Operations.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+
+</BODY>
+</HTML>

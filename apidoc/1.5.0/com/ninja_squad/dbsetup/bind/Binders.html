@@ -1,0 +1,405 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<TITLE>
+Binders (DbSetup 1.5.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Binders (DbSetup 1.5.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html" title="interface in com.ninja_squad.dbsetup.bind"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" title="class in com.ninja_squad.dbsetup.bind"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/bind/Binders.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="Binders.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+com.ninja_squad.dbsetup.bind</FONT>
+<BR>
+Class Binders</H2>
+<PRE>
+java.lang.Object
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.ninja_squad.dbsetup.bind.Binders</B>
+</PRE>
+<HR>
+<DL>
+<DT><PRE>public final class <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.40"><B>Binders</B></A><DT>extends java.lang.Object</DL>
+</PRE>
+
+<P>
+Utility class allowing to get various kinds of binders. The <A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" title="class in com.ninja_squad.dbsetup.bind"><CODE>DefaultBinderConfiguration</CODE></A> uses binders
+ returned by this class, based on the type of the parameter.
+<P>
+
+<P>
+<HR>
+
+<P>
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#dateBinder()">dateBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a binder suitable for columns of type DATE.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#decimalBinder()">decimalBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a binder suitable for numeric, decimal columns.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#defaultBinder()">defaultBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the default binder.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#integerBinder()">integerBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a binder suitable for numeric, integer columns.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#stringBinder()">stringBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a binder suitable for columns of type CHAR and VARCHAR.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#timeBinder()">timeBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a binder suitable for columns of type TIME.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/bind/Binders.html#timestampBinder()">timestampBinder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a binder suitable for columns of type TIMESTAMP.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="defaultBinder()"><!-- --></A><H3>
+defaultBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.64"><B>defaultBinder</B></A>()</PRE>
+<DL>
+<DD>Returns the default binder. This binder is normally used for columns of a type that is not handled by the other
+ binders. It is also used when the metadata are not used and the Insert thus doesn't know the type of the column.
+ It simply uses <code>stmt.setObject()</code> to bind the parameter, except if the value being bound is of some
+ some well-known type not handled by JDBC:
+ <ul>
+     <li><code>enum</code>: the name of the enum is bound</li>
+     <li><code>java.util.Date</code>: the date is transformed to a java.sql.Timestamp</li>
+     <li><code>java.util.Calendar</code>: the date is transformed to a java.sql.Timestamp</li>
+ </ul>
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="stringBinder()"><!-- --></A><H3>
+stringBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.76"><B>stringBinder</B></A>()</PRE>
+<DL>
+<DD>Returns a binder suitable for columns of type CHAR and VARCHAR. The returned binder supports values of type
+ <ul>
+   <li><code>String</code></li>
+   <li><code>enum</code>: the name of the enum is used as bound value</li>
+   <li><code>Object</code>: the <code>toString()</code> of the object is used as bound value</li>
+ </ul>
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="dateBinder()"><!-- --></A><H3>
+dateBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.92"><B>dateBinder</B></A>()</PRE>
+<DL>
+<DD>Returns a binder suitable for columns of type DATE. The returned binder supports values of type
+ <ul>
+   <li><code>java.sql.Date</code></li>
+   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Date</li>
+   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a java.sql.Date
+   </li>
+   <li><code>String</code>: the string is transformed to a java.sql.Date using the <code>Date.valueOf()</code>
+       method</li>
+ </ul>
+ If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="timestampBinder()"><!-- --></A><H3>
+timestampBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.109"><B>timestampBinder</B></A>()</PRE>
+<DL>
+<DD>Returns a binder suitable for columns of type TIMESTAMP. The returned binder supports values of type
+ <ul>
+   <li><code>java.sql.Timestamp</code></li>
+   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Timestamp</li>
+   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a
+   java.sql.Timestamp</code></li>
+   <li><code>String</code>: the string is transformed to a <code>java.sql.Timestamp</code> using the
+       <code>Timestamp.valueOf()</code> method, or using the <code>java.sql.Date.valueOf()</code> method if the
+       string has less than 19 characters</li>
+ </ul>
+ If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="timeBinder()"><!-- --></A><H3>
+timeBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.127"><B>timeBinder</B></A>()</PRE>
+<DL>
+<DD>Returns a binder suitable for columns of type TIME. The returned binder supports values of type
+ <ul>
+   <li><code>java.sql.Time</code></li>
+   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a
+      <code>java.sql.Time</code></li>
+   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a
+      <code>java.sql.Time</code>
+   </li>
+   <li><code>String</code>: the string is transformed to a java.sql.Time using the
+       <code>Time.valueOf()</code> method</li>
+ </ul>
+ If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="decimalBinder()"><!-- --></A><H3>
+decimalBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.138"><B>decimalBinder</B></A>()</PRE>
+<DL>
+<DD>Returns a binder suitable for numeric, decimal columns. The returned binder supports values of type
+ <ul>
+   <li><code>String</code>: the string is transformed to a java.math.BigDecimal using its constructor</li>
+ </ul>
+ If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="integerBinder()"><!-- --></A><H3>
+integerBinder</H3>
+<PRE>
+public static <A HREF="../../../../com/ninja_squad/dbsetup/bind/Binder.html" title="interface in com.ninja_squad.dbsetup.bind">Binder</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/bind/Binders.html#line.155"><B>integerBinder</B></A>()</PRE>
+<DL>
+<DD>Returns a binder suitable for numeric, integer columns. The returned binder supports values of type
+ <ul>
+   <li><code>BigInteger</code>: the object is transformed to a String and bound using
+       <code>stmt.setObject()</code>, with <code>BIGINT</code> as target type.
+   </li>
+   <li><code>enum</code>: the enum is transformed into an integer by taking its ordinal</li>
+   <li><code>String</code>: the string is bound using <code>stmt.setObject()</code>, with <code>BIGINT</code> as
+       target type.
+   </li>
+ </ul>
+ If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/BinderConfiguration.html" title="interface in com.ninja_squad.dbsetup.bind"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/bind/DefaultBinderConfiguration.html" title="class in com.ninja_squad.dbsetup.bind"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/bind/Binders.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="Binders.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+
+</BODY>
+</HTML>

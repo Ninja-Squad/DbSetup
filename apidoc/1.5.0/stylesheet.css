@@ -1,0 +1,116 @@
+body { 
+    background-color: #FFFFFF; 
+    color: #333333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+/* Headings */
+h1 { 
+    text-align: left;
+}
+
+a {
+    color: #0088CC;
+}
+a:hover {
+    color: #005580;
+}
+
+table {
+    border-collapse: collapse;
+}
+th, td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+hr {
+    border-bottom: 0 none;
+    border-left: 0 none;
+    border-right: 0 none;
+    border-top: 1px solid #DDDDDD;
+}
+
+/* Table colors */
+.TableHeadingColor, .TableSubHeadingColor {
+    background-color: #444444;
+    background-image: linear-gradient(to bottom, #444444, #333333);
+    background-repeat: repeat-x;
+    color: #FFFFFF;
+}
+
+.TableSubHeadingColor {
+    background-color: #555555;
+    background-image: linear-gradient(to bottom, #555555, #444444);
+}
+.TableHeadingColor font, .TableSubHeadingColor  font { 
+    font-size: inherit;
+}
+.TableRowColor {
+    background: #FFFFFF;
+    color: #333333;
+}
+.TableRowColor th, .TableRowColor td {
+    border: 1px solid #DDDDDD;
+}
+
+/* Font used in left-hand frame lists */
+.FrameTitleFont   {
+    font-size: 100%; 
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #333333;
+}
+.FrameHeadingFont {
+    font-size:  90%;
+    font-weight: bold;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color: #333333;
+}
+.FrameHeadingFont b {
+    font-weight: inherit;
+}
+.FrameItemFont { 
+    font-size: 90%; 
+    font-family: 
+    "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color: #333333; 
+}
+
+/* Navigation bar fonts and colors */
+.NavBarCell1 {
+    background-color: #444444;
+    background-image: linear-gradient(to bottom, #444444, #333333);
+    background-repeat: repeat-x;
+    color: #999999;
+    border: 0;
+}
+.NavBarCell1 a {
+    color: #999999; 
+}
+.NavBarCell1 a:hover { 
+    color:#FFFFFF; 
+}
+.NavBarCell1 table, .NavBarCell1 th, .NavBarCell1 td {
+    border: 0;
+}
+.NavBarCell1Rev { 
+    color: #FFFFFF;
+    background-color: #444444 !IMPORTANT;
+} 
+.NavBarFont1    { 
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color: #999999;
+}
+.NavBarFont1Rev { 
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    color:#FFFFFF;
+}
+.NavBarCell2 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    border: 0;
+}
+.NavBarCell3 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    border: 0;
+}
+
