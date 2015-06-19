@@ -31,6 +31,7 @@ import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -237,6 +238,114 @@ public class InsertTest {
         Insert.into("A")
               .row().column("c", "value of c").end()
               .row().column("b", "value of b").end();
+    }
+
+    @Test
+    public void repeatingValuesWork() throws SQLException {
+        Binder aBinder = mock(Binder.class);
+        Binder bBinder = mock(Binder.class);
+
+        Connection connection = mock(Connection.class);
+        BinderConfiguration config = mock(BinderConfiguration.class);
+        ParameterMetaData metadata = mock(ParameterMetaData.class);
+        PreparedStatement statement = mock(PreparedStatement.class);
+        when(connection.prepareStatement("insert into A (a, b) values (?, ?)")).thenReturn(statement);
+        when(statement.getParameterMetaData()).thenReturn(metadata);
+        when(config.getBinder(metadata, 1)).thenReturn(aBinder);
+        when(config.getBinder(metadata, 2)).thenReturn(bBinder);
+
+        Insert insert = Insert.into("A")
+                              .columns("a", "b")
+                              .repeatingValues("a1", "b1").times(2)
+                              .build();
+
+        insert.execute(connection, config);
+
+        InOrder inOrder = inOrder(aBinder, bBinder, statement);
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(statement).close();
+    }
+
+    @Test
+    public void rowAsMapCanBeAddedSeveralTimes() throws SQLException {
+        Binder aBinder = mock(Binder.class);
+        Binder bBinder = mock(Binder.class);
+        Binder cBinder = mock(Binder.class);
+
+        Connection connection = mock(Connection.class);
+        BinderConfiguration config = mock(BinderConfiguration.class);
+        ParameterMetaData metadata = mock(ParameterMetaData.class);
+        PreparedStatement statement = mock(PreparedStatement.class);
+        when(connection.prepareStatement("insert into A (a, b, c) values (?, ?, ?)")).thenReturn(statement);
+        when(statement.getParameterMetaData()).thenReturn(metadata);
+        when(config.getBinder(metadata, 1)).thenReturn(aBinder);
+        when(config.getBinder(metadata, 2)).thenReturn(bBinder);
+        when(config.getBinder(metadata, 3)).thenReturn(cBinder);
+
+        Map<String, Object> row = new HashMap<String, Object>();
+        row.put("a", "a1");
+        row.put("b", "b1");
+
+        Insert insert = Insert.into("A")
+                              .columns("a", "b", "c")
+                              .repeatingValues(row).times(2)
+                              .build();
+
+        insert.execute(connection, config);
+
+        InOrder inOrder = inOrder(aBinder, bBinder, cBinder, statement);
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(cBinder).bind(statement, 3, null);
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(cBinder).bind(statement, 3, null);
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(statement).close();
+    }
+
+    @Test
+    public void dynamicRowCanBeAddedSeveralTimes() throws SQLException {
+        Binder aBinder = mock(Binder.class);
+        Binder bBinder = mock(Binder.class);
+        Binder cBinder = mock(Binder.class);
+
+        Connection connection = mock(Connection.class);
+        BinderConfiguration config = mock(BinderConfiguration.class);
+        ParameterMetaData metadata = mock(ParameterMetaData.class);
+        PreparedStatement statement = mock(PreparedStatement.class);
+        when(connection.prepareStatement("insert into A (a, b, c) values (?, ?, ?)")).thenReturn(statement);
+        when(statement.getParameterMetaData()).thenReturn(metadata);
+        when(config.getBinder(metadata, 1)).thenReturn(aBinder);
+        when(config.getBinder(metadata, 2)).thenReturn(bBinder);
+        when(config.getBinder(metadata, 3)).thenReturn(cBinder);
+
+        Insert insert = Insert.into("A")
+                              .columns("a", "b", "c")
+                              .row()
+                                  .column("a", "a1")
+                                  .column("b", "b1")
+                              .times(2)
+                              .build();
+
+        insert.execute(connection, config);
+
+        InOrder inOrder = inOrder(aBinder, bBinder, cBinder, statement);
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(cBinder).bind(statement, 3, null);
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(cBinder).bind(statement, 3, null);
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(statement).close();
     }
 
     @Test

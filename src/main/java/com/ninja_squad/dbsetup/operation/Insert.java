@@ -411,18 +411,29 @@ public final class Insert implements Operation {
          * the number of columns.
          */
         public Builder values(@Nonnull Object... values) {
+            return addRepeatingValues(Arrays.asList(values), 1);
+        }
+
+        /**
+         * Allows adding many rows with the same non-generated values to insert.
+         * @param values the values to insert.
+         * @return A RowRepeater, allowing to choose how many similar rows to add.
+         * @throws IllegalStateException if the Insert has already been built, or if the number of values doesn't match
+         * the number of columns.
+         */
+        public RowRepeater repeatingValues(@Nonnull Object... values) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkArgument(values.length == columnNames.size(),
                                         "The number of values doesn't match the number of columns");
-            rows.add(new ArrayList<Object>(Arrays.asList(values)));
-            return this;
+            return new ListRowRepeater(this, Arrays.asList(values));
         }
 
         /**
          * Starts building a new row with named columns to insert. If the row is the first one being added and the
          * columns haven't been set yet by calling <code>columns()</code>, then the columns of this row constitute the
          * column names (excluding the generated ones) of the Insert being built
-         * @return a {@link RowBuilder} instance, which, when built, will add a row to this insert builder.
+         * @return a {@link RowBuilder} instance, which, when built, will add a row (or several ones) to this insert
+         * builder.
          * @throws IllegalStateException if the Insert has already been built.
          * @see RowBuilder
          */
@@ -445,28 +456,19 @@ public final class Insert implements Operation {
          * specified with {@link #columns(String...)}
          */
         public Builder values(@Nonnull Map<String, ?> row) {
+            return addRepeatingValues(row, 1);
+        }
+
+        /**
+         * Allows adding many rows with the same non-generated values to insert.
+         * @return A RowRepeater, allowing to choose how many similar rows to add.
+         * @throws IllegalStateException if the Insert has already been built.
+         * @see #values(Map)
+         */
+        public RowRepeater repeatingValues(@Nonnull Map<String, ?> row) {
             Preconditions.checkState(!built, "The insert has already been built");
             Preconditions.checkNotNull(row, "The row may not be null");
-
-            boolean setColumns = rows.isEmpty() && columnNames.isEmpty();
-            if (setColumns) {
-                columns(row.keySet().toArray(new String[row.size()]));
-            }
-            else {
-                Set<String> rowColumnNames = new HashSet<String>(row.keySet());
-                rowColumnNames.removeAll(columnNames);
-                if (!rowColumnNames.isEmpty()) {
-                    throw new IllegalArgumentException(
-                        "The following columns of the row don't match with any column name: " + rowColumnNames);
-                }
-            }
-
-            List<Object> values = new ArrayList<Object>(columnNames.size());
-            for (String columnName : columnNames) {
-                values.add(row.get(columnName));
-            }
-            rows.add(values);
-            return this;
+            return new MapRowRepeater(this, row);
         }
 
         /**
@@ -579,6 +581,50 @@ public final class Insert implements Operation {
                 + built
                 + "]";
         }
+
+        private Builder addRepeatingValues(List<?> values, int times) {
+            Preconditions.checkState(!built, "The insert has already been built");
+            Preconditions.checkArgument(values.size() == columnNames.size(),
+                                        "The number of values doesn't match the number of columns");
+
+            List<Object> row = new ArrayList<Object>(values);
+            for (int i = 0; i < times; i++) {
+                rows.add(row);
+            }
+            return this;
+        }
+
+        private Builder addRepeatingValues(@Nonnull Map<String, ?> row, int times) {
+            Preconditions.checkState(!built, "The insert has already been built");
+            Preconditions.checkNotNull(row, "The row may not be null");
+
+            List<Object> values = mapToRow(row);
+            for (int i = 0; i < times; i++) {
+                rows.add(values);
+            }
+            return this;
+        }
+
+        private List<Object> mapToRow(@Nonnull Map<String, ?> row) {
+            boolean setColumns = rows.isEmpty() && columnNames.isEmpty();
+            if (setColumns) {
+                columns(row.keySet().toArray(new String[row.size()]));
+            }
+            else {
+                Set<String> rowColumnNames = new HashSet<String>(row.keySet());
+                rowColumnNames.removeAll(columnNames);
+                if (!rowColumnNames.isEmpty()) {
+                    throw new IllegalArgumentException(
+                        "The following columns of the row don't match with any column name: " + rowColumnNames);
+                }
+            }
+
+            List<Object> values = new ArrayList<Object>(columnNames.size());
+            for (String columnName : columnNames) {
+                values.add(row.get(columnName));
+            }
+            return values;
+        }
     }
 
     /**
@@ -645,6 +691,87 @@ public final class Insert implements Operation {
             Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");
             ended = true;
             return builder.values(row);
+        }
+
+        /**
+         * Ends the row, adds it to the Insert Builder the given amount of times, and returns it, for chaining.
+         * @param times the number of rows to add. Must be >= 0. If zero, no row is added.
+         * @return the Insert Builder
+         */
+        public Builder times(int times) {
+            Preconditions.checkArgument(times >= 0, "the number of repeating values must be >= 0");
+            Preconditions.checkState(!ended, "The row has already been ended and added to the Insert Builder");
+            ended = true;
+            return builder.addRepeatingValues(row, times);
+        }
+    }
+
+    /**
+     * Allows inserting the same list of non-generated values several times.
+     */
+    public interface RowRepeater {
+        /**
+         * Adds several rows with the same non-generated values to the insert. This method can only be called once.
+         * @param times the number of rows to add. Must be >= 0. If zero, no row is added.
+         * @return the Insert Builder, for chaining
+         * @throws IllegalStateException if the rows have already been added
+         */
+        Builder times(int times);
+    }
+
+    /**
+     * Base abstract class for row repeaters.
+     */
+    private abstract static class AbstractRowRepeater implements RowRepeater {
+        protected final Builder builder;
+        private boolean ended;
+
+        public AbstractRowRepeater(Builder builder) {
+            this.builder = builder;
+        }
+
+        protected abstract Builder doTimes(int times);
+
+        @Override
+        public Builder times(int times) {
+            Preconditions.checkArgument(times >= 0, "the number of repeating values must be >= 0");
+            Preconditions.checkState(!ended, "The rows have already been ended and added to the Insert Builder");
+            ended = true;
+            return doTimes(times);
+        }
+    }
+
+    /**
+     * Allows inserting the same list of non-generated values as list several times.
+     */
+    private static final class ListRowRepeater extends AbstractRowRepeater {
+        private final List<Object> values;
+
+        private ListRowRepeater(Builder builder, List<Object> values) {
+            super(builder);
+            this.values = values;
+        }
+
+        @Override
+        public Builder doTimes(int times) {
+            return builder.addRepeatingValues(values, times);
+        }
+    }
+
+    /**
+     * Allows inserting the same list of non-generated values as map several times.
+     */
+    private static final class MapRowRepeater extends AbstractRowRepeater {
+        private final Map<String, ?> values;
+
+        private MapRowRepeater(Builder builder, Map<String, ?> values) {
+            super(builder);
+            this.values = values;
+        }
+
+        @Override
+        public Builder doTimes(int times) {
+            return builder.addRepeatingValues(values, times);
         }
     }
 }
