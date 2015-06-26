@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<TITLE>
+StringSequenceValueGenerator (DbSetup 1.6.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="StringSequenceValueGenerator (DbSetup 1.6.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/SequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="StringSequenceValueGenerator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+com.ninja_squad.dbsetup.generator</FONT>
+<BR>
+Class StringSequenceValueGenerator</H2>
+<PRE>
+java.lang.Object
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.ninja_squad.dbsetup.generator.StringSequenceValueGenerator</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator">ValueGenerator</A>&lt;java.lang.String&gt;</DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public final class <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.35"><B>StringSequenceValueGenerator</B></A><DT>extends java.lang.Object<DT>implements <A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator">ValueGenerator</A>&lt;java.lang.String&gt;</DL>
+</PRE>
+
+<P>
+A <A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator"><CODE>ValueGenerator</CODE></A> that returns a string prefix followed by a sequence number, optionally left-padded
+ with 0 to ensure a correct ordering (for example: CODE_001, CODE_002, etc.). Instances of this generator
+ are created by <A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerators.html#stringSequence(java.lang.String)"><CODE>ValueGenerators.stringSequence(String)</CODE></A>.
+<P>
+
+<P>
+<HR>
+
+<P>
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#incrementingBy(int)">incrementingBy</A></B>(int&nbsp;increment)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Increments the number by the given increment.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.String</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#nextValue()">nextValue</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Called each time a new row is inserted, to get the value to insert in the column using this value generator.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#startingAt(long)">startingAt</A></B>(long&nbsp;start)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Restarts the sequence at the given value</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.String</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#toString()">toString</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#withLeftPadding(int)">withLeftPadding</A></B>(int&nbsp;paddedNumberLength)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tells the generator to left-pad the number it generates with 0 until the length of the number is the given
+ length.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#withoutLeftPadding()">withoutLeftPadding</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tells the generator to avoid left-padding the number it generates with 0</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="withLeftPadding(int)"><!-- --></A><H3>
+withLeftPadding</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.63"><B>withLeftPadding</B></A>(int&nbsp;paddedNumberLength)</PRE>
+<DL>
+<DD>Tells the generator to left-pad the number it generates with 0 until the length of the number is the given
+ length. For example, passing 3 to this method will generate numbers 001, 002, 003, 004, etc. If the generated
+ number, before padding, has a length already equal or larger that the given length, the number is not padded.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>paddedNumberLength</CODE> - the length of the number once padded. Must be > 0.
+<DT><B>Returns:</B><DD>this instance, for chaining</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="withoutLeftPadding()"><!-- --></A><H3>
+withoutLeftPadding</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.73"><B>withoutLeftPadding</B></A>()</PRE>
+<DL>
+<DD>Tells the generator to avoid left-padding the number it generates with 0
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>this instance, for chaining</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="startingAt(long)"><!-- --></A><H3>
+startingAt</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.83"><B>startingAt</B></A>(long&nbsp;start)</PRE>
+<DL>
+<DD>Restarts the sequence at the given value
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>start</CODE> - the new starting value of the sequence
+<DT><B>Returns:</B><DD>this instance, for chaining</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="incrementingBy(int)"><!-- --></A><H3>
+incrementingBy</H3>
+<PRE>
+public <A HREF="../../../../com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator">StringSequenceValueGenerator</A> <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.92"><B>incrementingBy</B></A>(int&nbsp;increment)</PRE>
+<DL>
+<DD>Increments the number by the given increment.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>this instance, for chaining</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="nextValue()"><!-- --></A><H3>
+nextValue</H3>
+<PRE>
+public java.lang.String <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.98"><B>nextValue</B></A>()</PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html#nextValue()">ValueGenerator</A></CODE></B></DD>
+<DD>Called each time a new row is inserted, to get the value to insert in the column using this value generator.
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html#nextValue()">nextValue</A></CODE> in interface <CODE><A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator">ValueGenerator</A>&lt;java.lang.String&gt;</CODE></DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>the value to insert in the column associated with this generator.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="toString()"><!-- --></A><H3>
+toString</H3>
+<PRE>
+public java.lang.String <A HREF="../../../../src-html/com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html#line.117"><B>toString</B></A>()</PRE>
+<DL>
+<DD><DL>
+<DT><B>Overrides:</B><DD><CODE>toString</CODE> in class <CODE>java.lang.Object</CODE></DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/SequenceValueGenerator.html" title="class in com.ninja_squad.dbsetup.generator"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/ninja_squad/dbsetup/generator/ValueGenerator.html" title="interface in com.ninja_squad.dbsetup.generator"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?com/ninja_squad/dbsetup/generator/StringSequenceValueGenerator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="StringSequenceValueGenerator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+
+</BODY>
+</HTML>

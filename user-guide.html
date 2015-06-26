@@ -49,6 +49,11 @@
                     </li>
                     <li><a href="#data-formats">Data formats</a></li>
                     <li><a href="#generators">Value generators</a></li>
+                    <li>
+                        <ul class="nav nav-list">
+                            <li><a href="#repeating-values">Repeating values</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#columns-in-rows">Column names in rows</li>
                     <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
                     <li><a href="#metadata-and-mysql">A note on metadata, MySQL and Oracle</a></li>
@@ -295,6 +300,19 @@ public class VendorRepositoryTest {
             .values("EBA", "EBay")
             .build();</pre>
             
+            <h3><a id="repeating-values"></a>Repeating values</h3>
+            <p>
+                It's also useful sometimes to insert similar rows several times. Here's an example showing how to insert 100 tags with generated IDs and names, and the same fake description:
+            </p>
+            <pre class="prettyprint">
+    Operation insertTags = 
+        insertInto("TAG")
+            .withGeneratedValue("ID", ValueGenerators.sequence().startingAt(1L))
+            .withGeneratedValue("NAME", ValueGenerators.stringSequence("tag-").startingAt(1L))
+            .columns("DESCRIPTION")
+            .repeatingValues("fake description").times(100)
+            .build();</pre>
+
             <hr/>
             
             <h2><a id="columns-in-rows"></a>Specifying column names in rows</h2>
@@ -329,7 +347,8 @@ public class VendorRepositoryTest {
                 row doesn't contain any value for one of the columns of the insert, then null is inserted for this column.
             </p>
             <p>
-                Note that you can mix the two kinds of row definitions inside a single insert, and that you can also use value generators.
+                Note that you can mix the two kinds of row definitions inside a single insert, and that you can also use value generators. Repeating the same row is also possible by 
+                ending the row with <pre>.times(N)</pre> instead of <pre>.end()</pre>.
             </p>
 
             <hr/>
