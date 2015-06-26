@@ -217,6 +217,43 @@ public class InsertTest {
         inOrder.verify(statement).close();
     }
 
+    @Test
+    public void insertWorksWhenColumnsSpecifiedByFirstRepeatedRow() throws SQLException {
+        Binder aBinder = mock(Binder.class);
+        Binder bBinder = mock(Binder.class);
+        Binder cBinder = mock(Binder.class);
+
+        Connection connection = mock(Connection.class);
+        BinderConfiguration config = mock(BinderConfiguration.class);
+        ParameterMetaData metadata = mock(ParameterMetaData.class);
+        PreparedStatement statement = mock(PreparedStatement.class);
+        when(connection.prepareStatement("insert into A (a, b, c) values (?, ?, ?)")).thenReturn(statement);
+        when(statement.getParameterMetaData()).thenReturn(metadata);
+        when(config.getBinder(metadata, 1)).thenReturn(aBinder);
+        when(config.getBinder(metadata, 2)).thenReturn(bBinder);
+        when(config.getBinder(metadata, 3)).thenReturn(cBinder);
+
+        Insert insert = Insert.into("A")
+                              .row().column("a", "a1")
+                                    .column("b", "b1")
+                                    .times(2)
+                              .withDefaultValue("c", "c3")
+                              .build();
+
+        insert.execute(connection, config);
+
+        InOrder inOrder = inOrder(aBinder, bBinder, cBinder, statement);
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(cBinder).bind(statement, 3, "c3");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(aBinder).bind(statement, 1, "a1");
+        inOrder.verify(bBinder).bind(statement, 2, "b1");
+        inOrder.verify(cBinder).bind(statement, 3, "c3");
+        inOrder.verify(statement).executeUpdate();
+        inOrder.verify(statement).close();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void rowBuilderColumnFailsWhenMapContainsUnknownColumnName() {
         Insert.into("A")
