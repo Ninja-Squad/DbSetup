@@ -192,7 +192,7 @@ public final class Insert implements Operation {
     /**
      * Inserts the values and generated values in the table. Unless <code>useMetadata</code> has been set to
      * <code>false</code>, the given configuration is used to get the appropriate binder. Nevertheless, if a binder
-     * has explicitely been associated to a given column, this binder will always be used for this column.
+     * has explicitly been associated to a given column, this binder will always be used for this column.
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(
         value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
@@ -531,10 +531,10 @@ public final class Insert implements Operation {
 
         /**
          * Determines if the metadata must be used to get the appropriate binder for each inserted column (except
-         * the ones which have been associated explicitely with a Binder). The default is <code>true</code>. The insert
+         * the ones which have been associated explicitly with a Binder). The default is <code>true</code>. The insert
          * can be faster if set to <code>false</code>, but in this case, the binder used will be the one returned
          * by the {@link BinderConfiguration} for a null metadata (which is, by default, the
-         * {@link Binders#defaultBinder() default binder}), except the ones which have been associated explicitely with
+         * {@link Binders#defaultBinder() default binder}), except the ones which have been associated explicitly with
          * a Binder.<br/>
          * Before version 1.3.0, a SQLException was thrown if the database doesn't support parameter metadata and
          * <code>useMetadata(false)</code> wasn't called. Since version 1.3.0, if <code>useMetadata</code> is true
