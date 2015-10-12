@@ -48,7 +48,7 @@ configurations {
 
 task checkJavaVersion << {
     if (!JavaVersion.current().isJava6Compatible()) {
-        String message = "ERROR: Java 1.6 required but " +
+        String message = "ERROR: Java 1.6 compatilbe JRE is required but " +
                          JavaVersion.current() +
                          " found. Change your JAVA_HOME environment variable.";
         throw new IllegalStateException(message);
