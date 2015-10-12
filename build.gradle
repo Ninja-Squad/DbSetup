@@ -47,9 +47,9 @@ configurations {
 }
 
 task checkJavaVersion << {
-    if (!JavaVersion.current().isJava6()) {
-        String message = "ERROR: Java 1.6 required but " + 
-                         JavaVersion.current() + 
+    if (!JavaVersion.current().isJava6Compatible()) {
+        String message = "ERROR: Java 1.6 compatilbe JRE is required but " +
+                         JavaVersion.current() +
                          " found. Change your JAVA_HOME environment variable.";
         throw new IllegalStateException(message);
     }
@@ -96,13 +96,13 @@ findbugsMain {
 }
 
 def sharedManifest = manifest {
-    attributes(['Implementation-Title': project.name, 
+    attributes(['Implementation-Title': project.name,
                 'Implementation-Version': project.version,
                 'Implementation-Vendor': 'ninja-squad.com'])
 }
 
 jar {
-    manifest { 
+    manifest {
         from sharedManifest
         instruction 'Bundle-Vendor', 'ninja-squad.com'
         instructionReplace 'Export-Package',
@@ -137,7 +137,7 @@ javadoc << {
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
-    manifest { 
+    manifest {
         from sharedManifest
     }
 }
@@ -145,7 +145,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
-    manifest { 
+    manifest {
         from sharedManifest
     }
 }
@@ -208,14 +208,14 @@ uploadArchives {
 
 [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured {pom ->
     // we don't care about test dependencies
-    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'} 
-    // we don't care about findbugs annotations 
-    pom.dependencies = pom.dependencies.findAll {it.groupId != 'net.sourceforge.findbugs' && it.artifactId != 'annotations'} 
+    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'}
+    // we don't care about findbugs annotations
+    pom.dependencies = pom.dependencies.findAll {it.groupId != 'net.sourceforge.findbugs' && it.artifactId != 'annotations'}
     // we don't care about JSR305 annotations
-    pom.dependencies = pom.dependencies.findAll {it.groupId != 'com.google.code.findbugs' && it.artifactId != 'jsr305'} 
+    pom.dependencies = pom.dependencies.findAll {it.groupId != 'com.google.code.findbugs' && it.artifactId != 'jsr305'}
     // all dependencies are compile time dependencies, and there is no need to say it
-    pom.dependencies*.scope = null 
-    
+    pom.dependencies*.scope = null
+
     pom.project {
         name = 'DbSetup'
         description = 'Helps you setup your database with test data'
