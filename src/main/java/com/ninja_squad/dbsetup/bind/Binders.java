@@ -68,16 +68,16 @@ public final class Binders {
      *     <li><code>java.util.Date</code>: the date is transformed to a <code>java.sql.Timestamp</code></li>
      *     <li><code>java.util.Calendar</code>: the calendar is transformed to a <code>java.sql.Timestamp</code>,
      *         and is passed as third argument of
-     *         <code>PreparedStatement.setTimestampt()</code> to pass the timezone</li>
+     *         <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
      *     <li><code>java.time.LocalDate</code>: transformed to a <code>java.sql.Date</code></li>
      *     <li><code>java.time.LocalTime</code>: transformed to a <code>java.sql.Time</code></li>
      *     <li><code>java.time.LocalDateTime</code>: transformed to a <code>java.sql.Timestamp</code></li>
      *     <li><code>java.time.Instant</code>: transformed to a <code>java.sql.Timestamp</code></li>
      *     <li><code>java.time.ZonedDateTime</code> and <code>OffsetDateTime</code>: transformed to a
-     *         <code>java.sql.Timestamp</code>. The time zone is also used to create a Calendar passed as third
-     *         argument of <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
+     *         <code>java.sql.Timestamp</code>. The time zone is also used to create a <code>Calendar</code> passed as
+     *         third argument of <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
      *     <li><code>java.time.OffsetTime</code>: transformed to a
-     *         <code>java.sql.Time</code>. The time zone is also used to create a Calendar passed as third
+     *         <code>java.sql.Time</code>. The time zone is also used to create a <code>Calendar</code> passed as third
      *         argument of <code>PreparedStatement.setTime()</code> to pass the timezone</li>
      * </ul>
      */
@@ -116,8 +116,8 @@ public final class Binders {
      *   <li><code>java.time.Instant</code>the milliseconds of the instant are used to construct a
      *       <code>java.sql.Date</code>.</li>
      *   <li><code>java.time.ZonedDateTime</code> and <code>java.time.OffsetDateTime</code>: transformed to an Instant
-     *       and then to a <code>java.sql.Date</code>. The time zone is also used to create a Calendar passed as third
-     *       argument of <code>PreparedStatement.setDate()</code> to pass the timezone</li>
+     *       and then to a <code>java.sql.Date</code>. The time zone is also used to create a <code>Calendar</code>
+     *       passed as third argument of <code>PreparedStatement.setDate()</code> to pass the timezone</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
@@ -126,7 +126,7 @@ public final class Binders {
     }
 
     /**
-     * Returns a binder suitable for columns of type TIMESTAMP and TIMESTAMP WITh TIMEZONE. The returned binder
+     * Returns a binder suitable for columns of type TIMESTAMP and TIMESTAMP_WITH_TIMEZONE. The returned binder
      * supports values of type
      * <ul>
      *   <li><code>java.sql.Timestamp</code></li>
@@ -146,7 +146,7 @@ public final class Binders {
      *       <code>Timestamp.from()</code></li>
      *   <li><code>java.time.ZonedDateTime</code> and <code>java.time.OffsetDateTime</code>: transformed to an Instant
      *       and then to a <code>java.sql.Timestamp</code> using <code>Timestamp.from()</code>. The time zone is also
-     *       used to create a Calendar passed as third argument of
+     *       used to create a <code>Calendar</code> passed as third argument of
      *       <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
@@ -156,7 +156,7 @@ public final class Binders {
     }
 
     /**
-     * Returns a binder suitable for columns of type TIME or TIME WITH TIME ZONE. The returned binder supports values
+     * Returns a binder suitable for columns of type TIME or TIME_WITH_TIMEZONE. The returned binder supports values
      * of type
      * <ul>
      *   <li><code>java.sql.Time</code></li>
@@ -170,9 +170,9 @@ public final class Binders {
      *       <code>Time.valueOf()</code> method</li>
      *   <li><code>java.time.LocalTime</code>: transformed to a <code>java.sql.Time</code> using
      *       <code>Time.valueOf()</code></li>
-     *   <li><code>java.time.OffsetTime</code>: transformed to a LocalTime and then to a <code>java.sql.Time</code>
-     *       using <code>Time.valueOf()</code>. The time zone is also
-     *       used to create a Calendar passed as third argument of
+     *   <li><code>java.time.OffsetTime</code>: transformed to a <code>LocalTime</code> and then to a
+     *       <code>java.sql.Time</code> using <code>Time.valueOf()</code>. The time zone is also
+     *       used to create a <code>Calendar</code> passed as third argument of
      *       <code>PreparedStatement.setTime()</code> to pass the timezone</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
