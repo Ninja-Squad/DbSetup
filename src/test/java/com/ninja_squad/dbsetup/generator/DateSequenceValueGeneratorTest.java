@@ -24,15 +24,21 @@
 
 package com.ninja_squad.dbsetup.generator;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * @author JB
@@ -40,33 +46,24 @@ import static org.junit.Assert.*;
 public class DateSequenceValueGeneratorTest {
     @Test
     public void startsAtToday() {
-        Date date = ValueGenerators.dateSequence().nextValue();
-        Calendar now = Calendar.getInstance();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        assertEquals(now.get(Calendar.YEAR), calendar.get(Calendar.YEAR));
-        assertEquals(now.get(Calendar.MONTH), calendar.get(Calendar.MONTH));
-        assertEquals(now.get(Calendar.DATE), calendar.get(Calendar.DATE));
-        assertEquals(0, calendar.get(Calendar.HOUR_OF_DAY));
-        assertEquals(0, calendar.get(Calendar.MINUTE));
-        assertEquals(0, calendar.get(Calendar.SECOND));
-        assertEquals(0, calendar.get(Calendar.MILLISECOND));
+        ZonedDateTime date = ValueGenerators.dateSequence().nextValue();
+        assertEquals(LocalDate.now().atStartOfDay(ZoneId.systemDefault()), date);
     }
 
     @Test
     public void incrementsByOneDay() throws ParseException {
         DateSequenceValueGenerator sequence = ValueGenerators.dateSequence().startingAt(july19Of2013AtMidnight());
         sequence.nextValue();
-        Date date = sequence.nextValue();
-        assertEquals("2013-07-20 00:00:00 0", toLongString(date));
+        ZonedDateTime date = sequence.nextValue();
+        assertEquals(LocalDateTime.parse("2013-07-20T00:00:00.000").atZone(ZoneId.systemDefault()), date);
     }
 
     @Test
     public void allowsSettingNewStartAsDate() throws ParseException {
         DateSequenceValueGenerator sequence = ValueGenerators.dateSequence().startingAt(july19Of2013AtMidnight());
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
         sequence.startingAt(july19Of1975AtMidnight());
-        assertEquals("1975-07-19 00:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("1975-07-19T00:00:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -74,7 +71,7 @@ public class DateSequenceValueGeneratorTest {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnightInParisTimeZone(), TimeZone.getTimeZone("UTC"));
-        assertEquals("2013-07-18 22:00:00 0", toLongStringInUTC(sequence.nextValue()));
+        assertEquals("2013-07-18T22:00:00.000", toLongStringInUTC(sequence.nextValue()));
     }
 
     @Test
@@ -82,7 +79,7 @@ public class DateSequenceValueGeneratorTest {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
                            .startingAt("2013-07-19");
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -90,7 +87,31 @@ public class DateSequenceValueGeneratorTest {
         Calendar start = Calendar.getInstance();
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence().startingAt(start);
-        assertEquals(start.getTime(), sequence.nextValue());
+        assertEquals(start.getTime().getTime(), sequence.nextValue().toInstant().toEpochMilli());
+    }
+
+    @Test
+    public void allowsSettingNewStartAsLocalDate() throws ParseException {
+        LocalDate start = LocalDate.parse("2000-01-01");
+        DateSequenceValueGenerator sequence =
+            ValueGenerators.dateSequence().startingAt(start);
+        assertEquals(start.atStartOfDay(ZoneId.systemDefault()), sequence.nextValue());
+    }
+
+    @Test
+    public void allowsSettingNewStartAsLocalDateTime() throws ParseException {
+        LocalDateTime start = LocalDateTime.parse("2000-01-01T01:02:03.000");
+        DateSequenceValueGenerator sequence =
+            ValueGenerators.dateSequence().startingAt(start);
+        assertEquals(start.atZone(ZoneId.systemDefault()), sequence.nextValue());
+    }
+
+    @Test
+    public void allowsSettingNewStartAsZonedDateTime() throws ParseException {
+        ZonedDateTime start = ZonedDateTime.parse("2000-01-01T01:02:03.000Z");
+        DateSequenceValueGenerator sequence =
+            ValueGenerators.dateSequence().startingAt(start);
+        assertEquals(start, sequence.nextValue());
     }
 
     @Test
@@ -99,8 +120,8 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(2, DateSequenceValueGenerator.CalendarField.DAY);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2013-07-21 00:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-21T00:00:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -109,8 +130,8 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(1, DateSequenceValueGenerator.CalendarField.YEAR);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2014-07-19 00:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2014-07-19T00:00:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -119,8 +140,8 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(1, DateSequenceValueGenerator.CalendarField.MONTH);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2013-08-19 00:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2013-08-19T00:00:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -129,8 +150,8 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(1, DateSequenceValueGenerator.CalendarField.HOUR);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2013-07-19 01:00:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T01:00:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -139,8 +160,8 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(1, DateSequenceValueGenerator.CalendarField.MINUTE);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2013-07-19 00:01:00 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:01:00.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -149,8 +170,8 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(1, DateSequenceValueGenerator.CalendarField.SECOND);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2013-07-19 00:00:01 0", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:01.000", toLongString(sequence.nextValue()));
     }
 
     @Test
@@ -159,19 +180,16 @@ public class DateSequenceValueGeneratorTest {
             ValueGenerators.dateSequence()
                            .startingAt(july19Of2013AtMidnight())
                            .incrementingBy(1, DateSequenceValueGenerator.CalendarField.MILLISECOND);
-        assertEquals("2013-07-19 00:00:00 0", toLongString(sequence.nextValue()));
-        assertEquals("2013-07-19 00:00:00 1", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
+        assertEquals("2013-07-19T00:00:00.001", toLongString(sequence.nextValue()));
     }
 
-    private String toLongString(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss S").format(date);
+    private String toLongString(ZonedDateTime date) {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").format(date);
     }
 
-    private String toLongStringInUTC(Date date) {
-        TimeZone zone = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss S");
-        simpleDateFormat.setTimeZone(zone);
-        return simpleDateFormat.format(date);
+    private String toLongStringInUTC(ZonedDateTime date) {
+        return toLongString(date.withZoneSameInstant(ZoneOffset.UTC));
     }
 
     private Date july19Of2013AtMidnight() throws ParseException {

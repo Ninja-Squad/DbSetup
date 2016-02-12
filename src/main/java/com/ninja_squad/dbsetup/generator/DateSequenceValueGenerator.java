@@ -24,86 +24,88 @@
 
 package com.ninja_squad.dbsetup.generator;
 
-import com.ninja_squad.dbsetup.util.Preconditions;
-
 import javax.annotation.Nonnull;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.ninja_squad.dbsetup.util.Preconditions;
+
 /**
- * A {@link ValueGenerator} that returns a sequence of dates, starting at a given date and incremented by a given
- * time, specified as an increment and a calendar field.
+ * A {@link ValueGenerator} that returns a sequence of dates, starting at a given zoned date time and incremented by a
+ * given time, specified as an increment and a temporal unit.
  * @author JB
  */
-public final class DateSequenceValueGenerator implements ValueGenerator<Date> {
+public final class DateSequenceValueGenerator implements ValueGenerator<ZonedDateTime> {
 
     // the number of chars in yyyy-mm-dd hh:mm:ss
     private static final int MIN_NUMBER_OF_CHARS_FOR_TIMESTAMP = 19;
 
     /**
      * The available units for the increment of this sequence
+     * @deprecated use ChronoField instead. This enum is only kept to maintain backward compatibility
      */
+    @Deprecated
     public enum CalendarField {
-        YEAR(Calendar.YEAR),
-        MONTH(Calendar.MONTH),
-        DAY(Calendar.DATE),
-        HOUR(Calendar.HOUR),
-        MINUTE(Calendar.MINUTE),
-        SECOND(Calendar.SECOND),
-        MILLISECOND(Calendar.MILLISECOND);
+        YEAR(ChronoUnit.YEARS),
+        MONTH(ChronoUnit.MONTHS),
+        DAY(ChronoUnit.DAYS),
+        HOUR(ChronoUnit.HOURS),
+        MINUTE(ChronoUnit.MINUTES),
+        SECOND(ChronoUnit.SECONDS),
+        MILLISECOND(ChronoUnit.MILLIS);
 
-        private int field;
+        private TemporalUnit unit;
 
-        CalendarField(int field) {
-            this.field = field;
+        CalendarField(TemporalUnit unit) {
+            this.unit = unit;
         }
 
-        private int getField() {
-            return field;
+        private TemporalUnit toTemporalUnit() {
+            return unit;
         }
     }
 
-    private Calendar next;
+    private ZonedDateTime next;
     private int increment;
-    private CalendarField unit;
+    private TemporalUnit unit;
 
     DateSequenceValueGenerator() {
-        this(today(), 1, CalendarField.DAY);
+        this(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()), 1, ChronoUnit.DAYS);
     }
 
-    private DateSequenceValueGenerator(Calendar next, int increment, CalendarField unit) {
+    private DateSequenceValueGenerator(ZonedDateTime next, int increment, TemporalUnit unit) {
         this.next = next;
         this.increment = increment;
         this.unit = unit;
     }
 
-    private static Calendar today() {
-        Calendar result = Calendar.getInstance();
-        result.set(Calendar.HOUR_OF_DAY, 0);
-        result.set(Calendar.MINUTE, 0);
-        result.set(Calendar.SECOND, 0);
-        result.set(Calendar.MILLISECOND, 0);
-        return result;
-    }
-
     /**
      * Restarts the sequence at the given date, in the given time zone
      * @return this instance, for chaining
+     * @deprecated use one of the other <code>startingAt()</code> methods taking java.time types as argument
      */
+    @Deprecated
     public DateSequenceValueGenerator startingAt(@Nonnull Date startDate, @Nonnull TimeZone timeZone) {
         Preconditions.checkNotNull(startDate, "startDate may not be null");
         Preconditions.checkNotNull(timeZone, "timeZone may not be null");
-        next = Calendar.getInstance(timeZone);
-        next.setTime(startDate);
+        next = startDate.toInstant().atZone(timeZone.toZoneId());
         return this;
     }
 
     /**
      * Restarts the sequence at the given date, in the default time zone
      * @return this instance, for chaining
+     * @deprecated use one of the other <code>startingAt()</code> methods taking java.time types as argument
      */
+    @Deprecated
     public DateSequenceValueGenerator startingAt(@Nonnull Date startDate) {
         return startingAt(startDate, TimeZone.getDefault());
     }
@@ -111,10 +113,12 @@ public final class DateSequenceValueGenerator implements ValueGenerator<Date> {
     /**
      * Restarts the sequence at the given date
      * @return this instance, for chaining
+     * @deprecated use one of the other <code>startingAt()</code> methods taking java.time types as argument
      */
+    @Deprecated
     public DateSequenceValueGenerator startingAt(@Nonnull Calendar startDate) {
         Preconditions.checkNotNull(startDate, "startDate may not be null");
-        next = (Calendar) startDate.clone();
+        next = startDate.toInstant().atZone(startDate.getTimeZone().toZoneId());
         return this;
     }
 
@@ -128,18 +132,54 @@ public final class DateSequenceValueGenerator implements ValueGenerator<Date> {
     public DateSequenceValueGenerator startingAt(@Nonnull String startDate) {
         Preconditions.checkNotNull(startDate, "startDate may not be null");
         if (startDate.length() >= MIN_NUMBER_OF_CHARS_FOR_TIMESTAMP) {
-            return startingAt(Timestamp.valueOf(startDate));
+            return startingAt(new Date(Timestamp.valueOf(startDate).getTime()));
         }
         else {
-            return startingAt(java.sql.Date.valueOf(startDate));
+            return startingAt(new Date(java.sql.Date.valueOf(startDate).getTime()));
         }
+    }
+
+    /**
+     * Restarts the sequence at the given local date, in the default time zone
+     * @return this instance, for chaining
+     */
+    public DateSequenceValueGenerator startingAt(@Nonnull LocalDate startDate) {
+        return startingAt(startDate.atStartOfDay());
+    }
+
+    /**
+     * Restarts the sequence at the given local date time, in the default time zone
+     * @return this instance, for chaining
+     */
+    public DateSequenceValueGenerator startingAt(@Nonnull LocalDateTime startDate) {
+        return startingAt(startDate.atZone(ZoneId.systemDefault()));
+    }
+
+    /**
+     * Restarts the sequence at the given zoned date time
+     * @return this instance, for chaining
+     */
+    public DateSequenceValueGenerator startingAt(@Nonnull ZonedDateTime startDate) {
+        next = startDate;
+        return this;
     }
 
     /**
      * Increments the date by the given increment of the given unit.
      * @return this instance, for chaining
+     * @deprecated use the other {@link #incrementingBy(int, TemporalUnit)} method
      */
     public DateSequenceValueGenerator incrementingBy(int increment, @Nonnull CalendarField unit) {
+        Preconditions.checkNotNull(unit, "unit may not be null");
+        return incrementingBy(increment, unit.toTemporalUnit());
+    }
+
+    /**
+     * Increments the date by the given increment of the given unit. One of the constants of ChronoField is typically
+     * used for the unit.
+     * @return this instance, for chaining
+     */
+    public DateSequenceValueGenerator incrementingBy(int increment, @Nonnull TemporalUnit unit) {
         Preconditions.checkNotNull(unit, "unit may not be null");
         this.increment = increment;
         this.unit = unit;
@@ -147,9 +187,9 @@ public final class DateSequenceValueGenerator implements ValueGenerator<Date> {
     }
 
     @Override
-    public Date nextValue() {
-        Date result = next.getTime();
-        next.add(unit.getField(), increment);
+    public ZonedDateTime nextValue() {
+        ZonedDateTime result = next;
+        next = next.plus(increment, unit);
         return result;
     }
 
