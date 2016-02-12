@@ -24,6 +24,8 @@
 
 package com.ninja_squad.dbsetup.bind;
 
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -35,8 +37,20 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
+import java.util.TimeZone;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,7 +81,7 @@ public class BindersTest {
     public void defaultBinderBindsEnum() throws SQLException {
         Binder binder = Binders.defaultBinder();
         binder.bind(stmt, 1, TestEnum.BAR);
-        verify(stmt).setObject(1, TestEnum.BAR.name());
+        verify(stmt).setString(1, TestEnum.BAR.name());
     }
 
     @Test
@@ -75,7 +89,7 @@ public class BindersTest {
         java.util.Date date = new java.util.Date(Date.valueOf("1975-07-19").getTime());
         Binder binder = Binders.defaultBinder();
         binder.bind(stmt, 1, date);
-        verify(stmt).setObject(1, new Timestamp(date.getTime()));
+        verify(stmt).setTimestamp(1, new Timestamp(date.getTime()));
     }
 
     @Test
@@ -84,7 +98,69 @@ public class BindersTest {
         calendar.setTimeInMillis(Date.valueOf("1975-07-19").getTime());
         Binder binder = Binders.defaultBinder();
         binder.bind(stmt, 1, calendar);
-        verify(stmt).setObject(1, new Timestamp(calendar.getTime().getTime()));
+        verify(stmt).setTimestamp(1, new Timestamp(calendar.getTime().getTime()), calendar);
+    }
+
+    @Test
+    public void defaultBinderBindsLocalDate() throws SQLException {
+        LocalDate localDate = LocalDate.parse("1975-07-19");
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, localDate);
+        verify(stmt).setDate(1, Date.valueOf(localDate));
+    }
+
+    @Test
+    public void defaultBinderBindsLocalTime() throws SQLException {
+        LocalTime localTime = LocalTime.parse("01:02:03.000");
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, localTime);
+        verify(stmt).setTime(1, Time.valueOf("01:02:03"));
+    }
+
+    @Test
+    public void defaultBinderBindsLocalDateTime() throws SQLException {
+        LocalDateTime localDateTime = LocalDateTime.parse("1975-07-19T01:02:03.000");
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, localDateTime);
+        verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 01:02:03"));
+    }
+
+    @Test
+    public void defaultBinderBindsInstant() throws SQLException {
+        Instant instant = LocalDateTime.parse("1975-07-19T01:02:03.000").atZone(ZoneId.systemDefault()).toInstant();
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, instant);
+        verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 01:02:03"));
+    }
+
+    @Test
+    public void defaultBinderBindsZonedDateTime() throws SQLException {
+        ZonedDateTime zonedDateTime = LocalDateTime.parse("1975-07-19T01:02:03.000").atZone(ZoneOffset.UTC);
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, zonedDateTime);
+        verify(stmt).setTimestamp(eq(1),
+                                  eq(Timestamp.from(zonedDateTime.toInstant())),
+                                  calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void defaultBinderBindsOffsetDateTime() throws SQLException {
+        OffsetDateTime offsetDateTime = LocalDateTime.parse("1975-07-19T01:02:03.000").atOffset(ZoneOffset.UTC);
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, offsetDateTime);
+        verify(stmt).setTimestamp(eq(1),
+                                  eq(Timestamp.from(offsetDateTime.toInstant())),
+                                  calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void defaultBinderBindsOffsetTime() throws SQLException {
+        OffsetTime offsetTime = LocalTime.parse("01:02:03.000").atOffset(ZoneOffset.UTC);
+        Binder binder = Binders.defaultBinder();
+        binder.bind(stmt, 1, offsetTime);
+        verify(stmt).setTime(eq(1),
+                             eq(Time.valueOf(offsetTime.toLocalTime())),
+                             calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
     }
 
     @Test
@@ -137,7 +213,7 @@ public class BindersTest {
         calendar.setTimeInMillis(Date.valueOf("1975-07-19").getTime());
         Binder binder = Binders.dateBinder();
         binder.bind(stmt, 1, calendar);
-        verify(stmt).setDate(1, Date.valueOf("1975-07-19"));
+        verify(stmt).setDate(1, Date.valueOf("1975-07-19"), calendar);
     }
 
     @Test
@@ -145,6 +221,48 @@ public class BindersTest {
         Binder binder = Binders.dateBinder();
         binder.bind(stmt, 1, "1975-07-19");
         verify(stmt).setDate(1, Date.valueOf("1975-07-19"));
+    }
+
+    @Test
+    public void dateBinderBindsLocalDate() throws SQLException {
+        Binder binder = Binders.dateBinder();
+        binder.bind(stmt, 1, LocalDate.parse("1975-07-19"));
+        verify(stmt).setDate(1, Date.valueOf("1975-07-19"));
+    }
+
+    @Test
+    public void dateBinderBindsLocalDateTime() throws SQLException {
+        Binder binder = Binders.dateBinder();
+        binder.bind(stmt, 1, LocalDateTime.parse("1975-07-19T01:02:03.000"));
+        verify(stmt).setDate(1, Date.valueOf("1975-07-19"));
+    }
+
+    @Test
+    public void dateBinderBindsInstant() throws SQLException {
+        Binder binder = Binders.dateBinder();
+        Instant value = LocalDateTime.parse("1975-07-19T01:02:03.000").atZone(ZoneId.systemDefault()).toInstant();
+        binder.bind(stmt, 1, value);
+        verify(stmt).setDate(1, new Date(value.toEpochMilli()));
+    }
+
+    @Test
+    public void dateBinderBindsZonedDateTime() throws SQLException {
+        Binder binder = Binders.dateBinder();
+        ZonedDateTime value = LocalDateTime.parse("1975-07-19T01:02:03.000").atZone(ZoneOffset.UTC);
+        binder.bind(stmt, 1, value);
+        verify(stmt).setDate(eq(1),
+                             eq(new Date(value.toInstant().toEpochMilli())),
+                             calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void dateBinderBindsOffsetDateTime() throws SQLException {
+        Binder binder = Binders.dateBinder();
+        OffsetDateTime value = LocalDateTime.parse("1975-07-19T01:02:03.000").atOffset(ZoneOffset.UTC);
+        binder.bind(stmt, 1, value);
+        verify(stmt).setDate(eq(1),
+                             eq(new Date(value.toInstant().toEpochMilli())),
+                             calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
     }
 
     @Test
@@ -184,7 +302,7 @@ public class BindersTest {
         calendar.setTimeInMillis(ts.getTime());
         Binder binder = Binders.timestampBinder();
         binder.bind(stmt, 1, calendar);
-        verify(stmt).setTimestamp(1, ts);
+        verify(stmt).setTimestamp(1, ts, calendar);
     }
 
     @Test
@@ -199,6 +317,47 @@ public class BindersTest {
         Binder binder = Binders.timestampBinder();
         binder.bind(stmt, 1, "1975-07-19");
         verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 00:00:00"));
+    }
+
+    @Test
+    public void timestampBinderBindsLocalDateTime() throws SQLException {
+        Binder binder = Binders.timestampBinder();
+        binder.bind(stmt, 1, LocalDateTime.parse("1975-07-19T01:02:03.000"));
+        verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 01:02:03"));
+    }
+
+    @Test
+    public void timestampBinderBindsLocalDate() throws SQLException {
+        Binder binder = Binders.timestampBinder();
+        binder.bind(stmt, 1, LocalDate.parse("1975-07-19"));
+        verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 00:00:00"));
+    }
+
+    @Test
+    public void timestampBinderBindsInstant() throws SQLException {
+        Binder binder = Binders.timestampBinder();
+        binder.bind(stmt, 1, LocalDateTime.parse("1975-07-19T01:02:03.000").atZone(ZoneId.systemDefault()).toInstant());
+        verify(stmt).setTimestamp(1, Timestamp.valueOf("1975-07-19 01:02:03"));
+    }
+
+    @Test
+    public void timestampBinderBindsZonedDateTime() throws SQLException {
+        Binder binder = Binders.timestampBinder();
+        ZonedDateTime value = LocalDateTime.parse("1975-07-19T01:02:03.000").atZone(ZoneOffset.UTC);
+        binder.bind(stmt, 1, value);
+        verify(stmt).setTimestamp(eq(1),
+                                  eq(Timestamp.from(value.toInstant())),
+                                  calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void timestampBinderBindsOffsetDateTime() throws SQLException {
+        Binder binder = Binders.timestampBinder();
+        OffsetDateTime value = LocalDateTime.parse("1975-07-19T01:02:03.000").atOffset(ZoneOffset.UTC);
+        binder.bind(stmt, 1, value);
+        verify(stmt).setTimestamp(eq(1),
+                                  eq(Timestamp.from(value.toInstant())),
+                                  calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
     }
 
     @Test
@@ -238,7 +397,7 @@ public class BindersTest {
         calendar.setTimeInMillis(time.getTime());
         Binder binder = Binders.timeBinder();
         binder.bind(stmt, 1, calendar);
-        verify(stmt).setTime(1, time);
+        verify(stmt).setTime(1, time, calendar);
     }
 
     @Test
@@ -246,6 +405,22 @@ public class BindersTest {
         Binder binder = Binders.timeBinder();
         binder.bind(stmt, 1, "13:14:15");
         verify(stmt).setTime(1, Time.valueOf("13:14:15"));
+    }
+
+    @Test
+    public void timeBinderBindsLocalTime() throws SQLException {
+        Binder binder = Binders.timeBinder();
+        binder.bind(stmt, 1, LocalTime.parse("01:02:03.000"));
+        verify(stmt).setTime(1, Time.valueOf("01:02:03"));
+    }
+
+    @Test
+    public void timeBinderBindsOffsetTime() throws SQLException {
+        Binder binder = Binders.timeBinder();
+        binder.bind(stmt, 1, OffsetTime.of(LocalTime.parse("01:02:03.000"), ZoneOffset.UTC));
+        verify(stmt).setTime(eq(1),
+                             eq(Time.valueOf("01:02:03")),
+                             calendarWithTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)));
     }
 
     @Test
@@ -327,5 +502,19 @@ public class BindersTest {
         public String toString() {
             return "foo";
         }
+    }
+
+    private static Calendar calendarWithTimeZone(TimeZone timeZone) {
+        return argThat(new BaseMatcher<Calendar>() {
+            @Override
+            public boolean matches(Object item) {
+                return (item instanceof Calendar) && ((Calendar) item).getTimeZone().equals(timeZone);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("a calendar with timezone " + timeZone);
+            }
+        });
     }
 }

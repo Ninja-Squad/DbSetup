@@ -24,16 +24,7 @@
 
 package com.ninja_squad.dbsetup.integration;
 
-import com.ninja_squad.dbsetup.DbSetup;
-import com.ninja_squad.dbsetup.DbSetupRuntimeException;
-import com.ninja_squad.dbsetup.Operations;
-import com.ninja_squad.dbsetup.bind.Binder;
-import com.ninja_squad.dbsetup.bind.Binders;
-import com.ninja_squad.dbsetup.generator.ValueGenerators;
-import com.ninja_squad.dbsetup.operation.Insert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -44,9 +35,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 
-import static org.junit.Assert.*;
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.DbSetupRuntimeException;
+import com.ninja_squad.dbsetup.Operations;
+import com.ninja_squad.dbsetup.bind.Binder;
+import com.ninja_squad.dbsetup.bind.Binders;
+import com.ninja_squad.dbsetup.generator.ValueGenerators;
+import com.ninja_squad.dbsetup.operation.Insert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author JB Nizet
@@ -214,6 +221,83 @@ public class InsertIntegrationTest {
             Insert.into("A")
                   .columns("a_id", "tis")
                   .values(1, Calendar.getInstance())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertLocalDateTimeToTimestampColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tis")
+                  .values(1, LocalDateTime.now())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertLocalDateToDateColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "da")
+                  .values(1, LocalDate.now())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertLocalTimeToTimeColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tim")
+                  .values(1, LocalTime.now())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertInstantToTimestampColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tis")
+                  .values(1, Instant.now())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertZonedDateTimeToTimestampColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tis")
+                  .values(1, ZonedDateTime.now())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertOffsetDateTimeToTimestampColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tis")
+                  .values(1, OffsetDateTime.now())
+                  .useMetadata(false)
+                  .build();
+        new DbSetup(Database.DESTINATION, insertA).launch();
+    }
+
+    @Test
+    public void insertOffsetTimeToTimeColumnWithoutMetadataShouldWork() throws SQLException {
+        Insert insertA =
+            Insert.into("A")
+                  .columns("a_id", "tim")
+                  .values(1, OffsetTime.now())
                   .useMetadata(false)
                   .build();
         new DbSetup(Database.DESTINATION, insertA).launch();

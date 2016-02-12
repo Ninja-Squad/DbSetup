@@ -24,11 +24,11 @@
 
 package com.ninja_squad.dbsetup.bind;
 
-import com.ninja_squad.dbsetup.DbSetup;
-
 import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import com.ninja_squad.dbsetup.DbSetup;
 
 /**
  * Default implementation of {@link BinderConfiguration}, used by default by {@link DbSetup}.
@@ -75,10 +75,10 @@ public class DefaultBinderConfiguration implements BinderConfiguration {
             if (sqlType == Types.DATE) {
                 return Binders.dateBinder();
             }
-            if (sqlType == Types.TIME) {
+            if (sqlType == Types.TIME || sqlType == Types.TIME_WITH_TIMEZONE) {
                 return Binders.timeBinder();
             }
-            if (sqlType == Types.TIMESTAMP) {
+            if (sqlType == Types.TIMESTAMP || sqlType == Types.TIMESTAMP_WITH_TIMEZONE) {
                 return Binders.timestampBinder();
             }
             if (sqlType == Types.BIGINT

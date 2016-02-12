@@ -30,7 +30,15 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Utility class allowing to get various kinds of binders. The {@link DefaultBinderConfiguration} uses binders
@@ -57,8 +65,20 @@ public final class Binders {
      * some well-known type not handled by JDBC:
      * <ul>
      *     <li><code>enum</code>: the name of the enum is bound</li>
-     *     <li><code>java.util.Date</code>: the date is transformed to a java.sql.Timestamp</li>
-     *     <li><code>java.util.Calendar</code>: the date is transformed to a java.sql.Timestamp</li>
+     *     <li><code>java.util.Date</code>: the date is transformed to a <code>java.sql.Timestamp</code></li>
+     *     <li><code>java.util.Calendar</code>: the calendar is transformed to a <code>java.sql.Timestamp</code>,
+     *         and is passed as third argument of
+     *         <code>PreparedStatement.setTimestampt()</code> to pass the timezone</li>
+     *     <li><code>java.time.LocalDate</code>: transformed to a <code>java.sql.Date</code></li>
+     *     <li><code>java.time.LocalTime</code>: transformed to a <code>java.sql.Time</code></li>
+     *     <li><code>java.time.LocalDateTime</code>: transformed to a <code>java.sql.Timestamp</code></li>
+     *     <li><code>java.time.Instant</code>: transformed to a <code>java.sql.Timestamp</code></li>
+     *     <li><code>java.time.ZonedDateTime</code> and <code>OffsetDateTime</code>: transformed to a
+     *         <code>java.sql.Timestamp</code>. The time zone is also used to create a Calendar passed as third
+     *         argument of <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
+     *     <li><code>java.time.OffsetTime</code>: transformed to a
+     *         <code>java.sql.Time</code>. The time zone is also used to create a Calendar passed as third
+     *         argument of <code>PreparedStatement.setTime()</code> to pass the timezone</li>
      * </ul>
      */
     public static Binder defaultBinder() {
@@ -81,11 +101,23 @@ public final class Binders {
      * Returns a binder suitable for columns of type DATE. The returned binder supports values of type
      * <ul>
      *   <li><code>java.sql.Date</code></li>
-     *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Date</li>
-     *   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a java.sql.Date
+     *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a
+     *       <code>java.sql.Date</code>.</li>
+     *   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a
+     *       <code>java.sql.Date</code>, and the calendar is passed as third argument of
+     *       <code>PreparedStatement.setDate()</code> to pass the timezone
      *   </li>
      *   <li><code>String</code>: the string is transformed to a java.sql.Date using the <code>Date.valueOf()</code>
      *       method</li>
+     *   <li><code>java.time.LocalDate</code>: transformed to a <code>java.sql.Date</code> using
+     *       <code>Date.valueOf()</code></li>
+     *   <li><code>java.time.LocalDateTime</code>: transformed to a LocalDate (and thus ignoring the time),
+     *       and then transformed to a <code>java.sql.Date</code> using <code>Date.valueOf()</code></li>
+     *   <li><code>java.time.Instant</code>the milliseconds of the instant are used to construct a
+     *       <code>java.sql.Date</code>.</li>
+     *   <li><code>java.time.ZonedDateTime</code> and <code>java.time.OffsetDateTime</code>: transformed to an Instant
+     *       and then to a <code>java.sql.Date</code>. The time zone is also used to create a Calendar passed as third
+     *       argument of <code>PreparedStatement.setDate()</code> to pass the timezone</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
@@ -94,15 +126,28 @@ public final class Binders {
     }
 
     /**
-     * Returns a binder suitable for columns of type TIMESTAMP. The returned binder supports values of type
+     * Returns a binder suitable for columns of type TIMESTAMP and TIMESTAMP WITh TIMEZONE. The returned binder
+     * supports values of type
      * <ul>
      *   <li><code>java.sql.Timestamp</code></li>
-     *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a java.sql.Timestamp</li>
-     *   <li><code>java.util.Calendar: the milliseconds of the calendar are used to construct a
-     *   java.sql.Timestamp</code></li>
+     *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a
+     *       <code>java.sql.Timestamp</code></li>
+     *   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a
+     *       <code>java.sql.Timestamp</code>, and the calendar is passed as third argument of
+     *       <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
      *   <li><code>String</code>: the string is transformed to a <code>java.sql.Timestamp</code> using the
      *       <code>Timestamp.valueOf()</code> method, or using the <code>java.sql.Date.valueOf()</code> method if the
      *       string has less than 19 characters</li>
+     *   <li><code>java.time.LocalDateTime</code>: transformed to a <code>java.sql.Timestamp</code> using
+     *       <code>Timestamp.valueOf()</code></li>
+     *   <li><code>java.time.LocalDate</code>: transformed to a LocalDateTime with the time at start of day,
+     *       and then transformed to a <code>java.sql.Timestamp</code> using <code>Timestamp.valueOf()</code></li>
+     *   <li><code>java.time.Instant</code>: transformed to a <code>java.sql.Timestamp</code> using
+     *       <code>Timestamp.from()</code></li>
+     *   <li><code>java.time.ZonedDateTime</code> and <code>java.time.OffsetDateTime</code>: transformed to an Instant
+     *       and then to a <code>java.sql.Timestamp</code> using <code>Timestamp.from()</code>. The time zone is also
+     *       used to create a Calendar passed as third argument of
+     *       <code>PreparedStatement.setTimestamp()</code> to pass the timezone</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
@@ -111,16 +156,24 @@ public final class Binders {
     }
 
     /**
-     * Returns a binder suitable for columns of type TIME. The returned binder supports values of type
+     * Returns a binder suitable for columns of type TIME or TIME WITH TIME ZONE. The returned binder supports values
+     * of type
      * <ul>
      *   <li><code>java.sql.Time</code></li>
      *   <li><code>java.util.Date</code>: the milliseconds of the date are used to construct a
      *      <code>java.sql.Time</code></li>
      *   <li><code>java.util.Calendar</code>: the milliseconds of the calendar are used to construct a
-     *      <code>java.sql.Time</code>
+     *      <code>java.sql.Time</code>, and the calendar is passed as third argument of
+     *      <code>PreparedStatement.setTimestamp()</code> to pass the timezone
      *   </li>
      *   <li><code>String</code>: the string is transformed to a java.sql.Time using the
      *       <code>Time.valueOf()</code> method</li>
+     *   <li><code>java.time.LocalTime</code>: transformed to a <code>java.sql.Time</code> using
+     *       <code>Time.valueOf()</code></li>
+     *   <li><code>java.time.OffsetTime</code>: transformed to a LocalTime and then to a <code>java.sql.Time</code>
+     *       using <code>Time.valueOf()</code>. The time zone is also
+     *       used to create a Calendar passed as third argument of
+     *       <code>PreparedStatement.setTime()</code> to pass the timezone</li>
      * </ul>
      * If the value is none of these types, <code>stmt.setObject()</code> is used to bind the value.
      */
@@ -197,10 +250,20 @@ public final class Binders {
                 stmt.setTime(param, new Time(((java.util.Date) value).getTime()));
             }
             else if (value instanceof Calendar) {
-                stmt.setTime(param, new Time(((Calendar) value).getTimeInMillis()));
+                Calendar calendar = (Calendar) value;
+                stmt.setTime(param, new Time(calendar.getTimeInMillis()), calendar);
             }
             else if (value instanceof String) {
                 stmt.setTime(param, Time.valueOf((String) value));
+            }
+            else if (value instanceof LocalTime) {
+                stmt.setTime(param, Time.valueOf((LocalTime) value));
+            }
+            else if (value instanceof OffsetTime) {
+                OffsetTime offsetTime = (OffsetTime) value;
+                stmt.setTime(param,
+                             Time.valueOf(offsetTime.toLocalTime()),
+                             Calendar.getInstance(TimeZone.getTimeZone(offsetTime.getOffset())));
             }
             else {
                 stmt.setObject(param, value);
@@ -278,7 +341,7 @@ public final class Binders {
                 stmt.setTimestamp(param, new Timestamp(((java.util.Date) value).getTime()));
             }
             else if (value instanceof Calendar) {
-                stmt.setTimestamp(param, new Timestamp(((Calendar) value).getTimeInMillis()));
+                stmt.setTimestamp(param, new Timestamp(((Calendar) value).getTimeInMillis()), (Calendar) value);
             }
             else if (value instanceof String) {
                 String valueAsString = (String) value;
@@ -289,6 +352,30 @@ public final class Binders {
                     Date valueAsDate = Date.valueOf(valueAsString);
                     stmt.setTimestamp(param, new Timestamp(valueAsDate.getTime()));
                 }
+            }
+            else if (value instanceof LocalDateTime) {
+                LocalDateTime localDateTime = (LocalDateTime) value;
+                stmt.setTimestamp(param, Timestamp.valueOf(localDateTime));
+            }
+            else if (value instanceof Instant) {
+                Instant instant = (Instant) value;
+                stmt.setTimestamp(param, Timestamp.from(instant));
+            }
+            else if (value instanceof ZonedDateTime) {
+                ZonedDateTime zonedDateTime = (ZonedDateTime) value;
+                stmt.setTimestamp(param,
+                                  Timestamp.from(zonedDateTime.toInstant()),
+                                  Calendar.getInstance(TimeZone.getTimeZone(zonedDateTime.getZone())));
+            }
+            else if (value instanceof OffsetDateTime) {
+                OffsetDateTime offsetDateTime = (OffsetDateTime) value;
+                stmt.setTimestamp(param,
+                                  Timestamp.from(offsetDateTime.toInstant()),
+                                  Calendar.getInstance(TimeZone.getTimeZone(offsetDateTime.getOffset())));
+            }
+            else if (value instanceof LocalDate) {
+                LocalDate localDate = (LocalDate) value;
+                stmt.setTimestamp(param, Timestamp.valueOf(localDate.atStartOfDay()));
             }
             else {
                 stmt.setObject(param, value);
@@ -315,10 +402,35 @@ public final class Binders {
                 stmt.setDate(param, new Date(((java.util.Date) value).getTime()));
             }
             else if (value instanceof Calendar) {
-                stmt.setDate(param, new Date(((Calendar) value).getTimeInMillis()));
+                Calendar calendar = (Calendar) value;
+                stmt.setDate(param, new Date(calendar.getTimeInMillis()), calendar);
             }
             else if (value instanceof String) {
                 stmt.setDate(param, Date.valueOf((String) value));
+            }
+            else if (value instanceof LocalDate) {
+                LocalDate localDate = (LocalDate) value;
+                stmt.setDate(param, Date.valueOf(localDate));
+            }
+            else if (value instanceof LocalDateTime) {
+                LocalDateTime localDateTime = (LocalDateTime) value;
+                stmt.setDate(param, Date.valueOf(localDateTime.toLocalDate()));
+            }
+            else if (value instanceof Instant) {
+                Instant instant = (Instant) value;
+                stmt.setDate(param, new Date(instant.toEpochMilli()));
+            }
+            else if (value instanceof ZonedDateTime) {
+                ZonedDateTime zonedDateTime = (ZonedDateTime) value;
+                stmt.setDate(param,
+                             new Date(zonedDateTime.toInstant().toEpochMilli()),
+                             Calendar.getInstance(TimeZone.getTimeZone(zonedDateTime.getZone())));
+            }
+            else if (value instanceof OffsetDateTime) {
+                OffsetDateTime offsetDateTime = (OffsetDateTime) value;
+                stmt.setDate(param,
+                             new Date(offsetDateTime.toInstant().toEpochMilli()),
+                             Calendar.getInstance(TimeZone.getTimeZone(offsetDateTime.getOffset())));
             }
             else {
                 stmt.setObject(param, value);
@@ -338,20 +450,49 @@ public final class Binders {
     private static final class DefaultBinder implements Binder {
         @Override
         public void bind(java.sql.PreparedStatement stmt, int param, Object value) throws java.sql.SQLException {
-            Object boundValue;
             if (value instanceof Enum) {
-                boundValue = ((Enum) value).name();
+                stmt.setString(param, ((Enum) value).name());
             }
             else if (value instanceof java.util.Date) {
-                boundValue = new Timestamp(((java.util.Date) value).getTime());
+                stmt.setTimestamp(param, new Timestamp(((java.util.Date) value).getTime()));
             }
             else if (value instanceof Calendar) {
-                boundValue = new Timestamp(((Calendar) value).getTime().getTime());
+                Calendar calendar = (Calendar) value;
+                stmt.setTimestamp(param, new Timestamp(calendar.getTime().getTime()), calendar);
+            }
+            else if (value instanceof LocalDate) {
+                stmt.setDate(param, Date.valueOf((LocalDate) value));
+            }
+            else if (value instanceof LocalTime) {
+                stmt.setTime(param, Time.valueOf((LocalTime) value));
+            }
+            else if (value instanceof LocalDateTime) {
+                stmt.setTimestamp(param, Timestamp.valueOf((LocalDateTime) value));
+            }
+            else if (value instanceof Instant) {
+                stmt.setTimestamp(param, Timestamp.from((Instant) value));
+            }
+            else if (value instanceof ZonedDateTime) {
+                ZonedDateTime zonedDateTime = (ZonedDateTime) value;
+                stmt.setTimestamp(param,
+                                  Timestamp.from(zonedDateTime.toInstant()),
+                                  Calendar.getInstance(TimeZone.getTimeZone(zonedDateTime.getZone())));
+            }
+            else if (value instanceof OffsetDateTime) {
+                OffsetDateTime offsetDateTime = (OffsetDateTime) value;
+                stmt.setTimestamp(param,
+                                  Timestamp.from(offsetDateTime.toInstant()),
+                                  Calendar.getInstance(TimeZone.getTimeZone(offsetDateTime.getOffset())));
+            }
+            else if (value instanceof OffsetTime) {
+                OffsetTime offsetTime = (OffsetTime) value;
+                stmt.setTime(param,
+                             Time.valueOf(offsetTime.toLocalTime()),
+                             Calendar.getInstance(TimeZone.getTimeZone(offsetTime.getOffset())));
             }
             else {
-                boundValue = value;
+                stmt.setObject(param, value);
             }
-            stmt.setObject(param, boundValue);
         }
 
         @Override
