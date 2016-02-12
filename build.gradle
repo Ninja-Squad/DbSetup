@@ -1,16 +1,3 @@
-buildscript {
-    repositories {
-        maven {
-            name = 'Bintray Javadoc Hotfix repo'
-            url = 'http://dl.bintray.com/melix/gradle-javadoc-hotfix-plugin'
-        }
-    }
-
-    dependencies {
-        classpath 'me.champeau.gradle:gradle-javadoc-hotfix-plugin:0.1'
-    }
-}
-
 apply plugin : 'java'
 apply plugin : 'eclipse'
 apply plugin : 'checkstyle'
@@ -19,7 +6,6 @@ apply plugin : 'findbugs'
 apply plugin : 'jacoco'
 apply plugin : 'maven'
 apply plugin : 'signing'
-apply plugin : 'javadocHotfix'
 apply plugin : 'osgi'
 
 group = 'com.ninja-squad'

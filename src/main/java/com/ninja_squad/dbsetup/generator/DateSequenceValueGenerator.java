@@ -169,6 +169,7 @@ public final class DateSequenceValueGenerator implements ValueGenerator<ZonedDat
      * @return this instance, for chaining
      * @deprecated use the other {@link #incrementingBy(int, TemporalUnit)} method
      */
+    @Deprecated
     public DateSequenceValueGenerator incrementingBy(int increment, @Nonnull CalendarField unit) {
         Preconditions.checkNotNull(unit, "unit may not be null");
         return incrementingBy(increment, unit.toTemporalUnit());
