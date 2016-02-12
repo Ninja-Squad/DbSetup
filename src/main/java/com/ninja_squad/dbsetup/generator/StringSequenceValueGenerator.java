@@ -57,7 +57,7 @@ public final class StringSequenceValueGenerator implements ValueGenerator<String
      * Tells the generator to left-pad the number it generates with 0 until the length of the number is the given
      * length. For example, passing 3 to this method will generate numbers 001, 002, 003, 004, etc. If the generated
      * number, before padding, has a length already equal or larger that the given length, the number is not padded.
-     * @param paddedNumberLength the length of the number once padded. Must be > 0.
+     * @param paddedNumberLength the length of the number once padded. Must be &gt; 0.
      * @return this instance, for chaining
      */
     public StringSequenceValueGenerator withLeftPadding(int paddedNumberLength) {

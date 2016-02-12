@@ -23,7 +23,7 @@ apply plugin : 'javadocHotfix'
 apply plugin : 'osgi'
 
 group = 'com.ninja-squad'
-sourceCompatibility = 1.6
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -36,7 +36,7 @@ dependencies {
     compile 'net.sourceforge.findbugs:annotations:1.3.2'
     testCompile 'junit:junit:4.+'
     testCompile 'org.mockito:mockito-all:1.9.0'
-    testCompile 'org.hsqldb:hsqldb:2.2.8'
+    testCompile 'org.hsqldb:hsqldb:2.3.3'
 }
 
 configurations {
@@ -47,8 +47,8 @@ configurations {
 }
 
 task checkJavaVersion << {
-    if (!JavaVersion.current().isJava6()) {
-        String message = "ERROR: Java 1.6 required but " + 
+    if (!JavaVersion.current().isJava8()) {
+        String message = "ERROR: Java 1.8 required but " +
                          JavaVersion.current() + 
                          " found. Change your JAVA_HOME environment variable.";
         throw new IllegalStateException(message);
@@ -57,7 +57,7 @@ task checkJavaVersion << {
 
 compileJava.dependsOn checkJavaVersion
 
-[compileJava, compileTestJava]*.options*.encoding = 'ISO-8859-1'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 checkstyle {
     sourceSets = [sourceSets.main]
@@ -79,7 +79,6 @@ pmdMain {
 }
 
 findbugs {
-    toolVersion = '2.0.3'
     sourceSets = [sourceSets.main]
     ignoreFailures = true
 }
@@ -125,13 +124,7 @@ javadoc {
     options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
     options.noTimestamp true
     options.linkSource true
-    options.stylesheetFile file('config/javadoc/stylesheet.css')
-}
-
-javadoc << {
-    ant.delete {
-        fileset(dir: javadoc.destinationDir, includes: '**/*.orig')
-    }
+    options.addBooleanOption('Xdoclint:all,-missing', true)
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -253,5 +246,5 @@ signing {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '2.11'
 }

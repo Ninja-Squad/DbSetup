@@ -535,7 +535,7 @@ public final class Insert implements Operation {
          * can be faster if set to <code>false</code>, but in this case, the binder used will be the one returned
          * by the {@link BinderConfiguration} for a null metadata (which is, by default, the
          * {@link Binders#defaultBinder() default binder}), except the ones which have been associated explicitly with
-         * a Binder.<br/>
+         * a Binder.<br>
          * Before version 1.3.0, a SQLException was thrown if the database doesn't support parameter metadata and
          * <code>useMetadata(false)</code> wasn't called. Since version 1.3.0, if <code>useMetadata</code> is true
          * (the default) but the database doesn't support metadata, then the default binder configuration returns the
@@ -695,7 +695,7 @@ public final class Insert implements Operation {
 
         /**
          * Ends the row, adds it to the Insert Builder the given amount of times, and returns it, for chaining.
-         * @param times the number of rows to add. Must be >= 0. If zero, no row is added.
+         * @param times the number of rows to add. Must be &gt;= 0. If zero, no row is added.
          * @return the Insert Builder
          */
         public Builder times(int times) {
@@ -712,7 +712,7 @@ public final class Insert implements Operation {
     public interface RowRepeater {
         /**
          * Adds several rows with the same non-generated values to the insert. This method can only be called once.
-         * @param times the number of rows to add. Must be >= 0. If zero, no row is added.
+         * @param times the number of rows to add. Must be &gt;= 0. If zero, no row is added.
          * @return the Insert Builder, for chaining
          * @throws IllegalStateException if the rows have already been added
          */
