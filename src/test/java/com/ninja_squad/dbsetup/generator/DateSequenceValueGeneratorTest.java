@@ -51,6 +51,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void incrementsByOneDay() throws ParseException {
         DateSequenceValueGenerator sequence = ValueGenerators.dateSequence().startingAt(july19Of2013AtMidnight());
         sequence.nextValue();
@@ -59,6 +60,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewStartAsDate() throws ParseException {
         DateSequenceValueGenerator sequence = ValueGenerators.dateSequence().startingAt(july19Of2013AtMidnight());
         assertEquals("2013-07-19T00:00:00.000", toLongString(sequence.nextValue()));
@@ -67,6 +69,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewStartAsDateWithTimeZone() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -83,6 +86,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewStartAsCalendar() throws ParseException {
         Calendar start = Calendar.getInstance();
         DateSequenceValueGenerator sequence =
@@ -115,6 +119,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrement() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -125,6 +130,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrementInYears() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -135,6 +141,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrementInMonths() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -145,6 +152,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrementInHours() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -155,6 +163,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrementInMinutes() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -165,6 +174,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrementInSeconds() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
@@ -175,6 +185,7 @@ public class DateSequenceValueGeneratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void allowsSettingNewIncrementInMilliseconds() throws ParseException {
         DateSequenceValueGenerator sequence =
             ValueGenerators.dateSequence()
