@@ -257,13 +257,19 @@ public class VendorRepositoryTest {
                     <tr>
                         <td>DATE</td>
                         <td><code class="inline">java.sql.Date</code>, <code class="inline">java.util.Date</code>, 
-                            <code class="inline">java.util.Calendar</code>, or <code class="inline">String</code>. The expected format of the String 
+                            <code class="inline">java.util.Calendar</code>, several classes from the 
+                            <code class="inline">java.time</code> package (see the javadoc of 
+                            <code class="inline">Binders.timestampBinder()</code> for details), or <code class="inline">String</code>. 
+                            The expected format of the String 
                             is the format of <code class="inline">java.sql.Date.valueOf()</code>: <code>yyyy-MM-dd</code></td>
                     </tr>
                     <tr>
                         <td>TIMESTAMP</td>
                         <td><code class="inline">java.sql.Timestamp</code>, <code class="inline">java.util.Date</code>, 
-                            <code class="inline">java.util.Calendar</code>, or <code class="inline">String</code>. The expected format of the String 
+                            <code class="inline">java.util.Calendar</code>, , several classes from the 
+                            <code class="inline">java.time</code> package (see the javadoc of 
+                            <code class="inline">Binders.dateBinder()</code> for details) 
+                            or <code class="inline">String</code>. The expected format of the String 
                             is the format of <code class="inline">java.sql.Timestamp.valueOf()</code>: <code>yyyy-MM-dd hh:mm:ss[.f...]</code> or the format
                             of <code class="inline">java.sql.Date.valueOf()</code>: <code>yyyy-MM-dd</code></td>
                     </tr>
@@ -412,7 +418,7 @@ java.sql.SQLException: Unsupported feature.</pre>
             <hr/>
 
             <footer>
-                <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2015</small>
+                <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2016</small>
             </footer>
         </div>
         

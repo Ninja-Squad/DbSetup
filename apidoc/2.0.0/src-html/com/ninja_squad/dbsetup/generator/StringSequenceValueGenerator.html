@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * The MIT License<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Copyright (c) 2013-2016, Ninja Squad<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Permission is hereby granted, free of charge, to any person obtaining a copy<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * of this software and associated documentation files (the "Software"), to deal<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * in the Software without restriction, including without limitation the rights<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * copies of the Software, and to permit persons to whom the Software is<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * furnished to do so, subject to the following conditions:<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * The above copyright notice and this permission notice shall be included in<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * all copies or substantial portions of the Software.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * THE SOFTWARE.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span><a name="line.24"></a>
+<span class="sourceLineNo">025</span>package com.ninja_squad.dbsetup.generator;<a name="line.25"></a>
+<span class="sourceLineNo">026</span><a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.ninja_squad.dbsetup.util.Preconditions;<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>/**<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * A {@link ValueGenerator} that returns a string prefix followed by a sequence number, optionally left-padded<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * with 0 to ensure a correct ordering (for example: CODE_001, CODE_002, etc.). Instances of this generator<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * are created by {@link ValueGenerators#stringSequence(String)}.<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * @author JB<a name="line.33"></a>
+<span class="sourceLineNo">034</span> */<a name="line.34"></a>
+<span class="sourceLineNo">035</span>public final class StringSequenceValueGenerator implements ValueGenerator&lt;String&gt; {<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    private String prefix;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>    private long next;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    private int increment;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>    /**<a name="line.40"></a>
+<span class="sourceLineNo">041</span>     * The length of the number once padded. 0 if no padding must be applied<a name="line.41"></a>
+<span class="sourceLineNo">042</span>     */<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    private int paddedNumberLength;<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>    StringSequenceValueGenerator(String prefix) {<a name="line.45"></a>
+<span class="sourceLineNo">046</span>        this(prefix, 1L, 1, 0);<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    }<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>    private StringSequenceValueGenerator(String prefix, long next, int increment, int paddedNumberLength) {<a name="line.49"></a>
+<span class="sourceLineNo">050</span>        this.prefix = prefix;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        this.next = next;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        this.increment = increment;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        this.paddedNumberLength = paddedNumberLength;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    }<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>    /**<a name="line.56"></a>
+<span class="sourceLineNo">057</span>     * Tells the generator to left-pad the number it generates with 0 until the length of the number is the given<a name="line.57"></a>
+<span class="sourceLineNo">058</span>     * length. For example, passing 3 to this method will generate numbers 001, 002, 003, 004, etc. If the generated<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     * number, before padding, has a length already equal or larger that the given length, the number is not padded.<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     * @param paddedNumberLength the length of the number once padded. Must be &amp;gt; 0.<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * @return this instance, for chaining<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     */<a name="line.62"></a>
+<span class="sourceLineNo">063</span>    public StringSequenceValueGenerator withLeftPadding(int paddedNumberLength) {<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        Preconditions.checkArgument(paddedNumberLength &gt; 0, "paddedNumberLength must be &gt; 0");<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        this.paddedNumberLength = paddedNumberLength;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        return this;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    }<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>    /**<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * Tells the generator to avoid left-padding the number it generates with 0<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     * @return this instance, for chaining<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     */<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    public StringSequenceValueGenerator withoutLeftPadding() {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        this.paddedNumberLength = 0;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        return this;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    }<a name="line.76"></a>
+<span class="sourceLineNo">077</span><a name="line.77"></a>
+<span class="sourceLineNo">078</span>    /**<a name="line.78"></a>
+<span class="sourceLineNo">079</span>     * Restarts the sequence at the given value<a name="line.79"></a>
+<span class="sourceLineNo">080</span>     * @param start the new starting value of the sequence<a name="line.80"></a>
+<span class="sourceLineNo">081</span>     * @return this instance, for chaining<a name="line.81"></a>
+<span class="sourceLineNo">082</span>     */<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    public StringSequenceValueGenerator startingAt(long start) {<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        this.next = start;<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        return this;<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    }<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>    /**<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     * Increments the number by the given increment.<a name="line.89"></a>
+<span class="sourceLineNo">090</span>     * @return this instance, for chaining<a name="line.90"></a>
+<span class="sourceLineNo">091</span>     */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    public StringSequenceValueGenerator incrementingBy(int increment) {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        this.increment = increment;<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        return this;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    @Override<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    public String nextValue() {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        long number = next;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        next += increment;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        return prefix + leftPadIfNecessary(number);<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    }<a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>    private String leftPadIfNecessary(long number) {<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        String numberAsString = Long.toString(number);<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        if (numberAsString.length() &gt;= paddedNumberLength) {<a name="line.106"></a>
+<span class="sourceLineNo">107</span>            return numberAsString;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        }<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        StringBuilder builder = new StringBuilder(paddedNumberLength);<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        for (int i = 0; i &lt; paddedNumberLength - numberAsString.length(); i++) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            builder.append('0');<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        return builder.append(numberAsString).toString();<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    }<a name="line.114"></a>
+<span class="sourceLineNo">115</span><a name="line.115"></a>
+<span class="sourceLineNo">116</span>    @Override<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    public String toString() {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>        return "StringSequenceValueGenerator["<a name="line.118"></a>
+<span class="sourceLineNo">119</span>               + "prefix='" + prefix + '\''<a name="line.119"></a>
+<span class="sourceLineNo">120</span>               + ", next=" + next<a name="line.120"></a>
+<span class="sourceLineNo">121</span>               + ", increment=" + increment<a name="line.121"></a>
+<span class="sourceLineNo">122</span>               + ", paddedNumberLength=" + paddedNumberLength<a name="line.122"></a>
+<span class="sourceLineNo">123</span>               + "]";<a name="line.123"></a>
+<span class="sourceLineNo">124</span>    }<a name="line.124"></a>
+<span class="sourceLineNo">125</span>}<a name="line.125"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

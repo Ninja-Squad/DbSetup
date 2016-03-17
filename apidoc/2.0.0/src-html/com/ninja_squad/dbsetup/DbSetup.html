@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * The MIT License<a name="line.2"></a>
+<span class="sourceLineNo">003</span> *<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Copyright (c) 2012, Ninja Squad<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Permission is hereby granted, free of charge, to any person obtaining a copy<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * of this software and associated documentation files (the "Software"), to deal<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * in the Software without restriction, including without limitation the rights<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * copies of the Software, and to permit persons to whom the Software is<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * furnished to do so, subject to the following conditions:<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * The above copyright notice and this permission notice shall be included in<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * all copies or substantial portions of the Software.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * THE SOFTWARE.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span><a name="line.24"></a>
+<span class="sourceLineNo">025</span>package com.ninja_squad.dbsetup;<a name="line.25"></a>
+<span class="sourceLineNo">026</span><a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.sql.Connection;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.sql.SQLException;<a name="line.28"></a>
+<span class="sourceLineNo">029</span><a name="line.29"></a>
+<span class="sourceLineNo">030</span>import javax.annotation.Nonnull;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.ninja_squad.dbsetup.bind.BinderConfiguration;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.ninja_squad.dbsetup.destination.Destination;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.ninja_squad.dbsetup.operation.Operation;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.ninja_squad.dbsetup.util.Preconditions;<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>/**<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * Allows executing a sequence of database operations. This object is reusable, and can thus be used several times<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * to launch the same sequence of database operations. Here's a typical usage scenario in a unit test:<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * &lt;pre&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * &amp;#064;Before<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * public void setUp() throws Exception {<a name="line.43"></a>
+<span class="sourceLineNo">044</span> *     Operation operation =<a name="line.44"></a>
+<span class="sourceLineNo">045</span> *         Operations.sequenceOf(<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *             CommonOperations.DELETE_ALL,<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *             CommonOperations.INSERT_REFERENCE_DATA,<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *             Operations.insertInto("CLIENT")<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *                       .columns("CLIENT_ID", "FIRST_NAME", "LAST_NAME", "DATE_OF_BIRTH", "COUNTRY_ID")<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *                       .values(1L, "John", "Doe", "1975-07-19", 1L)<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *                       .values(2L, "Jack", "Smith", "1969-08-22", 2L)<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *                       .build());<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *     DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *     dbSetup.launch();<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * }<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * &lt;/pre&gt;<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * In the above code, &lt;code&gt;CommonOperations.DELETE_ALL&lt;/code&gt; and &lt;code&gt;CommonOperations.INSERT_REFERENCE_DATA&lt;/code&gt;<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * are operations shared by multiple test classes.<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * &lt;p&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * Note that, to speed up test executions, a {@link DbSetupTracker} can be used, at the price of a slightly<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * bigger complexity.<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * @author JB Nizet<a name="line.62"></a>
+<span class="sourceLineNo">063</span> */<a name="line.63"></a>
+<span class="sourceLineNo">064</span>public final class DbSetup {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    private final Destination destination;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    private final Operation operation;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    private final BinderConfiguration binderConfiguration;<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>    /**<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * Constructor which uses the {@link DefaultBinderConfiguration#INSTANCE default binder configuration}.<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     * @param destination the destination of the sequence of database operations<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     * @param operation the operation to execute (most of the time, an instance of<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     * {@link com.ninja_squad.dbsetup.operation.CompositeOperation}<a name="line.73"></a>
+<span class="sourceLineNo">074</span>     */<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    public DbSetup(@Nonnull Destination destination, @Nonnull Operation operation) {<a name="line.75"></a>
+<span class="sourceLineNo">076</span>        this(destination, operation, DefaultBinderConfiguration.INSTANCE);<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    }<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    /**<a name="line.79"></a>
+<span class="sourceLineNo">080</span>     * Constructor allowing to use a custom {@link BinderConfiguration}.<a name="line.80"></a>
+<span class="sourceLineNo">081</span>     * @param destination the destination of the sequence of database operations<a name="line.81"></a>
+<span class="sourceLineNo">082</span>     * @param operation the operation to execute (most of the time, an instance of<a name="line.82"></a>
+<span class="sourceLineNo">083</span>     * {@link com.ninja_squad.dbsetup.operation.CompositeOperation}<a name="line.83"></a>
+<span class="sourceLineNo">084</span>     * @param binderConfiguration the binder configuration to use.<a name="line.84"></a>
+<span class="sourceLineNo">085</span>     */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    public DbSetup(@Nonnull Destination destination,<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                   @Nonnull Operation operation,<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                   @Nonnull BinderConfiguration binderConfiguration) {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        Preconditions.checkNotNull(destination, "destination may not be null");<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        Preconditions.checkNotNull(operation, "operation may not be null");<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        Preconditions.checkNotNull(binderConfiguration, "binderConfiguration may not be null");<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>        this.destination = destination;<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        this.operation = operation;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        this.binderConfiguration = binderConfiguration;<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    }<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>    /**<a name="line.98"></a>
+<span class="sourceLineNo">099</span>     * Executes the sequence of operations. All the operations use the same connection, and are grouped<a name="line.99"></a>
+<span class="sourceLineNo">100</span>     * in a single transaction. The transaction is rolled back if any exception occurs.<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     */<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    public void launch() {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        try {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>            Connection connection = destination.getConnection();<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            try {<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                connection.setAutoCommit(false);<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                operation.execute(connection, binderConfiguration);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                connection.commit();<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            catch (SQLException e) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                connection.rollback();<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                throw e;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>            }<a name="line.113"></a>
+<span class="sourceLineNo">114</span>            catch (RuntimeException e) {<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                connection.rollback();<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                throw e;<a name="line.116"></a>
+<span class="sourceLineNo">117</span>            }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>            finally {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                connection.close();<a name="line.119"></a>
+<span class="sourceLineNo">120</span>            }<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        }<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        catch (SQLException e) {<a name="line.122"></a>
+<span class="sourceLineNo">123</span>            throw new DbSetupRuntimeException(e);<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        }<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    }<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>    @Override<a name="line.127"></a>
+<span class="sourceLineNo">128</span>    public String toString() {<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        return "DbSetup [destination="<a name="line.129"></a>
+<span class="sourceLineNo">130</span>               + destination<a name="line.130"></a>
+<span class="sourceLineNo">131</span>               + ", operation="<a name="line.131"></a>
+<span class="sourceLineNo">132</span>               + operation<a name="line.132"></a>
+<span class="sourceLineNo">133</span>               + ", binderConfiguration="<a name="line.133"></a>
+<span class="sourceLineNo">134</span>               + binderConfiguration<a name="line.134"></a>
+<span class="sourceLineNo">135</span>               + "]";<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>    @Override<a name="line.138"></a>
+<span class="sourceLineNo">139</span>    public int hashCode() {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        final int prime = 31;<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        int result = 1;<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        result = prime * result + binderConfiguration.hashCode();<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        result = prime * result + destination.hashCode();<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        result = prime * result + operation.hashCode();<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        return result;<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    }<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>    @Override<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    public boolean equals(Object obj) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        if (this == obj) {<a name="line.150"></a>
+<span class="sourceLineNo">151</span>            return true;<a name="line.151"></a>
+<span class="sourceLineNo">152</span>        }<a name="line.152"></a>
+<span class="sourceLineNo">153</span>        if (obj == null) {<a name="line.153"></a>
+<span class="sourceLineNo">154</span>            return false;<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        }<a name="line.155"></a>
+<span class="sourceLineNo">156</span>        if (getClass() != obj.getClass()) {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>            return false;<a name="line.157"></a>
+<span class="sourceLineNo">158</span>        }<a name="line.158"></a>
+<span class="sourceLineNo">159</span>        DbSetup other = (DbSetup) obj;<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        return binderConfiguration.equals(other.binderConfiguration)<a name="line.160"></a>
+<span class="sourceLineNo">161</span>               &amp;&amp; destination.equals(other.destination)<a name="line.161"></a>
+<span class="sourceLineNo">162</span>               &amp;&amp; operation.equals(other.operation);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>}<a name="line.164"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
