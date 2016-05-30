@@ -164,11 +164,10 @@ public class VendorRepositoryTest {
                     .values(1L, "AMA", "Amazon", 2)
                     .values(2L, "PMI", "PriceMinister", 1)
                     .build());
-            DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
-            // or without DataSource:
-            // DbSetup dbSetup = new DbSetup(new DriverManagerDestination(TEST_DB_URL, TEST_DB_USER, TEST_DB_PASSWORD), operation);
-            dbSetup.launch();
-        }
+        DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
+        // or without DataSource:
+        // DbSetup dbSetup = new DbSetup(new DriverManagerDestination(TEST_DB_URL, TEST_DB_USER, TEST_DB_PASSWORD), operation);
+        dbSetup.launch();
     }
 }</pre>
 
