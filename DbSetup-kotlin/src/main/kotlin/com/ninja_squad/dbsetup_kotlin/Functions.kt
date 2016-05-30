@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2012-2013, Ninja Squad
+ * Copyright (c) 2016, Ninja Squad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,3 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.ninja_squad.dbsetup_kotlin
+
+import com.ninja_squad.dbsetup.DbSetup
+
+/**
+ * Top-level function allowing to create a DbSetup by passing a lambda expression configuring it.
+ *
+ * Example usage:
+ *
+ * ```
+ * val setup = dbSetup {
+ *     destination = DataSourceDestination(dataSource)
+ *
+ *     deleteAllFrom("user", "country")
+ *     insertInto("country") {
+ *         ...
+ *     }
+ *     insertInto("user") {
+ *         ...
+ *     }
+ *     sql(...)
+ * }
+ * ```
+ *
+ * @throws IllegalStateException if the destination has not been set by the configure function
+ *
+ * @author JB Nizet
+ */
+fun dbSetup(configure: DbSetupBuilder.() -> Unit): DbSetup {
+    val builder = DbSetupBuilder()
+    builder.configure()
+    return builder.build()
+}

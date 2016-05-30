@@ -1,13 +1,12 @@
-
 /.project
 /.gradle
 /.settings
 /bin
-/build
+build/
 /.classpath
 /.classpath.idea/
 /.java-version
-DbSetup.iml
+*.iml
 .idea
 out
 classes

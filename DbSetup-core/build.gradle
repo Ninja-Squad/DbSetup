@@ -1,0 +1,81 @@
+apply plugin : 'pmd'
+apply plugin : 'findbugs'
+apply plugin : 'jacoco'
+
+description = 'Helps you setup your database with test data'
+
+check.dependsOn tasks.getByName("jacocoTestReport")
+
+dependencies {
+    compile 'com.google.code.findbugs:jsr305:2.0.0'
+    compile 'net.sourceforge.findbugs:annotations:1.3.2'
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.mockito:mockito-all:1.9.0'
+    testCompile 'org.hsqldb:hsqldb:2.3.3'
+}
+
+configurations {
+    compile.transitive = false
+    testCompile.transitive = false
+    runtime.transitive = false
+    testRuntime.transitive = false
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+pmd {
+    sourceSets = [sourceSets.main]
+}
+
+pmdMain {
+    ignoreFailures = true
+    ruleSetFiles = files('config/pmd/ruleset.xml')
+}
+
+findbugs {
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+}
+
+findbugsMain {
+    reports {
+        xml {
+            enabled = false
+        }
+        html {
+            enabled = true
+        }
+    }
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Vendor', 'ninja-squad.com'
+        instructionReplace 'Export-Package',
+                           'com.ninja_squad.dbsetup',
+                           'com.ninja_squad.dbsetup.bind',
+                           'com.ninja_squad.dbsetup.destination',
+                           'com.ninja_squad.dbsetup.generator',
+                           'com.ninja_squad.dbsetup.operation'
+        instruction 'Import-Package', '!javax.annotation.*', '*'
+    }
+}
+
+javadoc {
+    options.overview file('src/main/java/com/ninja_squad/dbsetup/overview.html').path
+    options.noTimestamp true
+    options.linkSource true
+    options.addBooleanOption('Xdoclint:all,-missing', true)
+}
+
+def configurePomDependencies(pom) {
+    // we don't care about test dependencies
+    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'}
+    // we don't care about findbugs annotations
+    pom.dependencies = pom.dependencies.findAll {it.groupId != 'net.sourceforge.findbugs' && it.artifactId != 'annotations'}
+    // we don't care about JSR305 annotations
+    pom.dependencies = pom.dependencies.findAll {it.groupId != 'com.google.code.findbugs' && it.artifactId != 'jsr305'}
+    // all dependencies are compile time dependencies, and there is no need to say it
+    pom.dependencies*.scope = null
+}
+

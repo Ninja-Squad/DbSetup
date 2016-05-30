@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2012-2013, Ninja Squad
+ * Copyright (c) 2016, Ninja Squad
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,3 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.ninja_squad.dbsetup_kotlin
+
+import com.ninja_squad.dbsetup.DbSetup
+import com.ninja_squad.dbsetup.DbSetupTracker
+
+/**
+ * Extension function of DbSetup allowing to launch it with a tracker. This allows launching the setup in an easier way:
+ * instead of doing
+ *
+ * ```
+ * val theSetup = dbSetup {
+ *     ...
+ * }
+ * tracker.launchIfNecessary(theSetup)
+ * ```
+ *
+ * you can simply do
+ *
+ * ```
+ * dbSetup {
+ *     ...
+ * }.launchWith(tracker)
+ * ```
+ *
+ * @author JB Nizet
+ */
+fun DbSetup.launchWith(tracker: DbSetupTracker) {
+    tracker.launchIfNecessary(this)
+}

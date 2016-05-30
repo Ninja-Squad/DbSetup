@@ -13,13 +13,13 @@
 
         <module name="MissingDeprecated">
         </module>
-        
+
         <module name="MissingOverride">
         </module>
-        
+
         <module name="PackageAnnotation">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <!-- Checks for empty blocks. -->
         <!-- <property name="option" value="stmt"/> -->
@@ -35,9 +35,9 @@
         </module>
         <module name="EmptyBlock">
             <property name="tokens" value="LITERAL_CATCH"/>
-            <property name="option" value="text"/> 
+            <property name="option" value="text"/>
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <!--
             Checks for the placement of left curly braces ('{') for code
@@ -87,7 +87,7 @@
         <!-- <property name="allowInSwitchCase" value="false"/> -->
         <module name="AvoidNestedBlocks">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_design.html -->
         <!-- Checks visibility of class members. -->
         <!-- <property name="packageAllowed" value="false"/> -->
@@ -148,7 +148,7 @@
         <!-- Detects empty statements (standalone ;). -->
         <module name="EmptyStatement">
         </module>
-        
+
         <module name="EqualsAvoidNull">
         </module>
 
@@ -274,11 +274,11 @@
             value="java.lang.Exception, java.lang.Throwable,
             java.lang.RuntimeException"/>
         -->
-        <!-- Disabled because already checked by PMD 
+        <!-- Disabled because already checked by PMD
         <module name="IllegalCatch">
         </module>
         -->
-        
+
         <module name="IllegalThrows">
         </module>
 
@@ -356,7 +356,7 @@
         <!-- Checks for the use of unnecessary parentheses. -->
         <module name="UnnecessaryParentheses">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <!--
             Checks that there are no import statements that use the *
@@ -368,7 +368,7 @@
 
         <module name="AvoidStaticImport">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <!-- Checks for imports from a set of illegal packages. -->
         <!-- <property name="illegalPkgs" value="sun"/> -->
@@ -385,7 +385,7 @@
         <module name="UnusedImports">
             <property name="processJavadoc" value="true"/>
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocType -->
         <!-- Checks Javadoc comments for class and interface definitions. -->
         <!-- <property name="scope" value="private"/> -->
@@ -395,7 +395,7 @@
         <!-- <property name="tokens" value="INTERFACE_DEF, CLASS_DEF"/> -->
         <module name="JavadocType">
         </module>
-        
+
         <!--  module name="JavadocMethod">
         </module -->
 
@@ -404,7 +404,7 @@
 
         <!-- module name="JavadocStyle">
         </module -->
-        
+
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <!--
             Checks that long constants are defined with an upper ell.
@@ -418,7 +418,7 @@
         <!-- <property name="javaStyle" value="true"/> -->
         <module name="ArrayTypeStyle">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <!-- Checks correct indentation of Java Code. -->
         <!-- <property name="basicOffset" value="4"/> -->
@@ -441,7 +441,7 @@
         <!-- <property name="tokens" value="METHOD_DEF, VARIABLE_DEF"/> -->
         <module name="RedundantModifier">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_naming.html -->
         <!-- Checks for Naming Conventions.                  -->
         <!-- <property name="format" value="^Abstract.*$|^.*Factory$"/> -->
@@ -527,10 +527,10 @@
 
         <module name="OuterTypeNumber">
         </module>
-        
+
         <module name="GenericWhitespace">
         </module>
-        
+
         <!-- See http://checkstyle.sf.net/config_whitespace.html -->
         <!--
             Checks the padding between the identifier of a method
@@ -611,7 +611,7 @@
             SR_ASSIGN, STAR, STAR_ASSIGN"/>
         </module>
     </module>
-    
+
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
     <!--
         Checks that there are no tab characters ('\t') in the source
@@ -619,9 +619,9 @@
     -->
     <module name="FileTabCharacter">
     </module>
-    
+
     <module name="Header">
-        <property name="headerFile" value="config/checkstyle/java.header"/>
+        <property name="headerFile" value="${headerFile}"/>
         <property name="ignoreLines" value="4"/>
         <property name="fileExtensions" value="java"/>
     </module>
