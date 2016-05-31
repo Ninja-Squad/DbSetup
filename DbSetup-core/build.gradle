@@ -68,6 +68,18 @@ javadoc {
     options.addBooleanOption('Xdoclint:all,-missing', true)
 }
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+    manifest {
+        from project.ext.sharedManifest
+    }
+}
+
+artifacts {
+    archives javadocJar
+}
+
 def configurePomDependencies(pom) {
     // we don't care about test dependencies
     pom.dependencies = pom.dependencies.findAll {it.scope != 'test'}

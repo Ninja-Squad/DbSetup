@@ -81,7 +81,7 @@ fun Insert.Builder.mappedValues(vararg entries: Pair<String, Any?>): Insert.Buil
  * insertInto("user") {
  *     columns("id", "firstName", "lastName")
  *     withGeneratedValue("id", ValueGenerators.sequence())
- *     repeatingMappedValues(mapOf("firstName" to "John", "lastName" to "Doe")).times(100)
+ *     repeatingValues(mapOf("firstName" to "John", "lastName" to "Doe")).times(100)
  * }
  * ```
  *

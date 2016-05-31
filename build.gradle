@@ -27,7 +27,7 @@ subprojects { subProject ->
     }
     compileJava.dependsOn checkJavaVersion
 
-    def sharedManifest = manifest {
+    subProject.ext.sharedManifest = manifest {
         attributes(['Implementation-Title': project.name,
                     'Implementation-Version': project.version,
                     'Implementation-Vendor': 'ninja-squad.com'])
@@ -35,7 +35,7 @@ subprojects { subProject ->
 
     subProject.jar {
         manifest {
-            from sharedManifest
+            from subProject.ext.sharedManifest
             instruction 'Bundle-Vendor', 'ninja-squad.com'
         }
     }
@@ -67,17 +67,8 @@ subprojects { subProject ->
         }
     }
 
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-        manifest {
-            from sharedManifest
-        }
-    }
-
     artifacts {
         archives sourcesJar
-        archives javadocJar
     }
 
     task checkSonatypeProperties << {
