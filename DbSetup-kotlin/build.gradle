@@ -18,6 +18,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.2"
     compile project(':DbSetup')
     testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-all:1.9.0'
 }
 
 dokka {

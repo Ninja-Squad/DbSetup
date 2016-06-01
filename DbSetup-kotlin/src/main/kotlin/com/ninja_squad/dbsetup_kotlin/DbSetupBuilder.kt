@@ -65,7 +65,7 @@ class DbSetupBuilder {
      * }
      * ```
      */
-    fun insertInto(table: String, configure: Insert.Builder.() -> Unit) {
+    inline fun insertInto(table: String, configure: Insert.Builder.() -> Unit) {
         val builder = Insert.into(table)
         builder.configure()
         execute(builder.build())
@@ -97,7 +97,7 @@ class DbSetupBuilder {
 
     /**
      * Adds a Truncate operation to the DbSetup
-     * @param tables the table to truncate
+     * @param table the table to truncate
      */
     fun truncate(table: String) {
         execute(Operations.truncate(table))
@@ -146,7 +146,7 @@ class DbSetupBuilder {
     /**
      * Adds an operation to the DbSetup. Custom extension functions typically delegate to this method to
      * add the operation they want.
-     * @param the operation to add
+     * @param operation the operation to add
      */
     fun execute(operation: Operation) {
         operations.add(operation)
