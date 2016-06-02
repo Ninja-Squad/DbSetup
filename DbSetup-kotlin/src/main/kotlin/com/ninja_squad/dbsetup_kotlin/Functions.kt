@@ -24,6 +24,7 @@
 package com.ninja_squad.dbsetup_kotlin
 
 import com.ninja_squad.dbsetup.DbSetup
+import com.ninja_squad.dbsetup.operation.Insert
 
 /**
  * Top-level function allowing to create a DbSetup by passing a lambda expression configuring it.
@@ -51,6 +52,27 @@ import com.ninja_squad.dbsetup.DbSetup
  */
 fun dbSetup(configure: DbSetupBuilder.() -> Unit): DbSetup {
     val builder = DbSetupBuilder()
+    builder.configure()
+    return builder.build()
+}
+
+/**
+ * Top-level function allowing to create an Insert operation by passing a lambda expression configuring it.
+ *
+ * Example usage:
+ *
+ * ```
+ * val insertUsers = insertInto("user") {
+ *     columns("id", "name")
+ *     values(1, "John Doe")
+ *     values(2, "Jane Doe")
+ * }
+ * ```
+ *
+ * @author JB Nizet
+ */
+fun insertInto(table: String, configure: Insert.Builder.() -> Unit): Insert {
+    val builder = Insert.into(table)
     builder.configure()
     return builder.build()
 }
