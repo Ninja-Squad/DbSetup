@@ -80,7 +80,7 @@ class DbSetupBuilder {
     }
 
     /**
-     * Adds a DeleteAll operation to the DbSetup
+     * Adds DeleteAll operations to the DbSetup
      * @param tables the tables to delete from
      */
     fun deleteAllFrom(vararg tables: String) {
