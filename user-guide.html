@@ -57,6 +57,13 @@
                     <li><a href="#columns-in-rows">Column names in rows</li>
                     <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
                     <li><a href="#metadata-and-mysql">A note on metadata, MySQL and Oracle</a></li>
+                    <li><a href="#kotlin">The Kotlin module</a></li>
+                    <li>
+                        <ul class="nav nav-list">
+                            <li><a href="#kotlin-dry">Don't repeat yourself</a></li>
+                            <li><a href="#kotlin-extending-dsl">Extending the DSL</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             
@@ -416,6 +423,110 @@ java.sql.SQLException: Unsupported feature.</pre>
 
             <hr/>
 
+            <h2><a id="kotlin"></a>The Kotlin module</h2>
+            <p>
+                Since version 2.1.0, a separate Kotlin module is also available, providing an even nicer DSL to create your database setups.
+                This module is a very thin layer on top of the Java API, so all we discussed in this guide applies to Kotlin, too. The
+                type-safe builders, lambda expressions and extension functions that Kotlin provides allow writing your database setup
+                in a nice, idiomatic, and extensible way.
+            </p>
+            <p>Here is an example of how you would use the Kotlin DSL to write a setup using Kotlin:</p>
+            <pre class="prettyprint">
+    val testDestination = DataSourceDestination(testDataSource)
+
+    val setup = dbSetup {
+        destination = testDestination                   // mandatory
+        binderConfiguration = customBinderConfiguration // optional
+        deleteAllFrom("PRODUCT", "VENDOR")
+        insertInto("VENDOR") {
+            columns("ID", "CODE", "NAME")
+            values(1L, "AMA", "Amazon")
+            values(2L, "PMI", "Prime Minister")
+        },
+        insertInto("PRODUCT")
+            mappedValues("ID" to 1L, 
+                         "NAME" to "Kindle", 
+                         "VENDOR_ID" to 1L)             // using column/value pairs
+            mappedValues("ID" to 2L, 
+                         "NAME" to "Television", 
+                         "VENDOR_ID" to 2L)       
+            withGeneratedValue("FIRST_SELLING_DATE", ValueGenerators.dateSequence())
+        }
+    }</pre>
+
+            <p>
+                You can of course launch the setup immediately:
+            </p>
+            <pre class="prettyprint">
+    dbSetup {
+        ...
+    }.launch()</pre>
+
+            <p>or you can launch it with a DbSetupTracker:</p>
+            <pre class="prettyprint">
+    dbSetup {
+        ...
+    }.launchWith(tracker)</pre>
+
+            <h3><a id="kotlin-dry"></a>Don't repeat yourself</h3>
+            <p>
+                Most of the times, all your setups will use the same destination, the same binder configuration, and will probably also
+                start by deleting everything from the same tables. How can you make that DRY?
+            </p>
+            <p>Kotlin extension functions are great for that. Here is an example showing how you can define your own 
+                <code>prepareDatabase()</code> function doing all this common stuff (it assumes you have defined the destination, custom binder configuration and tracker):</p>
+            <pre class="prettyprint">
+    fun prepareDatabase(configure: DbSetupBuilder.() -> Unit) {
+        dbSetup {
+            // do the common stuff
+            destination = testDestination
+            binderConfiguration = customBinderConfiguration
+            deleteAllFrom("PRODUCT", "VENDOR", "COUNTRY")
+            
+            // then do the additional configuration with the lambda passed as argument
+            configure()
+        }.launchWith(tracker)
+    }</pre>
+
+            <p>
+                In all your tests, you can now use this function the same way you would use <code>dbSetup()</code>, but without having to redefine
+                the common stuff:
+            </p>
+            <pre class="prettyprint">
+    prepareDatabase {
+        insertInto("VENDOR") {
+            columns("ID", "CODE", "NAME")
+            values(1L, "AMA", "Amazon")
+            values(2L, "PMI", "Prime Minister")
+        }
+    }</pre>
+
+            <h3><a id="kotlin-extending-dsl"></a>Extending the DSL</h3>
+            <p>
+                Now suppose many, but not necessarily all of your tests, must insert the same set of reference data. You can use the power of extension functions to achieve that. For example:
+            </p>
+            <pre class="prettyprint">
+    fun DbSetupBuilder.insertReferenceData() {
+        insertInto("country") {
+            ...
+        }
+        insertInto("city") {
+            ...
+        }
+    }</pre>
+            <p>
+                You can then use this extension function inside any configuration lambda. For example:
+            </p>
+            <pre class="prettyprint">
+    prepareDatabase {
+        insertReferenceData()
+
+        insertInto("VENDOR") {
+            ...
+        }
+    }</pre>
+
+            <hr/>
             <footer>
                 <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2016</small>
             </footer>
