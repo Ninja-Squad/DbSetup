@@ -24,6 +24,14 @@ dependencies {
 dokka {
     inputs.dir 'src/main/kotlin'
     jdkVersion = 8
+    inputs.dir 'config/dokka'
+    doLast {
+        copy {
+            from 'config/dokka'
+            include 'style.css'
+            into outputDirectory
+        }
+    }
 }
 
 task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {

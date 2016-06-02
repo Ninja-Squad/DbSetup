@@ -57,6 +57,9 @@ import com.ninja_squad.dbsetup.operation.Insert
  *
  * because that would try to insert the Pairs themselves into the table, rather than the values of the pairs.
  *
+ * @param entries the column/value pairs of the row to insert
+ * @return the Insert Builder for chaining (although that is usually not necessary with the Kotlin DSL)
+ *
  * @author JB Nizet
  */
 fun Insert.Builder.mappedValues(vararg entries: Pair<String, Any?>): Insert.Builder {
@@ -65,6 +68,7 @@ fun Insert.Builder.mappedValues(vararg entries: Pair<String, Any?>): Insert.Buil
 
 /**
  * Allows inserting the same values multiple times, by specifying them as colum/value pairs instead of a Map.
+ *
  * Example usage:
  *
  * ```
@@ -96,6 +100,9 @@ fun Insert.Builder.mappedValues(vararg entries: Pair<String, Any?>): Insert.Buil
  * ```
  *
  * because that would try to insert the Pairs themselves into the table, rather than the values of the pairs.
+ *
+ * @param entries the column/value pairs of the row to insert
+ * @return the RowRepeater, on which you must call times(N) to specify how many similar rows to insert
  *
  * @author JB Nizet
  */

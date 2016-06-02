@@ -33,14 +33,12 @@ import com.ninja_squad.dbsetup.operation.Operation
 
 /**
  * A builder allowing to configure a DbSetup from a lambda expression whose receiver type is this builder.
- * The intended usage is to use the dbSetup() top level function.
- *
- * @see dbSetup
+ * The intended usage is to use the [dbSetup] top level function.
  */
 class DbSetupBuilder {
 
     /**
-     * The destination of the DbSetup. It's mandatory
+     * The destination of the DbSetup. It is mandatory
      */
     var destination: Destination? = null
 
@@ -53,6 +51,7 @@ class DbSetupBuilder {
 
     /**
      * Adds an Insert operation to the DbSetup, using a lambda expression to configure it.
+     *
      * Example usage:
      *
      * ```
@@ -64,6 +63,9 @@ class DbSetupBuilder {
      *     }
      * }
      * ```
+     *
+     * @param table the name of the table to insert into
+     * @param configure the function used to configure the insert.
      */
     inline fun insertInto(table: String, configure: Insert.Builder.() -> Unit) {
         val builder = Insert.into(table)

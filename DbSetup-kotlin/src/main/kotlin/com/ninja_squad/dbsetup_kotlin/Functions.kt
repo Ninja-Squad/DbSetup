@@ -46,7 +46,9 @@ import com.ninja_squad.dbsetup.operation.Insert
  * }
  * ```
  *
+ * @param configure the function used to configure the DbSetup
  * @throws IllegalStateException if the destination has not been set by the configure function
+ * @return the created DbSetup
  *
  * @author JB Nizet
  */
@@ -68,6 +70,9 @@ fun dbSetup(configure: DbSetupBuilder.() -> Unit): DbSetup {
  *     values(2, "Jane Doe")
  * }
  * ```
+ * @param table the name of the table to insert into
+ * @param configure the function used to configure the Insert
+ * @return the created Insert operation
  *
  * @author JB Nizet
  */

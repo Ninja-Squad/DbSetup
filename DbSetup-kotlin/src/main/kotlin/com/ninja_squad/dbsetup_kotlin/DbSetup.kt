@@ -27,8 +27,9 @@ import com.ninja_squad.dbsetup.DbSetup
 import com.ninja_squad.dbsetup.DbSetupTracker
 
 /**
- * Extension function of DbSetup allowing to launch it with a tracker. This allows launching the setup in an easier way:
- * instead of doing
+ * Extension function of DbSetup allowing to launch it with a tracker. This allows launching the setup in an easier way.
+ *
+ * Instead of doing
  *
  * ```
  * val theSetup = dbSetup {
@@ -44,6 +45,8 @@ import com.ninja_squad.dbsetup.DbSetupTracker
  *     ...
  * }.launchWith(tracker)
  * ```
+ *
+ * @param tracker the tracker used to launch the DbSetup, if necessary.
  *
  * @author JB Nizet
  */
