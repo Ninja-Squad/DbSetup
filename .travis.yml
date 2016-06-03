@@ -1,4 +1,4 @@
 language: java
-script: "gradle --no-color test"
+script: "./gradlew test"
 jdk:
   - oraclejdk8
