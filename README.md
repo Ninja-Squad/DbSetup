@@ -41,21 +41,8 @@ To submit bugs or RFEs, use [Github](https://github.com/Ninja-Squad/DbSetup/issu
 
 ## install the artifacts in your own local Maven repository
     
-    gradlew install
+    gradlew publishToMavenLocal
     
-## deploy a snapshot to the sonatype *snapshots* repository
-
- - Make sure you have a file named `gradle.properties` under `HOME/.gradle`, and this file contains the following 
-properties:
-
-        sonatypeUsername=<the sonatype user name>
-        sonatypePassword=<the sonatype password>
-    
- - Make sure the version on DbSetup, in the project's `gradle.properties` file, ends with `SNAPSHOT`
- - Execute
- 
-        gradlew uploadArchives
-        
 ## release a new version of DbSetup
 
  - Make sure you have a file named `gradle.properties` under `HOME/.gradle`, and this file contains the following 
