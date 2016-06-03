@@ -1,13 +1,23 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+    }
+}
+
 allprojects {
     group = 'com.ninja-squad'
 }
 
 subprojects { subProject ->
     apply plugin : 'java'
-    apply plugin : 'maven'
     apply plugin : 'signing'
     apply plugin : 'osgi'
     apply plugin : 'checkstyle'
+    apply plugin : 'maven-publish'
+    apply plugin : 'com.jfrog.bintray'
 
     version = rootProject.version
     sourceCompatibility = 1.8
@@ -71,67 +81,87 @@ subprojects { subProject ->
         archives sourcesJar
     }
 
-    task checkSonatypeProperties << {
-        if (project.properties['sonatypeUsername'] == null || project.properties['sonatypePassword'] == null) {
-            throw new IllegalStateException("ERROR: you need to have sonatypeUsername and sonatypePassword properties" +
-                                            " defined in your HOME/.gradle/gradle.properties file to upload archives");
-        }
-    }
+    subProject.publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+                pom.withXml {
+                    def root = asNode()
+                    def xml = """
+                    <root>
+                        <name>${project.name}</name>
+                        <description>${project.description}</description>
+                        <url>http://dbsetup.ninja-squad.com/</url>
+                        <organization>
+                            <name>Ninja Squad</name>
+                            <url>http://ninja-squad.com</url>
+                        </organization>
+                        <licenses>
+                            <license>
+                                <name>MIT License</name>
+                                <url>http://dbsetup.ninja-squad.com/license.html</url>
+                                <distribution>repo</distribution>
+                            </license>
+                        </licenses>
+                        <developers>
+                            <developer>
+                                <id>jnizet</id>
+                                <name>Jean-Baptiste Nizet</name>
+                                <email>jb@ninja-squad.com</email>
+                            </developer>
+                        </developers>
+                        <scm>
+                            <connection>scm:git:git://github.com/Ninja-Squad/DbSetup</connection>
+                            <developerConnection>scm:git:git://github.com/Ninja-Squad/DbSetup</developerConnection>
+                            <url>https://github.com/Ninja-Squad/DbSetup</url>
+                        </scm>
+                    </root>
+                    """
 
-    subProject.uploadArchives {
-        dependsOn checkSonatypeProperties
+                    def parser =  new XmlParser()
+                    def rootNode = parser.parseText(xml)
+                    rootNode.children().each {
+                        root.append(it)
+                    }
+                }
+            }
+        }
         repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                    authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
-                }
-                snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
-                    authentication(userName: project.properties['sonatypeUsername'], password: project.properties['sonatypePassword'])
-                }
+            maven {
+                url "$buildDir/repo"
             }
         }
     }
 
-    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-    subProject.signing {
-        required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
-    }
-
-    [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured { pom ->
-        subProject.configurePomDependencies(pom)
-
-        pom.project {
+    bintray {
+        user = 'ninjasquad'
+        key = rootProject.findProperty('bintray.key')
+        publications = ['mavenJava']
+        publish = true
+        pkg {
+            repo = 'maven'
+            println(subProject.name)
             name = subProject.name
-            description = subProject.description
-            url = 'http://dbsetup.ninja-squad.com/'
-            organization {
-                name = 'Ninja Squad'
-                url = 'http://ninja-squad.com'
-            }
-            licenses {
-                license {
-                    name 'MIT License'
-                    url 'http://dbsetup.ninja-squad.com/license.html'
-                    distribution 'repo'
+            desc = subProject.description
+            websiteUrl = 'http://dbsetup.ninja-squad.com'
+            issueTrackerUrl = 'https://github.com/Ninja-Squad/DbSetup/issues'
+            vcsUrl = 'https://github.com/Ninja-Squad/DbSetup/'
+            licenses = ['MIT']
+            version {
+                gpg {
+                    sign = true
+                    passphrase = rootProject.findProperty('signing.password')
                 }
-            }
-            scm {
-                url = 'https://github.com/Ninja-Squad/DbSetup'
-                connection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
-                developerConnection = 'scm:git:git://github.com/Ninja-Squad/DbSetup'
-            }
-            developers {
-                developer {
-                    id = 'jnizet'
-                    name = 'Jean-Baptiste Nizet'
-                    email = 'jb@ninja-squad.com'
+                mavenCentralSync {
+                    sync = true
+                    user = rootProject.findProperty('sonatypeUserName')
+                    password = rootProject.findProperty('sonatypePassword')
                 }
             }
         }
     }
-
 }
 
 task wrapper(type: Wrapper) {

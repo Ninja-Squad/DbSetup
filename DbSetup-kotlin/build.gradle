@@ -66,10 +66,10 @@ checkstyleMain {
     source sourceSets.main.kotlin
 }
 
-def configurePomDependencies(pom) {
-    // we don't care about test dependencies
-    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'}
-    // all dependencies are compile time dependencies, and there is no need to say it
-    pom.dependencies*.scope = null
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact dokkaJar
+        }
+    }
 }
-

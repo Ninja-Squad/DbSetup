@@ -73,8 +73,3 @@ artifacts {
     archives javadocJar
 }
 
-def configurePomDependencies(pom) {
-    // we don't care about test dependencies
-    pom.dependencies = pom.dependencies.findAll {it.scope != 'test'}
-}
-

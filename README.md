@@ -58,26 +58,31 @@ properties:
         
 ## release a new version of DbSetup
 
- - Make sure you have PGP installed, and have a key pair generated and published. If you don't, follow 
-   [these instructions](https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven)
  - Make sure you have a file named `gradle.properties` under `HOME/.gradle`, and this file contains the following 
 properties:
 
         sonatypeUsername=<the sonatype user name>
-        sonatypePassword=<the sonatype password>
+        sonatypePassword=<the sonatype password>       
+        signing.password=<the password used to protect your PGP key configured in the ninjasquad bintray account>
+        bintray.key=<the api key of the ninjasquad bintray account>
         
-        signing.keyId=<the ID of your PGP key>
-        signing.password=<the password used to protect your PGP key
-        signing.secretKeyRingFile=<the absolute name of the secring.gpg file>
-        
- - Make sure the version of DbSetup in the project's `gradle.properties` file is the right one. It must not end with `SNAPSHOT`
+ - Make sure the version of DbSetup in the project's `gradle.properties` file is the right one. It must not end with `-SNAPSHOT`
  - Execute
  
-        gradlew uploadArchives
+        gradlew clean build bintrayUpload
         
- - Follow [these instructions](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide#SonatypeOSSMavenRepositoryUsageGuide-8a.ReleaseIt) 
-   (section 8.a only)
+That should upload the artefacts to the ninjasquad's bintray maven repo, sign then with the keypair stored in bintray,
+and sync it with jcenter and Maven central.
+
+Note: the bintray plugin acts sometimes strangely (hangs, or 400 errors). It can be useful to disable the gradle daemon
+by passing `-no-daemon`. Passing `--info` also helps understanding what's going on. 
+
+Note: to check the jar file and pom publication before uploading, you can use 
+
+    gradlew publish
     
+which will simply publish under the `build/repo` directory of each project.
+
 # License
 
 DbSetup is released under the [MIT License](http://en.wikipedia.org/wiki/MIT_License).
