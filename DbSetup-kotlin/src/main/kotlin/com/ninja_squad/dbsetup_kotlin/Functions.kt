@@ -76,7 +76,7 @@ fun dbSetup(configure: DbSetupBuilder.() -> Unit): DbSetup {
  *
  * @author JB Nizet
  */
-fun insertInto(table: String, configure: Insert.Builder.() -> Unit): Insert {
+inline fun insertInto(table: String, configure: Insert.Builder.() -> Unit): Insert {
     val builder = Insert.into(table)
     builder.configure()
     return builder.build()
