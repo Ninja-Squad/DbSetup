@@ -34,7 +34,7 @@
             <div class="page-header">
                 <h1>User Guide</h1>
             </div>
-            
+
             <div class="well">
                 <ul class="nav nav-list">
                     <li><a href="#dont-cleanup-prepare">Don't clean up, prepare!</a></li>
@@ -54,7 +54,7 @@
                             <li><a href="#repeating-values">Repeating values</a></li>
                         </ul>
                     </li>
-                    <li><a href="#columns-in-rows">Column names in rows</li>
+                    <li><a href="#columns-in-rows">Column names in rows</a></li>
                     <li><a href="#cyclic-dependencies">Cyclic dependencies and SQL support</a></li>
                     <li><a href="#metadata-and-mysql">A note on metadata, MySQL and Oracle</a></li>
                     <li><a href="#kotlin">The Kotlin module</a></li>
@@ -66,10 +66,10 @@
                     </li>
                 </ul>
             </div>
-            
+
             <h2><a id="dont-cleanup-prepare"></a>Don't clean up, prepare!</h2>
             <p>
-                A classical way of doing database tests is to start from an empty database, populate the database 
+                A classical way of doing database tests is to start from an empty database, populate the database
                 before each test, run the test, then remove the data after the test.
             <p>
                 This approach is not satisfactory:
@@ -88,22 +88,22 @@
                 We thus recommend the following strategy:
             </p>
             <ol>
-                <li>clear the database before the test, 
+                <li>clear the database before the test,
                 <li>then insert a small data set,
-                <li>then run the test, 
-                <li>then leave the database as it is. 
+                <li>then run the test,
+                <li>then leave the database as it is.
             </ol>
             <p>
                 If another test is run after, it will start by
-                clearing the database, and everything will be fine. That means that each test must start by 
+                clearing the database, and everything will be fine. That means that each test must start by
                 clearing all the tables, and not just the tables it uses. You want your tests to be independent,
                 and able to run in whatever order.
             </p>
-            
+
             <hr/>
-            
+
             <h2><a id="getting-started"></a>Getting started</h2>
-            
+
             <h3><a id="tables-to-clear"></a>Create the list of tables to clear before each test</h3>
             <p>
                 The order of this list is important. You must start with the tables that don't have any
@@ -119,11 +119,11 @@
 import static com.ninja_squad.dbsetup.Operations.*;
 
 public class CommonOperations {
-    public static final Operation DELETE_ALL = 
+    public static final Operation DELETE_ALL =
         deleteAllFrom("PRODUCT", "VENDOR", "COUNTRY", "USER");
     ...
 }</pre>
-            
+
             <h3><a id="common-data-set"></a>Optional: create a common data set</h3>
             <p>
                 We recommend creating data sets that are as independent as possible from other ones. Using a global
@@ -149,7 +149,7 @@ public class CommonOperations {
                 .values(1L, "jbnizet", "Jean-Baptiste Nizet")
                 .values(2L, "clacote", "Cyril Lacote")
                 .build());</pre>
-            
+
             <h3><a id="create-test-class"></a>Create your test class</h3>
             <p>
                 The below example uses JUnit, but the principle is similar if you use TestNG or any other test framework.
@@ -180,14 +180,14 @@ public class VendorRepositoryTest {
 
             <h3><a id="speedup-the-setup"></a>Add tests, and speedup the setup</h3>
             You might want to add a test for the methods <code>findByCode()</code>, <code>findByName()</code>, <code>findByCriteria()</code>
-            and <code>createVendor()</code>. Among all those tests, the test for <code>createVendor()</code> is the only one which 
+            and <code>createVendor()</code>. Among all those tests, the test for <code>createVendor()</code> is the only one which
             is susceptible to modify the database. All the other tests are read-only, and it's thus unnecessary to launch the setup
             after any of these tests has been run. To do that, we'll introduce a <code>DbSetupTracker</code>, and mark the read-only
             tests as such:
             <pre class="prettyprint">
     // the tracker is static because JUnit uses a separate Test instance for every test method.
     private static DbSetupTracker dbSetupTracker = new DbSetupTracker();
-    
+
     @Before
     public void prepare() throws Exception {
         // same operation definition as above
@@ -200,51 +200,51 @@ public class VendorRepositoryTest {
                     .values(1L, "AMA", "Amazon", 2)
                     .values(2L, "PMI", "Price Minister", 1)
                     .build());
-                    
+
         // same DbSetup definition as above
         DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), operation);
-        
+
         // use the tracker to launch the DbSetup.
         dbSetupTracker.launchIfNecessary(dbSetup);
     }
-    
+
     @Test
     public void testFindByCode() {
         dbSetupTracker.skipNextLaunch();
         ...
     }
-    
+
     @Test
     public void testFindByName() {
         dbSetupTracker.skipNextLaunch();
         ...
     }
-    
+
     @Test
     public void testFindByCriteria() {
         dbSetupTracker.skipNextLaunch();
         ...
     }
-    
+
     @Test
     public void testCreateVendor() {
         // The test writes to the database, so dbSetupTracker.skipNextLaunch(); must NOT be called
         ...
     }</pre>
-            
+
             <p>
                 Note that if you forget to call <code>dbSetupTracker.skipNextLaunch();</code> from a read-only test,
                 nothing serious will happen. The only consequence will be an unnecessary setup, but all the tests will
                 pass. That's why we chose this strategy.
             </p>
-        
+
             <hr/>
-        
+
             <h2><a id="data-formats"></a>Data formats</h2>
             <p>
-                DbSetup uses the <a href="#metadata-and-mysql">parameter metadata</a> to detect the type of the columns it must insert into. 
-                Depending on the type of the column, you may pass values of various types. Read the javadoc of the 
-                <code>DefaultBinderConfiguration</code> and 
+                DbSetup uses the <a href="#metadata-and-mysql">parameter metadata</a> to detect the type of the columns it must insert into.
+                Depending on the type of the column, you may pass values of various types. Read the javadoc of the
+                <code>DefaultBinderConfiguration</code> and
                 <code>Binders</code> classes for a complete list of supported types and formats. Here are the most important ones:
             </p>
             <table class="table table-bordered">
@@ -257,25 +257,25 @@ public class VendorRepositoryTest {
                 <tbody>
                     <tr>
                         <td>VARCHAR (and similar)</td>
-                        <td><code class="inline">String</code>, <code class="inline">Enum</code>, or any Object. If an enum is pased, its name is inserted. 
+                        <td><code class="inline">String</code>, <code class="inline">Enum</code>, or any Object. If an enum is pased, its name is inserted.
                             If an Object is passed, its <code>toString()</code> value is inserted.</td>
                     </tr>
                     <tr>
                         <td>DATE</td>
-                        <td><code class="inline">java.sql.Date</code>, <code class="inline">java.util.Date</code>, 
-                            <code class="inline">java.util.Calendar</code>, several classes from the 
-                            <code class="inline">java.time</code> package (see the javadoc of 
-                            <code class="inline">Binders.timestampBinder()</code> for details), or <code class="inline">String</code>. 
-                            The expected format of the String 
+                        <td><code class="inline">java.sql.Date</code>, <code class="inline">java.util.Date</code>,
+                            <code class="inline">java.util.Calendar</code>, several classes from the
+                            <code class="inline">java.time</code> package (see the javadoc of
+                            <code class="inline">Binders.timestampBinder()</code> for details), or <code class="inline">String</code>.
+                            The expected format of the String
                             is the format of <code class="inline">java.sql.Date.valueOf()</code>: <code>yyyy-MM-dd</code></td>
                     </tr>
                     <tr>
                         <td>TIMESTAMP</td>
-                        <td><code class="inline">java.sql.Timestamp</code>, <code class="inline">java.util.Date</code>, 
-                            <code class="inline">java.util.Calendar</code>, several classes from the 
-                            <code class="inline">java.time</code> package (see the javadoc of 
-                            <code class="inline">Binders.dateBinder()</code> for details) 
-                            or <code class="inline">String</code>. The expected format of the String 
+                        <td><code class="inline">java.sql.Timestamp</code>, <code class="inline">java.util.Date</code>,
+                            <code class="inline">java.util.Calendar</code>, several classes from the
+                            <code class="inline">java.time</code> package (see the javadoc of
+                            <code class="inline">Binders.dateBinder()</code> for details)
+                            or <code class="inline">String</code>. The expected format of the String
                             is the format of <code class="inline">java.sql.Timestamp.valueOf()</code>: <code>yyyy-MM-dd hh:mm:ss[.f...]</code> or the format
                             of <code class="inline">java.sql.Date.valueOf()</code>: <code>yyyy-MM-dd</code></td>
                     </tr>
@@ -288,22 +288,22 @@ public class VendorRepositoryTest {
                 To support additional types or formats, create an instance of BinderConfiguration, and pass an instance to the DbSetup constructor.
             </p>
             <p>Some databases, like MySQL and Oracle, don't allow knowing the type of a column from parameter metadata. In that case, since version 1.3.0,
-                the default <code>BinderConfiguration</code> returns the default binder instead of throwing a SQLException. This binder only supports standard JDBC 
+                the default <code>BinderConfiguration</code> returns the default binder instead of throwing a SQLException. This binder only supports standard JDBC
                 types (bound using <code>PreparedStatement.setObject()</code>), <code>java.util.Date</code> and <code>java.util.Calendar</code> (bound as JDBC Timestamp),
-                and enums (whose name is bound as String). 
-            
+                and enums (whose name is bound as String).
+
             <hr/>
-            
+
             <h2><a id="generators"></a>Value generators</h2>
             <p>
                 Database tables often have columns that are mandatory, must contain a unique value, but are irrelevant for your tests. Or sometimes,
-                you might simply want to populate a column by a constant or sequential value without having to specify the value for each row in the dataset. 
-                In these cases, you can use a <code>ValueGenerator</code>. Several implementations are available, that generate sequential numeric, string or date 
+                you might simply want to populate a column by a constant or sequential value without having to specify the value for each row in the dataset.
+                In these cases, you can use a <code>ValueGenerator</code>. Several implementations are available, that generate sequential numeric, string or date
                 values, with customizable starting values and increments. Here's an example of a table where the <code>ID</code> column is populated with
                 a generator starting at 1000 and with an increment of 10:
             </p>
             <pre class="prettyprint">
-    Operation insertVendors = 
+    Operation insertVendors =
         insertInto("PARAMETER")
             .withGeneratedValue("ID", ValueGenerators.sequence().startingAt(1000L).incrementingBy(10))
             .columns("CODE", "LABEL")
@@ -311,13 +311,13 @@ public class VendorRepositoryTest {
             .values("PMI", "Price Minister")
             .values("EBA", "EBay")
             .build();</pre>
-            
+
             <h3><a id="repeating-values"></a>Repeating values</h3>
             <p>
                 It's also useful sometimes to insert similar rows several times. Here's an example showing how to insert 100 tags with generated IDs and names, and the same fake description:
             </p>
             <pre class="prettyprint">
-    Operation insertTags = 
+    Operation insertTags =
         insertInto("TAG")
             .withGeneratedValue("ID", ValueGenerators.sequence().startingAt(1L))
             .withGeneratedValue("NAME", ValueGenerators.stringSequence("tag-").startingAt(1L))
@@ -326,11 +326,11 @@ public class VendorRepositoryTest {
             .build();</pre>
 
             <hr/>
-            
+
             <h2><a id="columns-in-rows"></a>Specifying column names in rows</h2>
             <p>
                 If the number of columns in a table is big, the code inserting values in the table might become harder to read. In a list
-                of 20 values, it's hard to tell which column a current value is for, and hard to check if all the 20 required values have 
+                of 20 values, it's hard to tell which column a current value is for, and hard to check if all the 20 required values have
                 been specified for each row. A solution to this problem is to specify the column name for every inserted value. This makes
                 the code more verbose of course, but you can't have your cake and eat it too.
             </p>
@@ -355,12 +355,12 @@ public class VendorRepositoryTest {
             <p>
                 In this kind of insert, you may omit the call to <code>columns()</code>. In that case, the first row will will be used to determine
                 the columns that all the inserted rows will have. If a row tries to insert a column that was not present in the columns
-                specified in <code>columns()</code> (or in the first row if <code>columns()</code> was omitted), then an exception is thrown. If a 
+                specified in <code>columns()</code> (or in the first row if <code>columns()</code> was omitted), then an exception is thrown. If a
                 row doesn't contain any value for one of the columns of the insert, then null is inserted for this column.
             </p>
             <p>
-                Note that you can mix the two kinds of row definitions inside a single insert, and that you can also use value generators. Repeating the same row is also possible by 
-                ending the row with <pre>.times(N)</pre> instead of <pre>.end()</pre>.
+                Note that you can mix the two kinds of row definitions inside a single insert, and that you can also use value generators. Repeating the same row is also possible by
+                ending the row with <code>.times(N)</code> instead of <code>.end()</code>.
             </p>
 
             <hr/>
@@ -380,7 +380,7 @@ public class VendorRepositoryTest {
             </ol>
             <p>The solution, in both cases, is to use a SQL operation. For example:</p>
             <pre class="prettyprint">
-    Operation insertVendorsAndProducts = 
+    Operation insertVendorsAndProducts =
         sequenceOf(
             insertInto("VENDOR")
                 .columns("ID", "CODE", "NAME")
@@ -391,33 +391,33 @@ public class VendorRepositoryTest {
                 .values(1L, "Kindle", "1L")
                 .build(),
             sql("update VENDOR set FEATURED_PRODUCT_ID = 1 where ID = 1"));</pre>
-            
+
             <hr/>
 
             <h2><a id="metadata-and-mysql"></a>A note on metadata, MySQL and Oracle</h2>
             <p>
-                If you tried using DbSetup before version 1.3.0 with MySQL or Oracle, you probably got one of the following exceptions: 
+                If you tried using DbSetup before version 1.3.0 with MySQL or Oracle, you probably got one of the following exceptions:
             </p>
             <pre class="prettyprint">
 java.sql.SQLException: Parameter metadata not available for the given statement.
 java.sql.SQLException: Unsupported feature.</pre>
             <p>
                 DbSetup tries to know the type of the columns it inserts into in order to
-                know how to bind the parameter. For example, if you pass an enum as argument, and the type of the column is VARCHAR, it will store 
+                know how to bind the parameter. For example, if you pass an enum as argument, and the type of the column is VARCHAR, it will store
                 the name of the enum.
                 But if the column is of type NUMBER, it will store the ordinal of the enum. This works fine most of the time, but not with MySQL and Oracle
                 which don't support this feature.
             </p>
             <p>
-                MySQL <span style="text-decoration: line-through;">sucks</span> is special in that regard. MySQL doesn't support parameter metadata (or at least I haven't found any way to make it support them). Adding <code>?useServerPrepStmts=true</code> to the URL makes it support them, 
-                but VARBINARY is returned whatever the type of the column actually is. Adding <code>?generateSimpleParameterMetadata=true</code> to 
+                MySQL <span style="text-decoration: line-through;">sucks</span> is special in that regard. MySQL doesn't support parameter metadata (or at least I haven't found any way to make it support them). Adding <code>?useServerPrepStmts=true</code> to the URL makes it support them,
+                but VARBINARY is returned whatever the type of the column actually is. Adding <code>?generateSimpleParameterMetadata=true</code> to
                 the URL makes it support them, but VARCHAR is returned whatever the type of the column actually is.
             </p>
             <p>
                 In previous versions of DbSetup, you had to call <code>useMetadata(false)</code> to avoid this
-                exception. DbSetup degrades nicely since 1.3.0. The default binder configuration catches the exception and returns the default binder, which 
+                exception. DbSetup degrades nicely since 1.3.0. The default binder configuration catches the exception and returns the default binder, which
                 uses <code>setObject()</code> on the prepared statement for any value passed, except for Date and Calendar instances which are transformed to Timestamp,
-                and enums which are transformed to their name. So if we go back to the enum example, if you want to bind its ordinal value, you will thus have to 
+                and enums which are transformed to their name. So if we go back to the enum example, if you want to bind its ordinal value, you will thus have to
                 pass the ordinal of the enum explicitely, instead of simply passing the enum and let DbSetup decide how to bind it.
             </p>
 
@@ -432,24 +432,24 @@ java.sql.SQLException: Unsupported feature.</pre>
             </p>
             <p>Here is an example of how you would use the Kotlin DSL to write a setup using Kotlin:</p>
             <pre class="prettyprint">
-    val testDestination = DataSourceDestination(testDataSource)
-
-    val setup = dbSetup {
-        destination = testDestination                   // mandatory
+    val setup = dbSetup(to = testDataSource) {
         binderConfiguration = customBinderConfiguration // optional
+
         deleteAllFrom("PRODUCT", "VENDOR")
+
         insertInto("VENDOR") {
-            columns("ID", "CODE", "NAME")
+            columns("ID", "CODE", "NAME")               // using ordered values
             values(1L, "AMA", "Amazon")
             values(2L, "PMI", "Prime Minister")
-        },
-        insertInto("PRODUCT")
-            mappedValues("ID" to 1L, 
-                         "NAME" to "Kindle", 
+        }
+
+        insertInto("PRODUCT") {
+            mappedValues("ID" to 1L,
+                         "NAME" to "Kindle",
                          "VENDOR_ID" to 1L)             // using column/value pairs
-            mappedValues("ID" to 2L, 
-                         "NAME" to "Television", 
-                         "VENDOR_ID" to 2L)       
+            mappedValues("ID" to 2L,
+                         "NAME" to "Television",
+                         "VENDOR_ID" to 2L)
             withGeneratedValue("FIRST_SELLING_DATE", ValueGenerators.dateSequence())
         }
     }</pre>
@@ -458,13 +458,13 @@ java.sql.SQLException: Unsupported feature.</pre>
                 You can of course launch the setup immediately:
             </p>
             <pre class="prettyprint">
-    dbSetup {
+    dbSetup(to = testDataSource) {
         ...
     }.launch()</pre>
 
             <p>or you can launch it with a DbSetupTracker:</p>
             <pre class="prettyprint">
-    dbSetup {
+    dbSetup(to = testDataSource) {
         ...
     }.launchWith(tracker)</pre>
 
@@ -473,16 +473,15 @@ java.sql.SQLException: Unsupported feature.</pre>
                 Most of the times, all your setups will use the same destination, the same binder configuration, and will probably also
                 start by deleting everything from the same tables. How can you make that DRY?
             </p>
-            <p>Kotlin extension functions are great for that. Here is an example showing how you can define your own 
+            <p>Kotlin extension functions are great for that. Here is an example showing how you can define your own
                 <code>prepareDatabase()</code> function doing all this common stuff (it assumes you have defined the destination, custom binder configuration and tracker):</p>
             <pre class="prettyprint">
     fun prepareDatabase(configure: DbSetupBuilder.() -> Unit) {
-        dbSetup {
+        dbSetup(to = testDestination) {
             // do the common stuff
-            destination = testDestination
             binderConfiguration = customBinderConfiguration
             deleteAllFrom("PRODUCT", "VENDOR", "COUNTRY")
-            
+
             // then do the additional configuration with the lambda passed as argument
             configure()
         }.launchWith(tracker)
@@ -531,7 +530,7 @@ java.sql.SQLException: Unsupported feature.</pre>
                 <small>&copy; <a href="http://ninja-squad.com">Ninja Squad</a> 2012-2016</small>
             </footer>
         </div>
-        
+
         <script src="js/prettify.js"></script>
     </body>
 </html>
