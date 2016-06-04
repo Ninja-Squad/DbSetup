@@ -106,6 +106,4 @@ fun Insert.Builder.mappedValues(vararg entries: Pair<String, Any?>): Insert.Buil
  *
  * @author JB Nizet
  */
-fun Insert.Builder.repeatingMappedValues(vararg entries: Pair<String, Any?>): Insert.RowRepeater {
-    return this.repeatingValues(mapOf(*entries))
-}
+fun Insert.Builder.repeatingMappedValues(vararg entries: Pair<String, Any?>) = this.repeatingValues(mapOf(*entries))

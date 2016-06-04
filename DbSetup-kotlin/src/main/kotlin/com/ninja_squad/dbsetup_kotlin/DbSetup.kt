@@ -50,6 +50,4 @@ import com.ninja_squad.dbsetup.DbSetupTracker
  *
  * @author JB Nizet
  */
-fun DbSetup.launchWith(tracker: DbSetupTracker) {
-    tracker.launchIfNecessary(this)
-}
+fun DbSetup.launchWith(tracker: DbSetupTracker) = tracker.launchIfNecessary(this)

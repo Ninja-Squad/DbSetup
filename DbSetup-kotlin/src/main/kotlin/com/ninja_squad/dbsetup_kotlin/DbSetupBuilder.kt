@@ -70,90 +70,65 @@ class DbSetupBuilder(private val to: Destination, var binderConfiguration: Binde
      * Adds a DeleteAll operation to the DbSetup
      * @param table the table to delete from
      */
-    fun deleteAllFrom(table: String) {
-        execute(Operations.deleteAllFrom(table))
-    }
+    fun deleteAllFrom(table: String) = execute(Operations.deleteAllFrom(table))
 
     /**
      * Adds DeleteAll operations to the DbSetup
      * @param tables the tables to delete from
      */
-    fun deleteAllFrom(vararg tables: String) {
-        execute(Operations.deleteAllFrom(*tables))
-    }
+    fun deleteAllFrom(vararg tables: String) = execute(Operations.deleteAllFrom(*tables))
 
     /**
      * Adds DeleteAll operations to the DbSetup
      * @param tables the tables to delete from
      */
-    fun deleteAllFrom(tables: List<String>) {
-        execute(Operations.deleteAllFrom(tables))
-    }
+    fun deleteAllFrom(tables: List<String>) = execute(Operations.deleteAllFrom(tables))
 
     /**
      * Adds a Truncate operation to the DbSetup
      * @param table the table to truncate
      */
-    fun truncate(table: String) {
-        execute(Operations.truncate(table))
-    }
+    fun truncate(table: String) = execute(Operations.truncate(table))
 
     /**
      * Adds Truncate operations to the DbSetup
      * @param tables the tables to delete from
      */
-    fun truncate(vararg tables: String) {
-        execute(Operations.truncate(*tables))
-    }
+    fun truncate(vararg tables: String) = execute(Operations.truncate(*tables))
 
     /**
      * Adds Truncate operations to the DbSetup
      * @param tables the tables to truncate
      */
-    fun truncate(tables: List<String>) {
-        execute(Operations.truncate(tables))
-    }
+    fun truncate(tables: List<String>) = execute(Operations.truncate(tables))
 
     /**
      * Adds a SqlOperation to the DbSetup
      * @param statement the SQL statement to execute
      */
-    fun sql(statement: String) {
-        execute(Operations.sql(statement))
-    }
+    fun sql(statement: String) = execute(Operations.sql(statement))
 
     /**
      * Adds SqlOperations to the DbSetup
      * @param statements the SQL statements to execute
      */
-    fun sql(vararg statements: String) {
-        execute(Operations.sql(*statements))
-    }
+    fun sql(vararg statements: String) = execute(Operations.sql(*statements))
 
     /**
      * Adds SqlOperations to the DbSetup
      * @param statements the SQL statements to execute
      */
-    fun sql(statements: List<String>) {
-        execute(Operations.sql(statements))
-    }
+    fun sql(statements: List<String>) = execute(Operations.sql(statements))
 
     /**
      * Adds an operation to the DbSetup. Custom extension functions typically delegate to this method to
      * add the operation they want.
      * @param operation the operation to add
      */
-    fun execute(operation: Operation) {
-        operations.add(operation)
-    }
+    fun execute(operation: Operation) = operations.add(operation)
 
     /**
      * Builds the DbSetup. This method is called by the dbSetup function after the builder has been configured.
-     * @throws IllegalStateException if the destination has not been set
      */
-    internal fun build(): DbSetup {
-        return DbSetup(to,
-                       Operations.sequenceOf(operations),
-                       binderConfiguration)
-    }
+    internal fun build() = DbSetup(to, Operations.sequenceOf(operations), binderConfiguration)
 }
