@@ -24,17 +24,21 @@
 package com.ninja_squad.dbsetup_kotlin
 
 import com.ninja_squad.dbsetup.DbSetup
+import com.ninja_squad.dbsetup.bind.BinderConfiguration
+import com.ninja_squad.dbsetup.bind.DefaultBinderConfiguration
+import com.ninja_squad.dbsetup.destination.DataSourceDestination
+import com.ninja_squad.dbsetup.destination.Destination
 import com.ninja_squad.dbsetup.operation.Insert
+import javax.sql.DataSource
 
 /**
- * Top-level function allowing to create a DbSetup by passing a lambda expression configuring it.
+ * Top-level function allowing to create a DbSetup by passing a destination and a lambda expression used to configure
+ * the operations that must be made.
  *
  * Example usage:
  *
  * ```
- * val setup = dbSetup {
- *     destination = DataSourceDestination(dataSource)
- *
+ * val setup = dbSetup(to = DriverManagerDestination(url, user, password)) {
  *     deleteAllFrom("user", "country")
  *     insertInto("country") {
  *         ...
@@ -46,18 +50,50 @@ import com.ninja_squad.dbsetup.operation.Insert
  * }
  * ```
  *
+ * @param to the destination of the DbSetup
+ * @param binderConfiguration a custom binder configuration. The default one is used if not specified
  * @param configure the function used to configure the DbSetup
- * @throws IllegalStateException if the destination has not been set by the configure function
  * @return the created DbSetup
  *
  * @author JB Nizet
  */
-fun dbSetup(configure: DbSetupBuilder.() -> Unit): DbSetup {
-    val builder = DbSetupBuilder()
+fun dbSetup(to: Destination,
+            binderConfiguration: BinderConfiguration = DefaultBinderConfiguration.INSTANCE,
+            configure: DbSetupBuilder.() -> Unit): DbSetup {
+    val builder = DbSetupBuilder(to, binderConfiguration)
     builder.configure()
     return builder.build()
 }
 
+/**
+ * Top-level function allowing to create a DbSetup by passing a DataSource and a lambda expression used to configure
+ * the operations that must be made.
+ *
+ * Example usage:
+ *
+ * ```
+ * val setup = dbSetup(to = dataSource) {
+ *     deleteAllFrom("user", "country")
+ *     insertInto("country") {
+ *         ...
+ *     }
+ *     insertInto("user") {
+ *         ...
+ *     }
+ *     sql(...)
+ * }
+ * ```
+ *
+ * @param to the destination of the DbSetup
+ * @param binderConfiguration a custom binder configuration. The default one is used if not specified
+ * @param configure the function used to configure the DbSetup
+ * @return the created DbSetup
+ *
+ * @author JB Nizet
+ */
+fun dbSetup(to: DataSource,
+            binderConfiguration: BinderConfiguration = DefaultBinderConfiguration.INSTANCE,
+            configure: DbSetupBuilder.() -> Unit) = dbSetup(DataSourceDestination(to), binderConfiguration, configure)
 /**
  * Top-level function allowing to create an Insert operation by passing a lambda expression configuring it.
  *

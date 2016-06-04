@@ -10,6 +10,7 @@ import org.mockito.Mockito.verify
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.Statement
+import javax.sql.DataSource
 
 class DbSetupBuilderTest {
 
@@ -31,9 +32,8 @@ class DbSetupBuilderTest {
     }
 
     @Test
-    fun `should execute an operation`() {
-        dbSetup {
-            destination = mockDestination
+    fun `should execute an operation with the binder configuration specified as property`() {
+        dbSetup(to = mockDestination) {
             binderConfiguration = mockConfig
             execute(mockOperation)
         }.launch()
@@ -42,26 +42,37 @@ class DbSetupBuilderTest {
     }
 
     @Test
+    fun `should execute an operation with the binder configuration specified as argument`() {
+        dbSetup(to = mockDestination, binderConfiguration = mockConfig) {
+            execute(mockOperation)
+        }.launch()
+
+        verify(mockOperation).execute(mockConnection, mockConfig)
+    }
+
+    @Test
+    fun `should execute an operation with a DataSource specified as argument`() {
+        val mockDataSource = mock<DataSource>()
+        whenever(mockDataSource.connection).thenReturn(mockConnection)
+        dbSetup(to = mockDataSource, binderConfiguration = mockConfig) {
+            execute(mockOperation)
+        }.launch()
+
+        verify(mockOperation).execute(mockConnection, mockConfig)
+    }
+
+    @Test
     fun `should use the default binder configuration if not set`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             execute(mockOperation)
         }.launch()
 
         verify(mockOperation).execute(mockConnection, DefaultBinderConfiguration.INSTANCE)
     }
 
-    @Test(expected = IllegalStateException::class)
-    fun `should throw if destination not set`() {
-        dbSetup {
-            execute(mockOperation)
-        }.launch()
-    }
-
     @Test
     fun `should delete all from one table`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             deleteAllFrom("user")
         }.launch()
 
@@ -70,8 +81,7 @@ class DbSetupBuilderTest {
 
     @Test
     fun `should delete all from multiple tables passed as vararg`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             deleteAllFrom("country", "user")
         }.launch()
 
@@ -81,8 +91,7 @@ class DbSetupBuilderTest {
 
     @Test
     fun `should delete all from multiple tables passed as list`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             deleteAllFrom(listOf("country", "user"))
         }.launch()
 
@@ -92,8 +101,7 @@ class DbSetupBuilderTest {
 
     @Test
     fun `should truncate one table`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             truncate("user")
         }.launch()
 
@@ -102,8 +110,7 @@ class DbSetupBuilderTest {
 
     @Test
     fun `should truncate multiple tables passed as vararg`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             truncate("country", "user")
         }.launch()
 
@@ -113,8 +120,7 @@ class DbSetupBuilderTest {
 
     @Test
     fun `should truncate multiple tables passed as list`() {
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             truncate(listOf("country", "user"))
         }.launch()
 
@@ -125,8 +131,7 @@ class DbSetupBuilderTest {
     @Test
     fun `should execute one sql statement`() {
         val query = "update foo where bar = 1"
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             sql(query)
         }.launch()
 
@@ -137,8 +142,7 @@ class DbSetupBuilderTest {
     fun `should execute multiple sql statements passed as vararg`() {
         val query1 = "update foo where bar = 1"
         val query2 = "update baz where qux = 1"
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             sql(query1, query2)
         }.launch()
 
@@ -150,8 +154,7 @@ class DbSetupBuilderTest {
     fun `should execute multiple sql statements passed as list`() {
         val query1 = "update foo where bar = 1"
         val query2 = "update baz where qux = 1"
-        dbSetup {
-            destination = mockDestination
+        dbSetup(to = mockDestination) {
             sql(listOf(query1, query2))
         }.launch()
 
@@ -165,9 +168,7 @@ class DbSetupBuilderTest {
         whenever(mockConnection.prepareStatement("insert into user (id, name) values (?, ?)"))
                 .thenReturn(mockPreparedStatement)
 
-        dbSetup {
-            destination = mockDestination
-
+        dbSetup(to = mockDestination) {
             insertInto("user") {
                 columns("id", "name")
                 values(1, "John")

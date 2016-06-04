@@ -142,7 +142,6 @@ subprojects { subProject ->
         publish = true
         pkg {
             repo = 'maven'
-            println(subProject.name)
             name = subProject.name
             desc = subProject.description
             websiteUrl = 'http://dbsetup.ninja-squad.com'

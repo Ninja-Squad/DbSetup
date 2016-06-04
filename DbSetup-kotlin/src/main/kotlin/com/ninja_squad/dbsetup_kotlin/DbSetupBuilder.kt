@@ -34,18 +34,11 @@ import com.ninja_squad.dbsetup.operation.Operation
 /**
  * A builder allowing to configure a DbSetup from a lambda expression whose receiver type is this builder.
  * The intended usage is to use the [dbSetup] top level function.
+ *
+ * @param to The destination of the DbSetup
+ * @property binderConfiguration The binder configuration of the DbSetup. It not set, the default configuration is used
  */
-class DbSetupBuilder {
-
-    /**
-     * The destination of the DbSetup. It is mandatory
-     */
-    var destination: Destination? = null
-
-    /**
-     * The binder configuration of the DbSetup. It not set, the default configuration is used
-     */
-    var binderConfiguration: BinderConfiguration = DefaultBinderConfiguration.INSTANCE
+class DbSetupBuilder(private val to: Destination, var binderConfiguration: BinderConfiguration = DefaultBinderConfiguration.INSTANCE) {
 
     private val operations = mutableListOf<Operation>()
 
@@ -159,7 +152,7 @@ class DbSetupBuilder {
      * @throws IllegalStateException if the destination has not been set
      */
     internal fun build(): DbSetup {
-        return DbSetup(destination ?: throw IllegalStateException("destination hasn't been set"),
+        return DbSetup(to,
                        Operations.sequenceOf(operations),
                        binderConfiguration)
     }
