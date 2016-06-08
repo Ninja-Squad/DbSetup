@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+<title>com.ninja_squad.dbsetup_kotlin - DbSetup-kotlin</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">DbSetup-kotlin</a>&nbsp;/&nbsp;<a href=".">com.ninja_squad.dbsetup_kotlin</a><br/>
+<br/>
+<h2>Package com.ninja_squad.dbsetup_kotlin</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="-db-setup-builder/index.html">DbSetupBuilder</a></td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DbSetupBuilder</span></code><p>A builder allowing to configure a DbSetup from a lambda expression whose receiver type is this builder.
+The intended usage is to use the <a href="db-setup.html">dbSetup</a> top level function.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Extensions for External Classes</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="com.ninja_squad.dbsetup.-db-setup/index.html">com.ninja_squad.dbsetup.DbSetup</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="com.ninja_squad.dbsetup.operation.-insert.-builder/index.html">com.ninja_squad.dbsetup.operation.Insert.Builder</a></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="db-setup.html">dbSetup</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">dbSetup</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$dbSetup(com.ninja_squad.dbsetup.destination.Destination, com.ninja_squad.dbsetup.bind.BinderConfiguration, kotlin.Function1((com.ninja_squad.dbsetup_kotlin.DbSetupBuilder, kotlin.Unit)))/to">to</span><span class="symbol">:</span>&nbsp;<span class="identifier">Destination</span><span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$dbSetup(com.ninja_squad.dbsetup.destination.Destination, com.ninja_squad.dbsetup.bind.BinderConfiguration, kotlin.Function1((com.ninja_squad.dbsetup_kotlin.DbSetupBuilder, kotlin.Unit)))/binderConfiguration">binderConfiguration</span><span class="symbol">:</span>&nbsp;<span class="identifier">BinderConfiguration</span>&nbsp;<span class="symbol">=</span>&nbsp;DefaultBinderConfiguration.INSTANCE<span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$dbSetup(com.ninja_squad.dbsetup.destination.Destination, com.ninja_squad.dbsetup.bind.BinderConfiguration, kotlin.Function1((com.ninja_squad.dbsetup_kotlin.DbSetupBuilder, kotlin.Unit)))/configure">configure</span><span class="symbol">:</span>&nbsp;<a href="-db-setup-builder/index.html"><span class="identifier">DbSetupBuilder</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Unit</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DbSetup</span></code><p>Top-level function allowing to create a DbSetup by passing a destination and a lambda expression used to configure
+the operations that must be made.</p>
+<code><span class="keyword">fun </span><span class="identifier">dbSetup</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$dbSetup(javax.sql.DataSource, com.ninja_squad.dbsetup.bind.BinderConfiguration, kotlin.Function1((com.ninja_squad.dbsetup_kotlin.DbSetupBuilder, kotlin.Unit)))/to">to</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/javax/sql/DataSource.html"><span class="identifier">DataSource</span></a><span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$dbSetup(javax.sql.DataSource, com.ninja_squad.dbsetup.bind.BinderConfiguration, kotlin.Function1((com.ninja_squad.dbsetup_kotlin.DbSetupBuilder, kotlin.Unit)))/binderConfiguration">binderConfiguration</span><span class="symbol">:</span>&nbsp;<span class="identifier">BinderConfiguration</span>&nbsp;<span class="symbol">=</span>&nbsp;DefaultBinderConfiguration.INSTANCE<span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$dbSetup(javax.sql.DataSource, com.ninja_squad.dbsetup.bind.BinderConfiguration, kotlin.Function1((com.ninja_squad.dbsetup_kotlin.DbSetupBuilder, kotlin.Unit)))/configure">configure</span><span class="symbol">:</span>&nbsp;<a href="-db-setup-builder/index.html"><span class="identifier">DbSetupBuilder</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Unit</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DbSetup</span></code><p>Top-level function allowing to create a DbSetup by passing a DataSource and a lambda expression used to configure
+the operations that must be made.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="insert-into.html">insertInto</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">insertInto</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))/table">table</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))/configure">configure</span><span class="symbol">:</span>&nbsp;<span class="identifier">Builder</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Unit</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Insert</span></code><p>Top-level function allowing to create an Insert operation by passing a lambda expression configuring it.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

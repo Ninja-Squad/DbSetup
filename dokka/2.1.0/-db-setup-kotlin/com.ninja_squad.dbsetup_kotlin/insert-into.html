@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<title>insertInto - DbSetup-kotlin</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">DbSetup-kotlin</a>&nbsp;/&nbsp;<a href="index.html">com.ninja_squad.dbsetup_kotlin</a>&nbsp;/&nbsp;<a href=".">insertInto</a><br/>
+<br/>
+<h1>insertInto</h1>
+<a name="com.ninja_squad.dbsetup_kotlin$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))"></a>
+<code><span class="keyword">inline</span> <span class="keyword">fun </span><span class="identifier">insertInto</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))/table">table</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))/configure">configure</span><span class="symbol">:</span>&nbsp;<span class="identifier">Builder</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Unit</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Insert</span></code><br/>
+<p>Top-level function allowing to create an Insert operation by passing a lambda expression configuring it.</p>
+<p>Example usage:</p>
+<pre><code>val insertUsers = insertInto("user") {
+    columns("id", "name")
+    values(1, "John Doe")
+    values(2, "Jane Doe")
+}</code></pre><br/>
+<br/>
+<h3>Parameters</h3>
+<a name="table"></a>
+<code>table</code> - the name of the table to insert into<br/>
+<br/>
+<a name="configure"></a>
+<code>configure</code> - the function used to configure the Insert<br/>
+<p><strong>Return</strong><br/>
+the created Insert operation</p>
+<p><strong>Author</strong><br/>
+JB Nizet</p>
+<br/>
+<br/>
+</BODY>
+</HTML>

@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<title>mappedValues - DbSetup-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">DbSetup-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.ninja_squad.dbsetup_kotlin</a>&nbsp;/&nbsp;<a href="index.html">com.ninja_squad.dbsetup.operation.Insert.Builder</a>&nbsp;/&nbsp;<a href=".">mappedValues</a><br/>
+<br/>
+<h1>mappedValues</h1>
+<a name="com.ninja_squad.dbsetup_kotlin$mappedValues(com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Array((kotlin.Pair((kotlin.String, kotlin.Any)))))"></a>
+<code><span class="keyword">fun </span><span class="identifier">Builder</span><span class="symbol">.</span><span class="identifier">mappedValues</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.ninja_squad.dbsetup_kotlin$mappedValues(com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Array((kotlin.Pair((kotlin.String, kotlin.Any)))))/entries">entries</span><span class="symbol">:</span>&nbsp;<span class="identifier">Pair</span><span class="symbol">&lt;</span><span class="identifier">String</span><span class="symbol">,</span>&nbsp;<span class="identifier">Any</span><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Builder</span></code><br/>
+<p>Extension function of InsertBuilder allowing to specify values as columns/value pairs instead of a Map.</p>
+<p>Example usage:</p>
+<pre><code>insertInto("user") {
+    columns("id", "name", "birthDate")
+    mappedValues("id" to 1, "name" to "John Doe")
+}</code></pre><p>This is equivalent to</p>
+<pre><code>insertInto("user") {
+    columns("id", "name", "birthDate")
+    values(mapOf("id" to 1, "name" to "John Doe"))
+}</code></pre><p>but is a bit shorter. Beware to NOT use</p>
+<pre><code>insertInto("user") {
+    columns("id", "name", "birthDate")
+    values("id" to 1, "name" to "John Doe")
+}</code></pre><p>because that would try to insert the Pairs themselves into the table, rather than the values of the pairs.</p>
+<br/>
+<br/>
+<h3>Parameters</h3>
+<a name="entries"></a>
+<code>entries</code> - the column/value pairs of the row to insert<br/>
+<p><strong>Return</strong><br/>
+the Insert Builder for chaining (although that is usually not necessary with the Kotlin DSL)</p>
+<p><strong>Author</strong><br/>
+JB Nizet</p>
+<br/>
+<br/>
+</BODY>
+</HTML>

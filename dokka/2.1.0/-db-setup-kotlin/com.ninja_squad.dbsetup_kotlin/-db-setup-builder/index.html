@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+<title>DbSetupBuilder - DbSetup-kotlin</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">DbSetup-kotlin</a>&nbsp;/&nbsp;<a href="../index.html">com.ninja_squad.dbsetup_kotlin</a>&nbsp;/&nbsp;<a href=".">DbSetupBuilder</a><br/>
+<br/>
+<h1>DbSetupBuilder</h1>
+<code><span class="keyword">class </span><span class="identifier">DbSetupBuilder</span></code><br/>
+<p>A builder allowing to configure a DbSetup from a lambda expression whose receiver type is this builder.
+The intended usage is to use the <a href="../db-setup.html">dbSetup</a> top level function.</p>
+<h3>Parameters</h3>
+<a name="to"></a>
+<code>to</code> - The destination of the DbSetup<br/>
+<br/>
+<br/>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="-init-.html">&lt;init&gt;</a></td>
+<td>
+<code><span class="identifier">DbSetupBuilder</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$<init>(com.ninja_squad.dbsetup.destination.Destination, com.ninja_squad.dbsetup.bind.BinderConfiguration)/to">to</span><span class="symbol">:</span>&nbsp;<span class="identifier">Destination</span><span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$<init>(com.ninja_squad.dbsetup.destination.Destination, com.ninja_squad.dbsetup.bind.BinderConfiguration)/binderConfiguration">binderConfiguration</span><span class="symbol">:</span>&nbsp;<span class="identifier">BinderConfiguration</span>&nbsp;<span class="symbol">=</span>&nbsp;DefaultBinderConfiguration.INSTANCE<span class="symbol">)</span></code><p>A builder allowing to configure a DbSetup from a lambda expression whose receiver type is this builder.
+The intended usage is to use the <a href="../db-setup.html">dbSetup</a> top level function.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="binder-configuration.html">binderConfiguration</a></td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">binderConfiguration</span><span class="symbol">: </span><span class="identifier">BinderConfiguration</span></code><p>The binder configuration of the DbSetup. It not set, the default configuration is used</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="delete-all-from.html">deleteAllFrom</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">deleteAllFrom</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$deleteAllFrom(kotlin.String)/table">table</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds a DeleteAll operation to the DbSetup</p>
+<code><span class="keyword">fun </span><span class="identifier">deleteAllFrom</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$deleteAllFrom(kotlin.Array((kotlin.String)))/tables">tables</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">deleteAllFrom</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$deleteAllFrom(kotlin.collections.List((kotlin.String)))/tables">tables</span><span class="symbol">:</span>&nbsp;<span class="identifier">List</span><span class="symbol">&lt;</span><span class="identifier">String</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds DeleteAll operations to the DbSetup</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="execute.html">execute</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">execute</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$execute(com.ninja_squad.dbsetup.operation.Operation)/operation">operation</span><span class="symbol">:</span>&nbsp;<span class="identifier">Operation</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds an operation to the DbSetup. Custom extension functions typically delegate to this method to
+add the operation they want.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="insert-into.html">insertInto</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">insertInto</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))/table">table</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">, </span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$insertInto(kotlin.String, kotlin.Function1((com.ninja_squad.dbsetup.operation.Insert.Builder, kotlin.Unit)))/configure">configure</span><span class="symbol">:</span>&nbsp;<span class="identifier">Builder</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Unit</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code><p>Adds an Insert operation to the DbSetup, using a lambda expression to configure it.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="sql.html">sql</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">sql</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$sql(kotlin.String)/statement">statement</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds a SqlOperation to the DbSetup</p>
+<code><span class="keyword">fun </span><span class="identifier">sql</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$sql(kotlin.Array((kotlin.String)))/statements">statements</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">sql</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$sql(kotlin.collections.List((kotlin.String)))/statements">statements</span><span class="symbol">:</span>&nbsp;<span class="identifier">List</span><span class="symbol">&lt;</span><span class="identifier">String</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds SqlOperations to the DbSetup</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="truncate.html">truncate</a></td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">truncate</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$truncate(kotlin.String)/table">table</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds a Truncate operation to the DbSetup</p>
+<code><span class="keyword">fun </span><span class="identifier">truncate</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$truncate(kotlin.Array((kotlin.String)))/tables">tables</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">truncate</span><span class="symbol">(</span><span class="identifier" id="com.ninja_squad.dbsetup_kotlin.DbSetupBuilder$truncate(kotlin.collections.List((kotlin.String)))/tables">tables</span><span class="symbol">:</span>&nbsp;<span class="identifier">List</span><span class="symbol">&lt;</span><span class="identifier">String</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><p>Adds Truncate operations to the DbSetup</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
