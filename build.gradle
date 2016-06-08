@@ -125,6 +125,12 @@ subprojects { subProject ->
                     rootNode.children().each {
                         root.append(it)
                     }
+
+                    asNode().dependencies.'*'.findAll() {
+                        it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+                            dep.name == it.artifactId.text()
+                        }
+                    }.each { it.scope*.value = 'compile'}
                 }
             }
         }
