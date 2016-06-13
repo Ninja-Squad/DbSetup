@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.ninja_squad.dbsetup.operation.CompositeOperation;
+import com.ninja_squad.dbsetup.operation.Delete;
 import com.ninja_squad.dbsetup.operation.DeleteAll;
 import com.ninja_squad.dbsetup.operation.Insert;
 import com.ninja_squad.dbsetup.operation.Operation;
@@ -68,6 +69,18 @@ public final class Operations {
      */
     public static Operation deleteAllFrom(@Nonnull List<String> tables) {
         return DeleteAll.from(tables);
+    }
+
+    /**
+     * Creates a sequence of <code>delete from ... where ...</code> operations.
+     * @param insertOperation the insertOperation used to identify what to delete (table and rows) 
+     * @param pkColumn the name of the column used to match rows to delete (ususally a column with 
+     *          an unicity constraint such as the primary key column) 
+     * @return the created Delete Operation
+     * @see Delete
+     */
+    public static Operation deleteFrom(@Nonnull Insert insertOperation, @Nonnull String pkColumn) {
+        return Delete.from(insertOperation, pkColumn);
     }
 
     /**
