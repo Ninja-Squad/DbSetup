@@ -776,14 +776,14 @@ public final class Insert implements Operation {
         }
     }
 
-    protected final String getTable() {
+    protected String getTable() {
         return table;
     }
-    protected final List<String> getColumnNames() {
+    protected List<String> getColumnNames() {
         return new ArrayList<String>(columnNames);
     }
 
-    protected final List<List<?>> getRows() {
+    protected List<List<?>> getRows() {
         return Collections.unmodifiableList(rows);
     }
 }

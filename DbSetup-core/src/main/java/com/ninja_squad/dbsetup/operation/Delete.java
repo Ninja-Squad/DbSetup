@@ -73,7 +73,7 @@ public final class Delete implements Operation {
         Preconditions.checkNotNull(pkColumn, "pkColumn may not be null");
         Preconditions.checkArgument(insertOperation.getColumnNames().contains(pkColumn),
                 "insertOperation should contain a column named '" + pkColumn + "'");
-        Preconditions.checkState(insertOperation.getRowCount()>0,
+        Preconditions.checkState(insertOperation.getRowCount() > 0,
                 "insertOperation should contain at least one row to delete");
         this.insertOperation = insertOperation;
         this.pkColumn = pkColumn;
