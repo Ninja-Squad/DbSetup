@@ -32,6 +32,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -773,5 +774,16 @@ public final class Insert implements Operation {
         public Builder doTimes(int times) {
             return builder.addRepeatingValues(values, times);
         }
+    }
+
+    protected String getTable() {
+        return table;
+    }
+    protected List<String> getColumnNames() {
+        return new ArrayList<String>(columnNames);
+    }
+
+    protected List<List<?>> getRows() {
+        return Collections.unmodifiableList(rows);
     }
 }
