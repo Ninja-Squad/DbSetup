@@ -50,7 +50,7 @@ import java.util.List;
  *             .withBinder(new ClientTypeBinder(), "CLIENT_TYPE")
  *             .build();
  *   Delete d = Delete.from(insert, "CLIENT_ID");
- * <pre>
+ * </pre>
  * 
  * SQL query: 
  * <pre>delete from CLIENT where CLIENT_ID in (1L, 2L)</pre>
