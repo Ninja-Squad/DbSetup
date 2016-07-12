@@ -2,6 +2,21 @@ Build status on Travis CI
 
 [![Build Status](https://secure.travis-ci.org/Ninja-Squad/DbSetup.png)](http://travis-ci.org/Ninja-Squad/DbSetup)
 
+# Setup
+####Maven 
+```xml
+<dependency>
+    <groupId>com.ninja-squad</groupId>
+    <artifactId>DbSetup</artifactId>
+    <version>2.1.0</version>
+</dependency>
+```
+
+####Gradle
+```groovy
+compile group: 'com.ninja-squad', name: 'DbSetup', version: '2.1.0'
+```
+
 # Overview
 
 DbSetup allows populating a database before executing automated integration tests (typically, DAO/Repository automated tests). 
