@@ -10,3 +10,4 @@ build/
 .idea
 out
 classes
+.sdkmanrc
