@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+
+    working_directory: ~/DbSetup
+
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    steps:
+
+      - checkout
+      - run: ./gradlew build
+      - store_test_results:
+          path: DbSetup-core/build/test-results/test
+      - store_test_results:
+          path: DbSetup-kotlin/build/test-results/test
