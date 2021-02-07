@@ -1,4 +1,0 @@
-language: java
-script: "./gradlew test"
-jdk:
-  - oraclejdk8

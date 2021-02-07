@@ -37,11 +37,11 @@ To submit bugs or RFEs, use [Github](https://github.com/Ninja-Squad/DbSetup/issu
 # How to...
 ## build
 
-    gradlew build
+    ./gradlew build
 
 ## install the artifacts in your own local Maven repository
     
-    gradlew publishToMavenLocal
+    ./gradlew publishToMavenLocal
     
 ## release a new version of DbSetup
 
@@ -50,25 +50,29 @@ properties:
 
         sonatypeUsername=<the sonatype user name>
         sonatypePassword=<the sonatype password>       
+        signing.keyId=<the ID of the PGP key to use>
         signing.password=<the password used to protect your PGP key configured in the ninjasquad bintray account>
-        bintray.key=<the api key of the ninjasquad bintray account>
-        
+        signing.secretKeyRingFile=<the path to the secring.jpg file>
+
  - Make sure the version of DbSetup in the project's `gradle.properties` file is the right one. It must not end with `-SNAPSHOT`
  - Execute
  
-        gradlew clean build bintrayUpload
+        ./gradlew clean build publishToSonatype closeAndReleaseRepository
         
-That should upload the artefacts to the ninjasquad's bintray maven repo, sign then with the keypair stored in bintray,
-and sync it with jcenter and Maven central.
+That should create a new staging repo in Sonatype OSSRS, then upload the artefacts to this staging repo, 
+sign close the repo and release (i.e. sync it to Maven central).
 
-Note: the bintray plugin acts sometimes strangely (hangs, or 400 errors). It can be useful to disable the gradle daemon
-by passing `-no-daemon`. Passing `--info` also helps understanding what's going on. 
+To only close the repo to test without syncing to Maven central, run
+
+    ./gradlew clean build publishToSonatype closeRepository
 
 Note: to check the jar file and pom publication before uploading, you can use 
 
-    gradlew publish
+    ./gradlew publishMavenPublicationToBuildRepository
     
-which will simply publish under the `build/repo` directory of each project.
+which will simply publish under the `build/repo` directory of the root project.
+
+See the publishing guide at https://github.com/rwinch/gradle-publish-ossrh-sample.
 
 # License
 
