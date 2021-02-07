@@ -1,5 +1,5 @@
 /.project
-/.gradle
+.gradle
 /.settings
 /bin
 build/
