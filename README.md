@@ -1,6 +1,4 @@
-Build status on Travis CI
-
-[![Build Status](https://secure.travis-ci.org/Ninja-Squad/DbSetup.png)](http://travis-ci.org/Ninja-Squad/DbSetup)
+[![CircleCI](https://circleci.com/gh/Ninja-Squad/DbSetup.svg?style=svg)](https://circleci.com/gh/Ninja-Squad/DbSetup)
 
 # Overview
 
