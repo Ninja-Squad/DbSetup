@@ -1,10 +1,12 @@
-import java.time.Duration
-
 plugins {
     `java-library-convention`
 }
 
 project.description = "Helps you setup your database with test data"
+
+java {
+    withJavadocJar()
+}
 
 dependencies {
     compileOnly("com.google.code.findbugs:jsr305:2.0.0")
