@@ -55,14 +55,14 @@ properties:
  - Make sure the version of DbSetup in the project's `gradle.properties` file is the right one. It must not end with `-SNAPSHOT`
  - Execute
  
-        ./gradlew clean build publishToSonatype closeAndReleaseRepository
+        ./gradlew clean build publishToSonatype closeAndReleaseSonatypeStagingRepository
         
 That should create a new staging repo in Sonatype OSSRS, then upload the artefacts to this staging repo, 
 sign close the repo and release (i.e. sync it to Maven central).
 
 To only close the repo to test without syncing to Maven central, run
 
-    ./gradlew clean build publishToSonatype closeRepository
+    ./gradlew clean build publishToSonatype closeSonatypeStagingRepository
 
 Note: to check the jar file and pom publication before uploading, you can use 
 

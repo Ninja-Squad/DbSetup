@@ -1,12 +1,10 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import java.time.Duration
 
 plugins {
     `java-library`
     signing
     `maven-publish`
     jacoco
-    id("de.marcphilipp.nexus-publish")
 }
 
 group = rootProject.group
@@ -107,14 +105,6 @@ publishing {
 
 signing {
     sign(publishing.publications["maven"])
-}
-
-nexusPublishing {
-    repositories {
-        sonatype()
-    }
-    connectTimeout.set(Duration.ofMinutes(3))
-    clientTimeout.set(Duration.ofMinutes(3))
 }
 
 
